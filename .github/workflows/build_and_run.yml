@@ -28,7 +28,7 @@ jobs:
 
       - name: Install dependencies
         working-directory: ./front
-        run: yarn install
+        run: yarn ci
 
       - name: ▶️ Run build
         working-directory: ./front
