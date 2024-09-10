@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "test": "vitest run --coverage",
+    "ci": "install --immutable --immutable-cache --check-cache",
     "postinstall": "cd .. && husky front/.husky",
     "prepack": "pinst --disable",
     "postpack": "pinst --enable"
