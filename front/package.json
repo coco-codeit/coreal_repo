@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "test": "vitest run --coverage",
-    "ci": "install --frozen-lockfile",
+    "ci": "yarn install --frozen-lockfile",
     "postinstall": "cd .. && husky front/.husky",
     "prepack": "pinst --disable",
     "postpack": "pinst --enable"
