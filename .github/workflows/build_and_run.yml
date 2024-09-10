@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: [18, 20]
+        node: [18]
     runs-on: ubuntu-latest
     steps:
       - name: ⬇️ Checkout repo
@@ -28,17 +28,18 @@ jobs:
 
       - name: Install dependencies
         working-directory: ./front
-        run: yarn install
+        run: yarn ci
 
       - name: ▶️ Run build
-        working-directory: ./front 
+        working-directory: ./front
         run: yarn build
 
       - name: ▶️ Run test
-        working-directory: ./front 
-        run: yarn vitest run
+        working-directory: ./front
+        run: yarn vitest run --coverage
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+          directory: ./front/coverage
