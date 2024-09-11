@@ -8,21 +8,55 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["var(--font-spoqa-han-sans-neo-regular)", "sans-serif"], // 기본폰트 Regular 폰트로 설정
+        title: ["var(--font-spoqa-han-sans-neo-bold)", "sans-serif"], // Bold 폰트
+        body: ["var(--font-spoqa-han-sans-neo-regular)", "sans-serif"], // Regular 폰트
+      },
+
+      fontSize: {
+        // Title
+        "display-5": ["40px", { lineHeight: "52px" }],
+        "display-4": ["36px", { lineHeight: "46px" }],
+        "display-3": ["32px", { lineHeight: "42px" }],
+        "display-2": ["28px", { lineHeight: "38px" }],
+        "display-1": ["24px", { lineHeight: "34px" }],
+        headline: ["20px", { lineHeight: "28px" }],
+        "subhead-3": ["16px", { lineHeight: "22px" }],
+        "subhead-long-3": ["16px", { lineHeight: "28px" }],
+        "subhead-2": ["14px", { lineHeight: "20px" }],
+        "subhead-long-2": ["14px", { lineHeight: "24px" }],
+        "subhead-1": ["12px", { lineHeight: "18px" }],
+
+        // Body
+        "body-2": ["16px", { lineHeight: "24px" }],
+        "body-long-2": ["16px", { lineHeight: "28px" }],
+        "body-1": ["14px", { lineHeight: "20px" }],
+        "body-long-1": ["14px", { lineHeight: "24px" }],
+        caption: ["12px", { lineHeight: "18px" }],
+      },
+
+      // 공통 letterSpacing 설정
+      letterSpacing: {
+        tighter: "-0.6px",
+      },
+
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
         black: "#000",
         white: "#FFF",
 
-        "gray-01": "#FBFBFB",
-        "gray-02": "#F7F7F7",
-        "gray-03": "#F5F4F3",
-        "gray-04": "#EFEFEF",
-        "gray-05": "#ECECEC",
-        "gray-06": "#DFDFDF",
-        "gray-07": "#C1C1C1",
-        "gray-08": "#A5A5A5",
-        "gray-09": "#8B8B8B",
+        // gray scale
+        "gray-1": "#FBFBFB",
+        "gray-2": "#F7F7F7",
+        "gray-3": "#F5F4F3",
+        "gray-4": "#EFEFEF",
+        "gray-5": "#ECECEC",
+        "gray-6": "#DFDFDF",
+        "gray-7": "#C1C1C1",
+        "gray-8": "#A5A5A5",
+        "gray-9": "#8B8B8B",
         "gray-10": "#6F6F6F",
         "gray-11": "#555",
         "gray-12": "#3D3D3D",
@@ -30,24 +64,27 @@ const config: Config = {
         "gray-14": "#242424",
         "gray-15": "#171717",
 
+        // gray transparent scale
         "gray-transparent-01": "rgba(176, 179, 188, 0.1)",
         "gray-transparent-02": "rgba(176, 179, 188, 0.3)",
         "gray-transparent-03": "rgba(176, 179, 188, 0.5)",
         "gray-transparent-04": "rgba(176, 179, 188, 0.7)",
 
-        "purple-01": "#E1C5FE",
-        "purple-02": "#D3AAFD",
-        "purple-03": "#C084FC",
-        "purple-04": "#B773FB",
-        "purple-05": "#AB5EF9",
-        "purple-06": "#A451F7",
-        "purple-07": "#9653D9",
-        "purple-08": "#8256AE",
-        "purple-09": "#6E5784",
+        // purple scale
+        "purple-1": "#E1C5FE",
+        "purple-2": "#D3AAFD",
+        "purple-3": "#C084FC",
+        "purple-4": "#B773FB",
+        "purple-5": "#AB5EF9",
+        "purple-6": "#A451F7",
+        "purple-7": "#9653D9",
+        "purple-8": "#8256AE",
+        "purple-9": "#6E5784",
         "purple-10": "#654C7E",
         "purple-11": "#533670",
         "purple-12": "#442365",
 
+        //systemscale
         "green-for-ios": "#06C755",
         "green-for-android": "#4CC764",
 
@@ -62,4 +99,5 @@ const config: Config = {
   },
   plugins: [],
 };
+
 export default config;
