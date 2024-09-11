@@ -52,7 +52,7 @@ jobs:
         run: |
           echo "$EC2_SSH_KEY" > ec2_key.pem
           chmod 600 ec2_key.pem
-          echo "Connecting to EC2 and updating frontend code..."
+          echo "EC2에 연결하고 프론트엔드 코드 업데이트 중..."
           ssh -i ec2_key.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST '
             cd /coreal_repo/front
             git pull origin main
@@ -61,7 +61,7 @@ jobs:
             if pm2 list | grep -q "coreal_frontend"; then
               pm2 restart coreal_frontend
             else
-              pm2 start yarn --name "coreal_frontend" -- start
+              pm2 start npm --name "coreal_frontend" -- start --cwd /coreal_repo/front
             fi
-            echo "Frontend deployment completed."
+            echo "프론트엔드 배포 완료."
           '
