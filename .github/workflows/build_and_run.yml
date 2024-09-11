@@ -44,6 +44,7 @@ jobs:
       #     token: ${{ secrets.CODECOV_TOKEN }}
       #     directory: ./front/coverage
 
+      # TODO: 빌드 캐시 사용 가능 한가? 너무 오래걸림.
       - name: EC2에 배포
         env:
           EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
@@ -71,7 +72,7 @@ jobs:
             fi
             
             echo "새 프로세스 시작"
-            pm2 start yarn --name "coreal_frontend" -- start
+            pm2 start yarn --name "coreal_frontend" -- start --port 8080
             
             echo "PM2 프로세스 목록"
             pm2 list
