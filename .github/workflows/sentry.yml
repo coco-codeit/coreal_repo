@@ -20,6 +20,8 @@ jobs:
     steps:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 10
 
       - name: ⎔ Setup node
         uses: actions/setup-node@v4
@@ -39,6 +41,7 @@ jobs:
         run: yarn global add @sentry/cli
 
       - name: Create Sentry release
+        working-directory: ./front
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG: junyup

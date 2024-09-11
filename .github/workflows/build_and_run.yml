@@ -52,12 +52,16 @@ jobs:
         run: |
           echo "$EC2_SSH_KEY" > ec2_key.pem
           chmod 600 ec2_key.pem
-          scp -i ec2_key.pem -o StrictHostKeyChecking=no -r ./build/* $EC2_USER@$EC2_HOST:/coreal_repo/front
+          echo "Connecting to EC2 and updating frontend code..."
           ssh -i ec2_key.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST '
             cd /coreal_repo/front
-            if pm2 list | grep -q "coreal_project"; then
-              pm2 restart coreal_project
+            git pull origin main
+            yarn install
+            yarn build
+            if pm2 list | grep -q "coreal_frontend"; then
+              pm2 restart coreal_frontend
             else
-              pm2 start yarn --name "coreal_project" -- start
+              pm2 start yarn --name "coreal_frontend" -- start
             fi
+            echo "Frontend deployment completed."
           '
