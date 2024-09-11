@@ -18,36 +18,41 @@ jobs:
         node: [18]
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v4
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
 
       - name: Install dependencies
-        run: npm install
+        working-directory: ./front
+        run: yarn ci
 
-      - name: Build project
-        run: npm run build
+      - name: ▶️ Run build
+        working-directory: ./front
+        run: yarn build
 
       - name: Install sentry-cli
-        run: npm install -g @sentry/cli
+        working-directory: ./front
+        run: yarn add -g @sentry/cli
 
       - name: Create Sentry release
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SENTRY_ORG: coreal_project
-          SENTRY_PROJECT: 4507932689891328
+          SENTRY_ORG: junyup
+          SENTRY_PROJECT: coreal_project
         run: |
           export VERSION=$(sentry-cli releases propose-version)
           sentry-cli releases new $VERSION
           sentry-cli releases set-commits --auto $VERSION
 
-      - name: Deploy to production
-        run: npm run deploy
-
       - name: Finalize Sentry release
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SENTRY_ORG: coreal_project
-          SENTRY_PROJECT: 4507932689891328
+          SENTRY_ORG: junyup
+          SENTRY_PROJECT: coreal_project
         run: |
           export VERSION=$(sentry-cli releases propose-version)
           sentry-cli releases finalize $VERSION
