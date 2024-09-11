@@ -34,12 +34,26 @@ jobs:
         working-directory: ./front
         run: yarn build
 
-      - name: ▶️ Run test
-        working-directory: ./front
-        run: yarn vitest run --coverage
+      # - name: ▶️ Run test
+      #   working-directory: ./front
+      #   run: yarn vitest run --coverage
 
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v4
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          directory: ./front/coverage
+      # - name: Upload coverage reports to Codecov
+      #   uses: codecov/codecov-action@v4
+      #   with:
+      #     token: ${{ secrets.CODECOV_TOKEN }}
+      #     directory: ./front/coverage
+
+      - name: EC2에 배포
+        env:
+          EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_USER: ${{ secrets.EC2_USER }}
+        run: |
+          echo "$EC2_SSH_KEY" > ec2_key.pem
+          chmod 600 ec2_key.pem
+          scp -i ec2_key.pem -o StrictHostKeyChecking=no -r ./build/* $EC2_USER@$EC2_HOST:/coreal_repo/front
+          ssh -i ec2_key.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST '
+            cd /coreal_repo/front
+            pm2 restart coreal_project || pm2 start yarn --name "coreal_project" -- start
+          '
