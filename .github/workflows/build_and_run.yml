@@ -44,6 +44,30 @@ jobs:
       #     token: ${{ secrets.CODECOV_TOKEN }}
       #     directory: ./front/coverage
 
+      - name: Install sentry-cli
+        working-directory: ./front
+        run: yarn global add @sentry/cli
+
+      - name: Create Sentry release
+        working-directory: ./front
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: junyup
+          SENTRY_PROJECT: coreal_project
+        run: |
+          export VERSION=$(sentry-cli releases propose-version)
+          sentry-cli releases new $VERSION
+          sentry-cli releases set-commits --auto $VERSION
+
+      - name: Finalize Sentry release
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: junyup
+          SENTRY_PROJECT: coreal_project
+        run: |
+          export VERSION=$(sentry-cli releases propose-version)
+          sentry-cli releases finalize $VERSION
+
       - name: EC2에 배포
         env:
           EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
