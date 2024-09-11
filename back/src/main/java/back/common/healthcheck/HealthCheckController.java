@@ -24,12 +24,12 @@ public class HealthCheckController {
     private String serverName;
 
     @GetMapping("/health-check")
-    public ResponseEntity<?> healthCheck(){
-        Map<String,String> responseData = new HashMap<>();
-        responseData.put("serverName",serverName);
-        responseData.put("serverAddress",serverAddress);
-        responseData.put("serverPort",serverPort);
-        responseData.put("env",env);
+    public ResponseEntity<?> healthCheck() {
+        Map<String, String> responseData = new HashMap<>();
+        responseData.put("serverName", serverName);
+        responseData.put("serverAddress", serverAddress);
+        responseData.put("serverPort", serverPort);
+        responseData.put("env", env);
         return ResponseEntity.ok(responseData);
     }
 
