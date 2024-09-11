@@ -36,7 +36,7 @@ jobs:
 
       - name: Install sentry-cli
         working-directory: ./front
-        run: yarn add -g @sentry/cli
+        run: yarn global add @sentry/cli
 
       - name: Create Sentry release
         env:

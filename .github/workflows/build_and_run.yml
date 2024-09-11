@@ -44,30 +44,6 @@ jobs:
       #     token: ${{ secrets.CODECOV_TOKEN }}
       #     directory: ./front/coverage
 
-      - name: Install sentry-cli
-        working-directory: ./front
-        run: yarn global add @sentry/cli
-
-      - name: Create Sentry release
-        working-directory: ./front
-        env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SENTRY_ORG: junyup
-          SENTRY_PROJECT: coreal_project
-        run: |
-          export VERSION=$(sentry-cli releases propose-version)
-          sentry-cli releases new $VERSION
-          sentry-cli releases set-commits --auto $VERSION
-
-      - name: Finalize Sentry release
-        env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SENTRY_ORG: junyup
-          SENTRY_PROJECT: coreal_project
-        run: |
-          export VERSION=$(sentry-cli releases propose-version)
-          sentry-cli releases finalize $VERSION
-
       - name: EC2에 배포
         env:
           EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
@@ -79,5 +55,9 @@ jobs:
           scp -i ec2_key.pem -o StrictHostKeyChecking=no -r ./build/* $EC2_USER@$EC2_HOST:/coreal_repo/front
           ssh -i ec2_key.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST '
             cd /coreal_repo/front
-            pm2 restart coreal_project || pm2 start yarn --name "coreal_project" -- start
+            if pm2 list | grep -q "coreal_project"; then
+              pm2 restart coreal_project
+            else
+              pm2 start yarn --name "coreal_project" -- start
+            fi
           '
