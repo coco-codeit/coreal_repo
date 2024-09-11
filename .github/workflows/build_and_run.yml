@@ -74,11 +74,5 @@ jobs:
             echo "새 프로세스 시작"
             pm2 start yarn --name "coreal_frontend" -- start --port 8080
             
-            echo "PM2 프로세스 목록"
-            pm2 list
-            
-            echo "PM2 로그 확인 (최근 10줄)"
-            pm2 logs coreal_frontend --lines 10
-            
             echo "프론트엔드 배포 완료."
           '
