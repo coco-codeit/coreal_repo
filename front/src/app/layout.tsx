@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import Navbar from "@/components/Navbar";
 
 // SpoqaHanSansNeo 폰트
 // Regular 폰트
@@ -32,6 +33,7 @@ export default function RootLayout({
       <body
         className={`${spoqaHanSansNeoRegular.variable} ${spoqaHanSansNeoBold.variable} antialiased`}
       >
+        <Navbar />
         {children}
       </body>
     </html>
