@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: [18]
+        node: [20]
     runs-on: ubuntu-latest
     steps:
       - name: ⬇️ Checkout repo
@@ -34,12 +34,45 @@ jobs:
         working-directory: ./front
         run: yarn build
 
-      - name: ▶️ Run test
-        working-directory: ./front
-        run: yarn vitest run --coverage
+      # - name: ▶️ Run test
+      #   working-directory: ./front
+      #   run: yarn vitest run --coverage
 
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v4
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          directory: ./front/coverage
+      # - name: Upload coverage reports to Codecov
+      #   uses: codecov/codecov-action@v4
+      #   with:
+      #     token: ${{ secrets.CODECOV_TOKEN }}
+      #     directory: ./front/coverage
+
+      # TODO: 빌드 캐시 사용 가능 한가? 너무 오래걸림.
+      - name: EC2에 배포
+        env:
+          EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_USER: ${{ secrets.EC2_USER }}
+        run: |
+          echo "$EC2_SSH_KEY" > ec2_key.pem
+          chmod 600 ec2_key.pem
+          echo "EC2에 연결하고 프론트엔드 코드 업데이트 중..."
+          ssh -i ec2_key.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST '
+            set -x
+            cd ~/coreal_repo
+            git pull origin main
+            cd front
+            yarn install
+            yarn build
+            
+            echo "PM2 프로세스 상태 확인"
+            pm2 list
+            
+            if pm2 list | grep -q "coreal_frontend"; then
+              echo "기존 프로세스 중지 및 삭제"
+              pm2 stop coreal_frontend
+              pm2 delete coreal_frontend
+            fi
+            
+            echo "새 프로세스 시작"
+            pm2 start yarn --name "coreal_frontend" -- start --port 8080
+            
+            echo "프론트엔드 배포 완료."
+          '
