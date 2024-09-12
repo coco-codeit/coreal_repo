@@ -1,0 +1,29 @@
+{
+  "studyList": [
+    {
+      "id": "1",
+      "name": "스터디 이름",
+      "imgUrl": "...",
+      "members": [
+        {
+          "id": "유저1",
+          "nickname": "...",
+          "imgUrl": "...",
+          "reviews": {
+            "created": "2020-12-20 15:34:20",
+            "updated": "2020-12-20 15:34:20",
+            "comments": ["c1", "c2", "c3", "c4", "c5"]
+          }
+        },
+        {
+          "id": "유저2",
+          "nickname": "...",
+          "imgUrl": "...",
+          "reviews": null
+        }
+      ]
+    }
+  ],
+  "gathers": { "data": "hello" },
+  "profile": {}
+}
