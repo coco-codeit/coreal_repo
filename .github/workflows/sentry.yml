@@ -47,9 +47,10 @@ jobs:
           SENTRY_ORG: junyup
           SENTRY_PROJECT: coreal_project
         run: |
+          export SENTRY_LOG_LEVEL=debug
           export VERSION=$(sentry-cli releases propose-version)
           sentry-cli releases new $VERSION
-          sentry-cli releases set-commits --auto $VERSION
+          sentry-cli releases set-commits --auto --ignore-missing $VERSION
 
       - name: Finalize Sentry release
         env:
@@ -57,5 +58,6 @@ jobs:
           SENTRY_ORG: junyup
           SENTRY_PROJECT: coreal_project
         run: |
+          export SENTRY_LOG_LEVEL=debug
           export VERSION=$(sentry-cli releases propose-version)
           sentry-cli releases finalize $VERSION
