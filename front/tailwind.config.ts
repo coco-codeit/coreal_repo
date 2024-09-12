@@ -1,5 +1,9 @@
 import type { Config } from "tailwindcss";
 
+function commonStyles(lineHeight: string) {
+  return { lineHeight, letterSpacing: "-0.6px" };
+}
+
 const config: Config = {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -9,36 +13,31 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["var(--font-spoqa-han-sans-neo-regular)", "sans-serif"], // 기본폰트 Regular 폰트로 설정
+        sans: ["var(--font-spoqa-han-sans-neo-regular)", "sans-serif"], // 기본 폰트 Regular 폰트로 설정
         title: ["var(--font-spoqa-han-sans-neo-bold)", "sans-serif"], // Bold 폰트
         body: ["var(--font-spoqa-han-sans-neo-regular)", "sans-serif"], // Regular 폰트
       },
 
       fontSize: {
         // Title
-        "display-5": ["40px", { lineHeight: "52px" }],
-        "display-4": ["36px", { lineHeight: "46px" }],
-        "display-3": ["32px", { lineHeight: "42px" }],
-        "display-2": ["28px", { lineHeight: "38px" }],
-        "display-1": ["24px", { lineHeight: "34px" }],
-        headline: ["20px", { lineHeight: "28px" }],
-        "subhead-3": ["16px", { lineHeight: "22px" }],
-        "subhead-long-3": ["16px", { lineHeight: "28px" }],
-        "subhead-2": ["14px", { lineHeight: "20px" }],
-        "subhead-long-2": ["14px", { lineHeight: "24px" }],
-        "subhead-1": ["12px", { lineHeight: "18px" }],
+        "display-5": ["40px", commonStyles("52px")],
+        "display-4": ["36px", commonStyles("46px")],
+        "display-3": ["32px", commonStyles("42px")],
+        "display-2": ["28px", commonStyles("38px")],
+        "display-1": ["24px", commonStyles("34px")],
+        headline: ["20px", commonStyles("28px")],
+        "subhead-3": ["16px", commonStyles("22px")],
+        "subhead-long-3": ["16px", commonStyles("28px")],
+        "subhead-2": ["14px", commonStyles("20px")],
+        "subhead-long-2": ["14px", commonStyles("24px")],
+        "subhead-1": ["12px", commonStyles("18px")],
 
         // Body
-        "body-2": ["16px", { lineHeight: "24px" }],
-        "body-long-2": ["16px", { lineHeight: "28px" }],
-        "body-1": ["14px", { lineHeight: "20px" }],
-        "body-long-1": ["14px", { lineHeight: "24px" }],
-        caption: ["12px", { lineHeight: "18px" }],
-      },
-
-      // 공통 letterSpacing 설정
-      letterSpacing: {
-        tighter: "-0.6px",
+        "body-2": ["16px", commonStyles("24px")],
+        "body-long-2": ["16px", commonStyles("28px")],
+        "body-1": ["14px", commonStyles("20px")],
+        "body-long-1": ["14px", commonStyles("24px")],
+        caption: ["12px", commonStyles("18px")],
       },
 
       colors: {
