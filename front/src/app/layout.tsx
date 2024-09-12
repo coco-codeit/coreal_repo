@@ -5,30 +5,17 @@ import "./globals.css";
 // SpoqaHanSansNeo 폰트
 // Regular 폰트
 const spoqaHanSansNeoRegular = localFont({
-  src: "../../public/fonts/SpoqaHanSansNeo-Regular.woff2",
+  src: "./fonts/SpoqaHanSansNeo-Regular.woff2",
   weight: "400",
   variable: "--font-spoqa-han-sans-neo-regular",
 });
 
 // Bold 폰트
 const spoqaHanSansNeoBold = localFont({
-  src: "../../public/fonts/SpoqaHanSansNeo-Bold.woff2",
+  src: "./fonts/SpoqaHanSansNeo-Bold.woff2",
   weight: "700",
   variable: "--font-spoqa-han-sans-neo-bold",
 });
-
-/*
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
-*/
 
 export const metadata: Metadata = {
   title: "Create Next App",
