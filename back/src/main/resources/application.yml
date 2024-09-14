@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: local
+    active: blue
     group:
       local: local
       blue: blue
@@ -36,6 +36,7 @@ spring:
         format_sql: true
 server:
   port: 8080
+  env: local
   serverAddress: localhost
   serverName: local_server
 
@@ -58,6 +59,8 @@ spring:
         show_sql: true
         format_sql: true
 server:
+  port: 8080
+  env: blue
   serverAddress: 13.209.231.21
   serverName: blue_server
 
@@ -80,6 +83,8 @@ spring:
         show_sql: true
         format_sql: true
 server:
+  port: 8081
+  env: green
   serverAddress: 13.209.231.21
   serverName: green_server
 
@@ -89,3 +94,8 @@ spring:
   sql:
     init:
       mode: always
+
+springdoc:
+  show-login-endpoint: true # 스웨거 로그인 url 뜨게하기
+  swagger-ui: # 스웨거 url 바꾸기
+    path: /swagger
