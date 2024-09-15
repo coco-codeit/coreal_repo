@@ -1,9 +1,6 @@
 package back.domain.user;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,5 +19,18 @@ public class User {
 
     private String email;
     private String password;
+    private String nickname;
     private boolean isFirstLogin;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private UserEnum role;
+
+    public boolean isFirstLoginCheck(){
+        return this.isFirstLogin == true;
+    }
+
+    public void changeFirstLogin(){
+        this.isFirstLogin = false;
+    }
 }

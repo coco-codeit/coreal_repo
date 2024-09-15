@@ -58,6 +58,10 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
+  data:
+  redis:
+    host:
+    port:
 server:
   port: 8080
   env: blue

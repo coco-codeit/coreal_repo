@@ -1,5 +1,7 @@
-package back.api.user.dto;
+package back.domain.user.dto;
 
+import back.common.util.DateUtil;
+import back.domain.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -50,5 +52,24 @@ public class UserResponse {
         private String progress;
         private int totalCapacity;
         private int currentCapacity;
+    }
+
+    @Getter
+    public static class Login{
+        private Long id;
+        private String username;
+        private String nickname;
+        private String accessToken;
+        private boolean isFirstLogin;
+        private String createdAt;
+
+        public Login(User user, String accessToken,boolean isFirstLogin) {
+            this.id = user.getId();
+            this.username = user.getEmail();
+            this.nickname = user.getNickname();
+            this.accessToken = accessToken;
+            this.createdAt = DateUtil.toStringFormat(LocalDateTime.now());
+            this.isFirstLogin = isFirstLogin;
+        }
     }
 }
