@@ -1,9 +1,9 @@
 package back.api.user;
 
 import back.api.common.dto.CustomApiResponse;
-import back.api.gathering.dto.GatheringResponse;
 import back.api.user.dto.UserRequest;
-import back.api.user.dto.UserResponse;
+import back.domain.user.dto.UserResponse;
+import back.domain.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -15,10 +15,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
 
+    private final UserService userService;
+
     @Operation(summary = "유저 회원가입")
     @PostMapping("/join")
     public CustomApiResponse<UserResponse.Join> join(@RequestBody UserRequest.Join request) {
-        return CustomApiResponse.ok("회원가입 성공", new UserResponse.Join(1L, "coreal@naver.com"));
+        return CustomApiResponse.ok("회원가입 성공", userService.join(request.toCommand()));
     }
 
     @Operation(summary = "프로필 조회")
