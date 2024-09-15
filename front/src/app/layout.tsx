@@ -34,7 +34,7 @@ export default function RootLayout({
         className={`${spoqaHanSansNeoRegular.variable} ${spoqaHanSansNeoBold.variable} antialiased`}
       >
         <Navbar />
-        {children}
+        <main>{children}</main>
       </body>
     </html>
   );
