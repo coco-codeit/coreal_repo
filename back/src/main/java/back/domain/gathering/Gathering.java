@@ -29,7 +29,7 @@ public class Gathering {
     private String image;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-    private String month;
+    private String gatheringMonth;
     private String time;
     private String description;
     private int totalCapacity;
