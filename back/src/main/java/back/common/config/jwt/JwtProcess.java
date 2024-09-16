@@ -14,9 +14,17 @@ public class JwtProcess {
     public static String create(LoginUser loginUser) {
         String jwtToken = JWT.create()
                 .withSubject("coreal")
-                .withExpiresAt(new Date(System.currentTimeMillis() + JwtUtil.EXPIRATION_TIME))
+                .withExpiresAt(new Date(System.currentTimeMillis() + JwtUtil.ACCESS_EXPIRATION_TIME))
                 .withClaim("id", loginUser.getUser().getId())
                 .withClaim("role", loginUser.getUser().getRole().name())
+                .sign(Algorithm.HMAC512(JwtUtil.SECRET));
+        return JwtUtil.TOKEN_PREFIX + jwtToken;
+    }
+
+    public static String createRefreshToken() {
+        String jwtToken = JWT.create()
+                .withSubject("coreal")
+                .withExpiresAt(new Date(System.currentTimeMillis() + JwtUtil.REFRESH_EXPIRATION_TIME))
                 .sign(Algorithm.HMAC512(JwtUtil.SECRET));
         return JwtUtil.TOKEN_PREFIX + jwtToken;
     }

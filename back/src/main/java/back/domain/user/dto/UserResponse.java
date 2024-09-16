@@ -55,19 +55,21 @@ public class UserResponse {
     }
 
     @Getter
-    public static class Login{
+    public static class Login {
         private Long id;
         private String username;
         private String nickname;
         private String accessToken;
+        private String refreshToken;
         private boolean isFirstLogin;
         private String createdAt;
 
-        public Login(User user, String accessToken,boolean isFirstLogin) {
+        public Login(User user, String accessToken, String refreshToken, boolean isFirstLogin) {
             this.id = user.getId();
             this.username = user.getEmail();
             this.nickname = user.getNickname();
             this.accessToken = accessToken;
+            this.refreshToken = refreshToken;
             this.createdAt = DateUtil.toStringFormat(LocalDateTime.now());
             this.isFirstLogin = isFirstLogin;
         }
