@@ -4,6 +4,7 @@ import back.common.filter.JwtAuthenticationFilter;
 import back.common.filter.JwtAuthorizationFilter;
 import back.common.util.CustomResponseUtil;
 import back.domain.user.UserRepository;
+import back.domain.user.token.UserRedisRepository;
 import com.fasterxml.jackson.core.Base64Variant;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +26,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfig {
 
     private final UserRepository userRepository;
+    private final UserRedisRepository userRedisRepository;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -51,7 +53,8 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(c ->
                 // 토큰을 만들어서 세션이 만들이지면 인증완료
-                c.anyRequest().permitAll());
+                c.requestMatchers("/env").authenticated()
+                        .anyRequest().permitAll());
 
         return http.build();
     }
@@ -61,7 +64,7 @@ public class SecurityConfig {
         public void configure(HttpSecurity builder) throws Exception {
             // AuthenticationManager가 없으면 강제 세션 로그인을 못해서 만들어줌
             AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
-            builder.addFilter(new JwtAuthenticationFilter(authenticationManager,userRepository));
+            builder.addFilter(new JwtAuthenticationFilter(authenticationManager,userRepository,userRedisRepository));
             builder.addFilter(new JwtAuthorizationFilter(authenticationManager));
             super.configure(builder);
         }

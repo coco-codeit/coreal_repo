@@ -7,6 +7,8 @@ import back.domain.user.dto.UserResponse;
 import back.common.config.auth.LoginUser;
 import back.common.config.jwt.JwtProcess;
 import back.common.util.CustomResponseUtil;
+import back.domain.user.token.RefreshToken;
+import back.domain.user.token.UserRedisRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -26,11 +28,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     private AuthenticationManager authenticationManager;
     private UserRepository userRepository;
+    private UserRedisRepository userRedisRepository;
 
-    public JwtAuthenticationFilter(AuthenticationManager authenticationManager,UserRepository userRepository) {
+    public JwtAuthenticationFilter(AuthenticationManager authenticationManager, UserRepository userRepository, UserRedisRepository userRedisRepository) {
         super(authenticationManager);
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
+        this.userRedisRepository = userRedisRepository;
     }
 
     @Override
@@ -55,12 +59,15 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         log.debug("디버그 : successfulAuthentication 호출됨");
         LoginUser loginUser = (LoginUser) authResult.getPrincipal();
-        String jwtToken = JwtProcess.create(loginUser);
+        String accessToken = JwtProcess.create(loginUser);
+        String refreshToken = JwtProcess.createRefreshToken();
+
+        userRedisRepository.save(new RefreshToken(String.valueOf(loginUser.getUser().getId()), refreshToken));
 
         User user = userRepository.findByEmail(loginUser.getUsername()).get();
         boolean firstLoginCheck = user.isFirstLoginCheck();
-        UserResponse.Login loginResponse = new UserResponse.Login(loginUser.getUser(), jwtToken, firstLoginCheck);
-        if (firstLoginCheck == true){
+        UserResponse.Login loginResponse = new UserResponse.Login(loginUser.getUser(), accessToken, refreshToken, firstLoginCheck);
+        if (firstLoginCheck == true) {
             user.changeFirstLogin();
             userRepository.save(user);
         }

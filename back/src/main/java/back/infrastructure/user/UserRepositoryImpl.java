@@ -1,7 +1,8 @@
-package back.infrastructure;
+package back.infrastructure.user;
 
 import back.domain.user.User;
 import back.domain.user.UserRepository;
+import back.infrastructure.user.UserJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

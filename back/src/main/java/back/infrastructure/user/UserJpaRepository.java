@@ -1,4 +1,4 @@
-package back.infrastructure;
+package back.infrastructure.user;
 
 import back.domain.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;

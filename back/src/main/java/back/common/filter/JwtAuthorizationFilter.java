@@ -5,6 +5,7 @@ import back.common.config.jwt.JwtProcess;
 import back.common.config.jwt.JwtUtil;
 import back.common.util.CustomResponseUtil;
 import com.auth0.jwt.exceptions.JWTDecodeException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,7 +33,10 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             LoginUser loginUser = null;
             try {
                 loginUser = JwtProcess.verify(token);
-            }catch (JWTDecodeException e){
+            }catch (TokenExpiredException e){
+                CustomResponseUtil.unAuthentication(response,"토큰 만료 시간이 지났습니다.");
+                return;
+            } catch (Exception e){
                 CustomResponseUtil.unAuthentication(response,"토큰이 유효하지 않습니다.");
                 return;
             }
