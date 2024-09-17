@@ -9,18 +9,6 @@ import close from "../../public/images/visibility_off.svg";
 import Image from "next/image";
 import { useState } from "react";
 
-const INPUT_CLASS =
-  "w-full py-[6px] sm:py-[10px] px-[10px] sm:px-4 bg-gray-2 placeholder-gray-8 rounded-lg sm:rounded-xl mb-2 sm:text text-sm sm:text-base";
-const ERROR_CLASS = "border-red-ios-400";
-const ERROR_TEXT_CLASS = "text-red-ios-400 text-xs mb-4 sm:mb-6";
-
-const schema = z.object({
-  id: z.string().email({ message: "유효한 이메일 주소를 입력해 주세요." }),
-  password: z
-    .string()
-    .min(8, { message: "비밀번호는 최소 8자 이상이어야 합니다." }),
-});
-
 type FormData = z.infer<typeof schema>;
 
 // TODO: 백엔드 KEY 이슈
@@ -70,7 +58,7 @@ export default function LoginForm() {
         }
       }
     } catch (error) {
-      console.error("로그인 중 오류", error);
+      console.error("서버 오류🚨", error);
     }
   };
 
@@ -80,7 +68,7 @@ export default function LoginForm() {
       aria-label="로그인 양식"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <label htmlFor="id" className="text-xs sm:text-base py-2">
+      <label htmlFor="id" className={LABEL_CLASS}>
         아이디
       </label>
       <input
@@ -96,7 +84,7 @@ export default function LoginForm() {
       <p
         className={ERROR_TEXT_CLASS}
       >{`${errors.id ? errors.id.message : " "}`}</p>
-      <label htmlFor="password" className="text-xs sm:text-base py-2">
+      <label htmlFor="password" className={LABEL_CLASS}>
         비밀번호
       </label>
       <div className="relative">
@@ -129,3 +117,16 @@ export default function LoginForm() {
     </form>
   );
 }
+
+const LABEL_CLASS = "text-xs sm:text-base py-2";
+const INPUT_CLASS =
+  "w-full py-[6px] sm:py-[10px] px-[10px] sm:px-4 bg-gray-2 placeholder-gray-8 rounded-lg sm:rounded-xl mb-2 sm:text text-sm sm:text-base";
+const ERROR_CLASS = "border-red-ios-400";
+const ERROR_TEXT_CLASS = "text-red-ios-400 text-xs mb-4 sm:mb-6";
+
+const schema = z.object({
+  id: z.string().email({ message: "유효한 이메일 주소를 입력해 주세요." }),
+  password: z
+    .string()
+    .min(8, { message: "비밀번호는 최소 8자 이상이어야 합니다." }),
+});
