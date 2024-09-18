@@ -14,7 +14,7 @@ type FormData = z.infer<typeof schema>;
 // TODO: 백엔드 KEY 이슈
 const API_URL = "Bearer ";
 
-export default function LoginForm() {
+export default function LoginForm({ title }: { title: string }) {
   const [showPassword, setShowPassword] = useState(false);
   const {
     register,
@@ -112,7 +112,7 @@ export default function LoginForm() {
         disabled={isSubmitting}
         className="bg-gray-8 text-white py-[6px] md:py-[10px] rounded-lg sm:rounded-xl mt-[15px] sm:mt-4 mb-4 sm:mb-6 text-xs sm:text-base"
       >
-        {isSubmitting ? "Login..." : "로그인"}
+        {isSubmitting ? title + " 중" : title}
       </button>
     </form>
   );
