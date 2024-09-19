@@ -17,7 +17,7 @@ export default function WelcomeMessage() {
       </div>
       <div className="relative mx-auto w-[242px] h-[162px] sm:w-[385px] sm:h-[257px] md:w-[536px] md:h-[358px] my-[29px] sm:my-[46px] md:my-16 ">
         <Image
-          src={`/images/login.svg`}
+          src="/images/login.svg"
           alt="CoReal 서비스 소개 이미지"
           fill
           priority
