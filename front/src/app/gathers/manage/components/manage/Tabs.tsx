@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
-import { useGatheringTabStore } from "@/store/useGatheringTabStore";
 import { AppliedList } from "../applied/List";
 import { CreatedList } from "../created/List";
+import { useTabStore } from "@/store/gathers/manage/useTabStore";
+import { useDropdownStore } from "@/store/gathers/manage/useDropdownStore";
 
 const tabs: { id: "applied" | "created"; label: string }[] = [
   { id: "applied", label: "내가 참여 중인 모임" },
@@ -17,10 +17,8 @@ const dropdownOptions: { id: "all" | "study" | "project"; label: string }[] = [
 ];
 
 function Tabs() {
-  const { activeTab, setActiveTab } = useGatheringTabStore();
-  const [activeDropdown, setActiveDropdown] = useState<
-    "all" | "study" | "project"
-  >("all");
+  const { activeTab, setActiveTab } = useTabStore();
+  const { activeDropdown, setActiveDropdown } = useDropdownStore();
 
   return (
     <div>
