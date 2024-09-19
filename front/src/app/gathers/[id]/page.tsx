@@ -1,5 +1,5 @@
 "use client";
-import ProjectCard from "./components/ProjectCard";
+import DetailProjectCard from "./components/DetailProjectCard";
 
 export default function page() {
   const handleParticipate = () => {
@@ -8,7 +8,7 @@ export default function page() {
   };
 
   return (
-    <ProjectCard
+    <DetailProjectCard
       projectName="프로젝트명"
       description="한줄소개?"
       onParticipate={handleParticipate}
