@@ -9,7 +9,7 @@ interface CardProps {
   time?: string;
   participants?: string; // (현재 인원 / 최대 인원)
   imageUrl?: string;
-  participantsList?: { name: string }[];
+  participantsList?: { name: string }[]; // 참여자 승인 목록
   onEdit?: () => void;
   onManage?: () => void;
   onApprove?: (participantName: string) => void;
