@@ -74,4 +74,11 @@ public class UserResponse {
             this.isFirstLogin = isFirstLogin;
         }
     }
+
+    @Getter
+    @AllArgsConstructor
+    public static class Info{
+        private Long id;
+        private String nickname;
+    }
 }
