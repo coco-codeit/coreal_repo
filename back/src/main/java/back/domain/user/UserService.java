@@ -4,18 +4,23 @@ import back.domain.common.exception.CustomGlobalException;
 import back.domain.common.exception.ErrorType;
 import back.domain.user.dto.UserCommand;
 import back.domain.user.dto.UserResponse;
+import back.domain.user.stack.TechStack;
+import back.domain.user.stack.TechStackRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
+    private final TechStackRepository techStackRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
@@ -48,5 +53,17 @@ public class UserService {
         if (!password.equals(checkPassword)) {
             throw new CustomGlobalException(ErrorType.NON_MATCH_PASSWORD);
         }
+    }
+
+    @Transactional
+    public UserResponse.Info saveInfo(Long userId, UserCommand.Info command) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomGlobalException(ErrorType.NOT_FOUND_USER));
+        user.changeInfo(command.getJobField(), command.getUsername(), command.getNickname());
+        List<TechStack> techStacks = command.getTechStacks().stream()
+                .map(techStack -> new TechStack(user, techStack.getName())).collect(Collectors.toList());
+        techStackRepository.saveAll(techStacks);
+
+        return new UserResponse.Info(userId, command.getNickname());
     }
 }
