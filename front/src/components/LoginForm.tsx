@@ -4,10 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import open from "../../public/images/visibility_on.svg";
-import close from "../../public/images/visibility_off.svg";
-import Image from "next/image";
-import { useState } from "react";
 
 type FormData = z.infer<typeof schema>;
 
@@ -15,7 +11,6 @@ type FormData = z.infer<typeof schema>;
 const API_URL = "Bearer ";
 
 export default function LoginForm({ title }: { title: string }) {
-  const [showPassword, setShowPassword] = useState(false);
   const {
     register,
     handleSubmit,
@@ -26,10 +21,6 @@ export default function LoginForm({ title }: { title: string }) {
   } = useForm<FormData>({
     resolver: zodResolver(schema),
   });
-
-  const togglePasswordVisibility = () => {
-    setShowPassword((prev) => !prev);
-  };
 
   const onSubmit = async (data: FormData) => {
     clearErrors();
@@ -89,7 +80,7 @@ export default function LoginForm({ title }: { title: string }) {
       </label>
       <div className="relative">
         <input
-          type={showPassword ? "text" : "password"}
+          type="type"
           id="password"
           placeholder="비밀번호를 입력해 주세요."
           {...register("password")}
@@ -97,12 +88,7 @@ export default function LoginForm({ title }: { title: string }) {
           required
           aria-required="true"
         />
-        <Image
-          src={showPassword ? open : close}
-          alt={showPassword ? "비밀번호 숨기기" : "비밀번호 보이기"}
-          onClick={togglePasswordVisibility}
-          className="absolute right-2 top-1/2 transform -translate-y-1/2 cursor-pointer w-4 h-4 sm:w-6 sm:h-6 "
-        />
+        {/* TODO: React-icons로 password visibility 수정 */}
       </div>
       <p
         className={ERROR_TEXT_CLASS}
