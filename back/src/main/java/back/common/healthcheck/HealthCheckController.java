@@ -27,6 +27,7 @@ public class HealthCheckController {
 
     @GetMapping("/health-check")
     public ResponseEntity<?> healthCheck() {
+        log.info("healthCheck");
         Map<String, String> responseData = new HashMap<>();
         responseData.put("serverName", serverName);
         responseData.put("serverAddress", serverAddress);
