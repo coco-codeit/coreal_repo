@@ -14,13 +14,17 @@
     "postpack": "pinst --enable"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.9.0",
     "@sentry/browser": "^8.28.0",
+    "@sentry/nextjs": "8",
     "@tanstack/react-query": "^5.55.0",
     "@vitest/coverage-v8": "^2.0.5",
+    "axios": "^1.7.7",
     "next": "14.2.8",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.53.0",
+    "zod": "^3.23.8",
     "zustand": "^4.5.5"
   },
   "devDependencies": {
@@ -30,6 +34,7 @@
     "eslint": "^8",
     "eslint-config-next": "14.2.8",
     "husky": "^9.1.5",
+    "json-server": "^0.17.4",
     "lint-staged": "^15.2.10",
     "pinst": "^3.0.0",
     "postcss": "^8",
@@ -44,5 +49,6 @@
       "eslint --fix",
       "prettier --write"
     ]
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
