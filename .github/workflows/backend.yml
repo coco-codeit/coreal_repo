@@ -99,5 +99,4 @@ jobs:
         key: ${{ secrets.BACK_EC2_SSH_KEY }}
         script_stop: true
         script: |
-          sudo docker stop ${{env.CURRENT_UPSTREAM}}
           sudo docker rm ${{env.CURRENT_UPSTREAM}}
