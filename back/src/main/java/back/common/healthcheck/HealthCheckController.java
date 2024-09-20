@@ -32,9 +32,12 @@ public class HealthCheckController {
         responseData.put("serverAddress", serverAddress);
         responseData.put("serverPort", serverPort);
         responseData.put("env", env);
-        log.info(responseData.toString());
-        log.info(responseData.toString());
         return ResponseEntity.ok(responseData);
+    }
+
+    @GetMapping("/test")
+    public ResponseEntity<?> test() {
+        return ResponseEntity.ok("test");
     }
 
     @GetMapping("/env")
