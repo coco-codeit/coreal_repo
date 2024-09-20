@@ -47,10 +47,7 @@ function TabsWrapper({
       {React.Children.map(children, (child, childIndex) =>
         React.isValidElement<TabsPropsInterface>(child)
           ? React.cloneElement(child, {
-              onClick: () => {
-                setIndex(childIndex);
-                console.log(childIndex);
-              },
+              onClick: () => setIndex(childIndex),
               "data-index": childIndex,
               "data-selected": index === childIndex,
             })
@@ -92,9 +89,20 @@ function Content({
   return <div {...props}>{children}</div>;
 }
 
+function DefaultContent({
+  children,
+  ...props
+}: {
+  children: React.ReactNode;
+  [key: string]: unknown;
+}) {
+  return <div {...props}>{children}</div>;
+}
+
 Tabs.TabsWrapper = TabsWrapper;
 Tabs.Tab = Tab;
 Tabs.ContentsWrapper = ContentsWrapper;
 Tabs.Content = Content;
+Tabs.DefaultContent = DefaultContent;
 
 export default Tabs;
