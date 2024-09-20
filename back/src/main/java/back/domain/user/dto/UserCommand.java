@@ -2,10 +2,13 @@ package back.domain.user.dto;
 
 import back.domain.user.User;
 import back.domain.user.UserEnum;
+import back.domain.user.stack.TechStack;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 public class UserCommand {
 
@@ -25,5 +28,17 @@ public class UserCommand {
                     .role(UserEnum.USER)
                     .build();
         }
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Info{
+        private String username;
+        private String nickname;
+        private String jobField;
+        private List<TechStack> techStacks;
+
     }
 }
