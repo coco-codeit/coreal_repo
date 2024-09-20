@@ -7,7 +7,7 @@ interface ListProps {
 function List({ type = "all" }: ListProps) {
   const studyData = [
     {
-      id: 1,
+      id: "1",
       title: "React 스터디원 구함",
       location: "온라인",
       skills: ["React", "TypeScript"],
@@ -21,7 +21,7 @@ function List({ type = "all" }: ListProps) {
 
   const projectData = [
     {
-      id: 42,
+      id: "42",
       title: "Next.js로 개발자 모임 어플 만드실 분들",
       location: "서울",
       skills: ["Next.js", "Node.js"],
@@ -42,6 +42,7 @@ function List({ type = "all" }: ListProps) {
     <div>
       {dataToRender.map((item) => (
         <Card
+          id={item.id}
           key={item.id}
           title={item.title}
           location={item.location}

@@ -30,7 +30,7 @@ export default function Navbar() {
                 width={38}
                 height={38}
                 alt="Site Logo"
-                src="/image/logo.svg"
+                src="/images/logo.svg"
               />
             </Link>
             <Image
@@ -38,7 +38,7 @@ export default function Navbar() {
               width={125}
               height={32}
               alt="Site Logo Text"
-              src="/image/logo-text.svg"
+              src="/images/logo-text.svg"
             />
           </div>
 
