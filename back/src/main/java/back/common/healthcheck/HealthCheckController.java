@@ -37,8 +37,8 @@ public class HealthCheckController {
     }
 
     @GetMapping("/test")
-    public ResponseEntity<?> test() {
-        return ResponseEntity.ok("test");
+    public String test(){
+        return "test";
     }
 
     @GetMapping("/env")
