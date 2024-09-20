@@ -34,7 +34,6 @@ public class HealthCheckController {
         responseData.put("env", env);
         log.info(responseData.toString());
         log.info(responseData.toString());
-        log.info(responseData.toString());
         return ResponseEntity.ok(responseData);
     }
 
