@@ -60,16 +60,14 @@ public class UserResponse {
         private String username;
         private String nickname;
         private String accessToken;
-        private String refreshToken;
         private boolean isFirstLogin;
         private String createdAt;
 
-        public Login(User user, String accessToken, String refreshToken, boolean isFirstLogin) {
+        public Login(User user, String accessToken, boolean isFirstLogin) {
             this.id = user.getId();
             this.username = user.getEmail();
             this.nickname = user.getNickname();
             this.accessToken = accessToken;
-            this.refreshToken = refreshToken;
             this.createdAt = DateUtil.toStringFormat(LocalDateTime.now());
             this.isFirstLogin = isFirstLogin;
         }
@@ -77,7 +75,7 @@ public class UserResponse {
 
     @Getter
     @AllArgsConstructor
-    public static class Info{
+    public static class Info {
         private Long id;
         private String nickname;
     }
