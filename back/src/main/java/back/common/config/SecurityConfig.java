@@ -53,9 +53,7 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(c ->
                 // 토큰을 만들어서 세션이 만들이지면 인증완료
-                c.requestMatchers("/env").authenticated()
-                        .anyRequest().permitAll());
-
+                c.requestMatchers("/env").permitAll());
         return http.build();
     }
 
