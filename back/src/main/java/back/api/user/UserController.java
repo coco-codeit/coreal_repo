@@ -54,10 +54,14 @@ public class UserController {
                 )));
     }
 
+    @Operation(summary = "유저 추가 정보 저장")
     @PostMapping("/user/info")
     public CustomApiResponse<UserResponse.Info> saveInfo(@RequestBody UserRequest.Info request,
                                                          @AuthenticationPrincipal LoginUser loginUser) {
         return CustomApiResponse.ok("회원 추가 정보 저장",userService.saveInfo(loginUser.getUser().getId(), request.toCommand()));
     }
 
+//    public CustomApiResponse<Void> getUserProfile(){
+//
+//    }
 }
