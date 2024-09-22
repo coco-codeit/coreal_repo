@@ -1,6 +1,5 @@
-package back.domain.user.stack;
+package back.domain.user.evaluation;
 
-import back.domain.gathering.Gathering;
 import back.domain.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -13,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TechStack {
+public class Evaluation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,14 +20,5 @@ public class TechStack {
 
     @ManyToOne
     private User user;
-
-    @ManyToOne
-    private Gathering gathering;
-
-    private String name;
-
-    public TechStack(User user, String name) {
-        this.user = user;
-        this.name = name;
-    }
+    private String description;
 }
