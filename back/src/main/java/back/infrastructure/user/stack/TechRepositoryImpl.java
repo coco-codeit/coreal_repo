@@ -21,6 +21,16 @@ public class TechRepositoryImpl implements TechStackRepository {
     }
 
     @Override
+    public List<TechStack> findByUserId(Long userId) {
+        return techStackJpaRepository.findByUserId(userId);
+    }
+
+    @Override
+    public List<TechStack> findByGatheringId(Long gatheringId) {
+        return techStackJpaRepository.findByGatheringId(gatheringId);
+    }
+
+    @Override
     public TechStack save(TechStack techStack) {
         return techStackJpaRepository.save(techStack);
     }
@@ -28,5 +38,10 @@ public class TechRepositoryImpl implements TechStackRepository {
     @Override
     public List<TechStack> saveAll(List<TechStack> techStacks) {
         return techStackJpaRepository.saveAll(techStacks);
+    }
+
+    @Override
+    public List<TechStack> findByGatheringIds(List<Long> gatheringIds) {
+        return techStackJpaRepository.findByGatheringIds(gatheringIds);
     }
 }
