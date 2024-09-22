@@ -26,14 +26,15 @@ public class UserController {
     }
 
     @Operation(summary = "프로필 조회")
-    @GetMapping("/user/profile")
-    public CustomApiResponse<UserResponse.Read> getProfile() {
+    @GetMapping("/user/{id}/profile")
+    public CustomApiResponse<UserResponse.Read> getProfile(@PathVariable Long id,
+                                                           @AuthenticationPrincipal LoginUser loginUser) {
         return CustomApiResponse.ok("프로필 정보를 성공적으로 조회하였습니다."
-                , new UserResponse.Read(1L, "닉네임", "coreal@naver.com", "s3주소", 38));
+                , userService.getProfile(id,loginUser.getUser().getId()));
     }
 
     @Operation(summary = "프로필 정보 수정")
-    @PatchMapping("/user/profile")
+    @PatchMapping("/user/{id}/profile")
     public CustomApiResponse<UserResponse.Update> updateProfile(@RequestBody UserRequest.Update request) {
         return CustomApiResponse.ok("프로필 정보 수정", new UserResponse.Update(1L, "닉네임", "coreal@naver.com", "s3주소"));
     }
@@ -58,7 +59,7 @@ public class UserController {
     @PostMapping("/user/info")
     public CustomApiResponse<UserResponse.Info> saveInfo(@RequestBody UserRequest.Info request,
                                                          @AuthenticationPrincipal LoginUser loginUser) {
-        return CustomApiResponse.ok("회원 추가 정보 저장",userService.saveInfo(loginUser.getUser().getId(), request.toCommand()));
+        return CustomApiResponse.ok("회원 추가 정보 저장", userService.saveInfo(loginUser.getUser().getId(), request.toCommand()));
     }
 
 //    public CustomApiResponse<Void> getUserProfile(){
