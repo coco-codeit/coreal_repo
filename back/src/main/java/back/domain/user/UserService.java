@@ -2,16 +2,26 @@ package back.domain.user;
 
 import back.domain.common.exception.CustomGlobalException;
 import back.domain.common.exception.ErrorType;
+import back.domain.gathering.Gathering;
+import back.domain.gathering.GatheringEnum;
+import back.domain.gathering.dto.GatheringDto;
 import back.domain.user.dto.UserCommand;
 import back.domain.user.dto.UserResponse;
+import back.domain.user.evaluation.Evaluation;
+import back.domain.user.evaluation.EvaluationRepository;
 import back.domain.user.stack.TechStack;
 import back.domain.user.stack.TechStackRepository;
+import back.domain.user.stack.dto.TechStackDto;
+import back.domain.user.usergatherting.UserGathering;
+import back.domain.user.usergatherting.UserGatheringRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -21,6 +31,8 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final TechStackRepository techStackRepository;
+    private final EvaluationRepository evaluationRepository;
+    private final UserGatheringRepository userGatheringRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
@@ -65,5 +77,41 @@ public class UserService {
         techStackRepository.saveAll(techStacks);
 
         return new UserResponse.Info(userId, command.getNickname());
+    }
+
+    public UserResponse.Read getProfile(Long profileUserId, Long guestId) {
+        boolean isOwner = profileUserId == guestId;
+        User profileUser = userRepository.findById(profileUserId)
+                .orElseThrow(() -> new CustomGlobalException(ErrorType.NOT_FOUND_PROFILE));
+        User guest = userRepository.findById(guestId)
+                .orElseThrow(() -> new CustomGlobalException(ErrorType.NOT_FOUND_USER));
+        List<TechStack> userTechStacks = techStackRepository.findByUserId(profileUserId);
+        List<Evaluation> evaluations = evaluationRepository.findByUserId(profileUserId);
+        List<UserGathering> userGatherings = userGatheringRepository.findByUserIdWithGathering(profileUserId);
+
+        // Gathering ID 목록 추출
+        List<Long> gatheringIds = userGatherings.stream()
+                .map(ug -> ug.getGathering().getId())
+                .collect(Collectors.toList());
+
+        List<TechStack> allTechStacks = techStackRepository.findByGatheringIds(gatheringIds);
+
+        // 맵 생성 ( 1: [TS1, TS2])
+        Map<Long, List<TechStack>> techStackMap = allTechStacks.stream()
+                .collect(Collectors.groupingBy(ts -> ts.getGathering().getId()));
+
+        // "STUDY": [GatheringDto1, GatheringDto3],
+        Map<String, List<GatheringDto.Read>> gatherings = userGatherings.stream()
+                .collect(Collectors.groupingBy(
+                        ug -> ug.getGathering().getGatheringType(),
+                        Collectors.mapping(ug -> {
+                            Gathering gathering = ug.getGathering();
+                            List<TechStack> techStacks = techStackMap.getOrDefault(gathering.getId(), Collections.emptyList());
+                            List<TechStackDto.Read> techStackDtos = techStacks.stream()
+                                    .map(ts -> new TechStackDto.Read(ts.getName()))
+                                    .collect(Collectors.toList());
+                            return new GatheringDto.Read(gathering,techStackDtos);
+                        },Collectors.toList())));
+        return new UserResponse.Read(profileUser, userTechStacks, evaluations, gatherings, isOwner);
     }
 }
