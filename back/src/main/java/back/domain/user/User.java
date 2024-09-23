@@ -42,9 +42,10 @@ public class User {
         this.isFirstLogin = false;
     }
 
-    public void changeInfo(String jobField,String username,String nickname){
+    public void changeInfo(String jobField,String username,String nickname,String profileImage){
         this.jobField = jobField;
         this.username = username;
         this.nickname = nickname;
+        this.profileImage = profileImage;
     }
 }

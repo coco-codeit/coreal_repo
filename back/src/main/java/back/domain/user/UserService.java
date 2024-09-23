@@ -71,7 +71,7 @@ public class UserService {
     public UserResponse.Info saveInfo(Long userId, UserCommand.Info command) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomGlobalException(ErrorType.NOT_FOUND_USER));
-        user.changeInfo(command.getJobField(), command.getUsername(), command.getNickname());
+        user.changeInfo(command.getJobField(), command.getUsername(), command.getNickname(), command.getProfileImage());
         List<TechStack> techStacks = command.getTechStacks().stream()
                 .map(techStack -> new TechStack(user, techStack.getName())).collect(Collectors.toList());
         techStackRepository.saveAll(techStacks);
