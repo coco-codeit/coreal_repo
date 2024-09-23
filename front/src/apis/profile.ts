@@ -22,7 +22,7 @@ export const getGatherings = async (select: string) => {
   }
 };
 
-export const getReviewsById = async () => {
+export const getReviewsById = async (id: number | string) => {
   const mockData = [
     {
       id: "유저1",
@@ -61,6 +61,7 @@ export const getReviewsById = async () => {
   ];
   try {
     // const url = `${BASE_URL}/gathering/${id}/review`;
+    console.log(id);
     return [...mockData];
     // const data = await fetch(url)
     //   .then((res) => res.json())
