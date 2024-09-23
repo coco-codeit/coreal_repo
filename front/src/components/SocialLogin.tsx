@@ -4,6 +4,7 @@ import kakao from "../../public/images/kakao.svg";
 import naver from "../../public/images/naver.svg";
 import Image from "next/image";
 
+// TODO: OAuth 추가 작업
 const SOCIAL_LOGIN_OPTIONS = [
   { url: "/", icon: github, alt: "깃허브" },
   { url: "/", icon: kakao, alt: "카카오" },
