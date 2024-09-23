@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface EvaluationJpaRepository extends JpaRepository<Evaluation,Long> {
     List<Evaluation> findByUserId(Long userId);
+    List<Evaluation> findTop3ByUserIdOrderByCountDesc(Long userId);
 }
