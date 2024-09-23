@@ -37,6 +37,7 @@ public class UserCommand {
     public static class Info{
         private String username;
         private String nickname;
+        private String profileImage;
         private String jobField;
         private List<TechStack> techStacks;
 

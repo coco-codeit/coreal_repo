@@ -21,4 +21,5 @@ public class Evaluation {
     @ManyToOne
     private User user;
     private String description;
+    private Integer count;
 }

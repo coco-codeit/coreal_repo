@@ -36,4 +36,9 @@ public class EvaluationRepositoryImpl implements EvaluationRepository {
     public List<Evaluation> findByUserId(Long userId) {
         return evaluationJpaRepository.findByUserId(userId);
     }
+
+    @Override
+    public List<Evaluation> findTop3ByUserIdOrderByCountDesc(Long userId) {
+        return evaluationJpaRepository.findTop3ByUserIdOrderByCountDesc(userId);
+    }
 }
