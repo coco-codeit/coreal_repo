@@ -25,5 +25,179 @@
     }
   ],
   "gathers": { "data": "hello" },
-  "profile": {}
+  "profile": {},
+  "gatheringsManage": [
+    {
+      "study": [ 
+        {
+          "id": "23",
+          "image": "string", 
+          "title": "React 심화 스터디 구함",
+          "content": "React 심화 스터디원 구함!!!!!", 
+          "oranizer": "아리", 
+          "dateTime" : "2024-09-10T07:48:14.342Z",
+          "registrationEnd" : "2024-09-10T07:48:14.342Z",
+          "startDateTime": "2024-09-10T09:00:00.000Z",
+          "canceledAt": "2024-09-10T07:48:14.342Z",
+          "connection": "offline",
+          "skills": ["React"], 
+          "participant": 3, 
+          "capacity": 15
+        },
+        {
+          "id": "13",
+          "image": "string", 
+          "title": "Next.js 스터디 모집해용",
+          "content": "Next.js 마스터 되고 싶은 분들 모집해용",
+          "oranizer": "동동", 
+          "dateTime" : "2024-09-10T07:48:14.342Z",
+          "registrationEnd" : "2024-09-10T07:48:14.342Z",
+          "startDateTime": "2024-09-10T09:00:00.000Z",
+          "canceledAt": null,
+          "connection": "online",
+          "skills": ["Next.js", "React", "TypeScript"], 
+          "participant": 10, 
+          "capacity": 15
+        }
+      ]
+    },
+    {
+      "project": [
+        {
+          "id": "20", 
+          "image": "string", 
+          "title": "Next.js로 프로젝트 만드실 분",
+          "content": "Next.js로 개발자 모임 어플 만들 분들 구함", 
+          "oranizer": "선남",
+          "dateTime" : "2024-09-10T07:48:14.342Z",
+          "registrationEnd" : "2024-09-10T07:48:14.342Z",
+          "startDateTime": "2024-09-10T09:00:00.000Z",
+          "canceledAt": null,
+          "connection": "online",
+          "skills": ["Next.js", "React", "TypeScript", "Node.js"], 
+          "participant": 10, 
+          "capacity": 15,
+          "recruitment" : [
+				    {
+			        "field": "frontend",
+			        "participant": 1,
+			        "capacity": 4
+			      },
+			      {
+			        "field": "backend",
+			        "participant": 2,
+			        "capacity": 3
+			      }
+			    ] 
+        },
+        {
+          "id": "17",
+          "image": "string", 
+          "title": "개발자 모임 서비스 만들어요!",
+          "content": "같이 만들 분 !!!!!", 
+          "oranizer": "애숙", 
+          "dateTime" : "2024-09-10T07:48:14.342Z",
+          "registrationEnd" : "2024-09-10T07:48:14.342Z",
+          "startDateTime": "2024-09-10T12:00:00.000Z",
+          "canceledAt": null,
+          "connection": "online",
+          "skills": ["Next.js", "TypeScript"], 
+          "participant": 10, 
+          "capacity": 15,
+          "recruitment" : [
+				    {
+			        "field": "frontend",
+			        "participant": 1,
+			        "capacity": 4
+			      },
+			      {
+			        "field": "backend",
+			        "participant": 2,
+			        "capacity": 3
+			      },
+            {
+			        "field": "design",
+			        "participant": 0,
+			        "capacity": 1
+			      }
+			    ] 
+        }
+      ]
+    },
+    {
+      "participants": [
+        {
+          "id": "20",
+          "applicantsPending": [
+            {
+              "userId": 0,
+              "userNickname": "동동",
+              "userProfileImage": "",
+              "userTemp": 0,
+              "userSkills": ["TypeScript", "Express"],
+              "position": "frontend"
+            },
+            {
+              "userId": 3,
+              "userNickname": "한돌",
+              "userProfile": "",
+              "userTemp": 37.0,
+              "userSkills": ["Node.js", "MongoDB"],
+              "position": "backend"
+            }
+          ]
+        },
+        {
+          "id": "23",
+          "applicantsPending": [
+            {
+              "userId": 3,
+              "userNickname": "한돌",
+              "userProfile": "",
+              "userTemp": 37.0,
+              "userSkills": ["Node.js", "MongoDB"],
+              "position": "backend"
+            },
+            {
+              "userId": 2,
+              "userNickname": "아리",
+              "userProfile": "",
+              "userTemp": 37.0,
+              "userSkills": ["React", "Next.js"],
+              "position": "frontend"
+            }
+          ]
+        },
+        {
+          "id": "17",
+          "applicantsPending": [
+            {
+              "userId": 0,
+              "userNickname": "동동",
+              "userProfileImage": "",
+              "userTemp": 0,
+              "userSkills": ["TypeScript", "Express"],
+              "position": "frontend"
+            },
+            {
+              "userId": 2,
+              "userNickname": "아리",
+              "userProfile": "",
+              "userTemp": 37.0,
+              "userSkills": ["React", "Next.js"],
+              "position": "Frontend"
+            },
+            {
+              "userId": 3,
+              "userNickname": "한돌",
+              "userProfile": "",
+              "userTemp": 37.0,
+              "userSkills": ["Node.js", "MongoDB"],
+              "position": "backend"
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }
