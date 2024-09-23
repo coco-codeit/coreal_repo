@@ -37,7 +37,7 @@ export default function GatheringItem({
               </div>
               <DisclosureButton className="absolute top-0 right-0">
                 {({ open }: { open: boolean }) =>
-                  open ? "리뷰 닫기" : "리뷰 펼치기"
+                  open ? <>리뷰 닫기</> : <>리뷰 펼치기</>
                 }
               </DisclosureButton>
             </div>
