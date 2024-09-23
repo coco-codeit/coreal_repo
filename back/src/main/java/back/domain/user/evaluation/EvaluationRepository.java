@@ -8,5 +8,6 @@ public interface EvaluationRepository {
     Evaluation save(Evaluation evaluation);
     List<Evaluation> saveAll(List<Evaluation> evaluations);
     List<Evaluation> findByUserId(Long userId);
+    List<Evaluation> findTop3ByUserIdOrderByCountDesc(Long userId);
 
 }

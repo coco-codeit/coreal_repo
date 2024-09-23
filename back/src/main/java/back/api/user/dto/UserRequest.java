@@ -49,6 +49,7 @@ public class UserRequest {
     public static class Info{
         private String username;
         private String nickname;
+        private String profileImage;
         private String jobField;
         private List<TechStack> techStacks;
 
@@ -56,6 +57,7 @@ public class UserRequest {
             return UserCommand.Info.builder()
                     .username(username)
                     .nickname(nickname)
+                    .profileImage(profileImage)
                     .jobField(jobField)
                     .techStacks(techStacks)
                     .build();

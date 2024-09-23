@@ -1,5 +1,6 @@
 package back.domain.user;
 
+import back.common.config.auth.LoginUser;
 import back.domain.common.exception.CustomGlobalException;
 import back.domain.common.exception.ErrorType;
 import back.domain.gathering.Gathering;
@@ -70,7 +71,7 @@ public class UserService {
     public UserResponse.Info saveInfo(Long userId, UserCommand.Info command) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomGlobalException(ErrorType.NOT_FOUND_USER));
-        user.changeInfo(command.getJobField(), command.getUsername(), command.getNickname());
+        user.changeInfo(command.getJobField(), command.getUsername(), command.getNickname(), command.getProfileImage());
         List<TechStack> techStacks = command.getTechStacks().stream()
                 .map(techStack -> new TechStack(user, techStack.getName())).collect(Collectors.toList());
         techStackRepository.saveAll(techStacks);
@@ -78,14 +79,16 @@ public class UserService {
         return new UserResponse.Info(userId, command.getNickname());
     }
 
-    public UserResponse.Read getProfile(Long profileUserId, Long guestId) {
-        boolean isOwner = profileUserId == guestId;
+    public UserResponse.Read getProfile(Long profileUserId, LoginUser currentUser) {
+        boolean isOwner = (currentUser != null && profileUserId == currentUser.getUser().getId());
+
         User profileUser = userRepository.findById(profileUserId)
                 .orElseThrow(() -> new CustomGlobalException(ErrorType.NOT_FOUND_PROFILE));
-        User guest = userRepository.findById(guestId)
-                .orElseThrow(() -> new CustomGlobalException(ErrorType.NOT_FOUND_USER));
-        List<TechStack> userTechStacks = techStackRepository.findByUserId(profileUserId);
-        List<Evaluation> evaluations = evaluationRepository.findByUserId(profileUserId);
+
+        List<String> userTechStacks = techStackRepository.findByUserId(profileUserId)
+                .stream().map(userTechStack -> userTechStack.getName()).collect(Collectors.toList());
+        List<String> evaluations = evaluationRepository.findTop3ByUserIdOrderByCountDesc(profileUserId)
+                .stream().map(userEvaluation->userEvaluation.getDescription()).collect(Collectors.toList());
         List<UserGathering> userGatherings = userGatheringRepository.findByUserIdWithGathering(profileUserId);
 
         // Gathering ID 목록 추출
@@ -106,8 +109,8 @@ public class UserService {
                         Collectors.mapping(ug -> {
                             Gathering gathering = ug.getGathering();
                             List<TechStack> techStacks = techStackMap.getOrDefault(gathering.getId(), Collections.emptyList());
-                            List<TechStackDto.Read> techStackDtos = techStacks.stream()
-                                    .map(ts -> new TechStackDto.Read(ts.getName()))
+                            List<String> techStackDtos = techStacks.stream()
+                                    .map(ts -> ts.getName())
                                     .collect(Collectors.toList());
                             return new GatheringDto.Read(gathering, techStackDtos);
                         }, Collectors.toList())));

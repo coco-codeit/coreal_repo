@@ -14,9 +14,9 @@ public class GatheringDto {
         private String gatheringImg;
         private String gatheringName;
         private String description;
-        private List<TechStackDto.Read> techStacks;
+        private List<String> techStacks;
 
-        public Read(Gathering gathering,List<TechStackDto.Read> techStacks) {
+        public Read(Gathering gathering,List<String> techStacks) {
             this.id = gathering.getId();
             this.gatheringImg = gathering.getImage();
             this.gatheringName = gathering.getGatheringName();

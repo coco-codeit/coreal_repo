@@ -30,7 +30,7 @@ public class UserController {
     public CustomApiResponse<UserResponse.Read> getProfile(@PathVariable Long id,
                                                            @AuthenticationPrincipal LoginUser loginUser) {
         return CustomApiResponse.ok("프로필 정보를 성공적으로 조회하였습니다."
-                , userService.getProfile(id,loginUser.getUser().getId()));
+                , userService.getProfile(id,loginUser));
     }
 
     @Operation(summary = "프로필 정보 수정")
