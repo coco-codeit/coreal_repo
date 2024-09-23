@@ -5,7 +5,7 @@ interface ListProps {
   type?: "all" | "study" | "project";
 }
 
-interface Gathering {
+interface Data {
   id: string;
   title: string;
   image: string;
@@ -19,13 +19,13 @@ interface Gathering {
 }
 
 function List({ type }: ListProps) {
-  const [data, setData] = useState<Gathering[]>([]);
+  const [data, setData] = useState<Data[]>([]);
 
   useEffect(() => {
     fetch("http://localhost:3001/gatheringsManage")
       .then((response) => response.json())
       .then((result) => {
-        let filteredData: Gathering[] = [];
+        let filteredData: Data[] = [];
 
         if (type === "study") {
           filteredData = result[0].study;
