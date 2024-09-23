@@ -25,9 +25,9 @@ function Dropdown({ options, selectedValue, onSelect }: DropdownProps) {
 
       {isOpen && (
         <ul className="absolute w-full bg-white shadow-lg border border-gray-200 mt-2 rounded-md max-h-20 overflow-y-auto">
-          {options.map((option, index) => (
+          {options.map((option) => (
             <li
-              key={index}
+              key={option}
               onClick={() => handleSelect(option)}
               className="py-2 px-4 hover:bg-gray-100 cursor-pointer"
             >
