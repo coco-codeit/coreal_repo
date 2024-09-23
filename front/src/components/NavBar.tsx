@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
+import { motion } from "framer-motion";
 
 export default function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -27,13 +28,22 @@ export default function Navbar() {
     setIsLoggedIn(false);
   };
 
+  const scaleInCenter = {
+    hidden: { scale: 0, opacity: 0 },
+    visible: {
+      scale: 1,
+      opacity: 1,
+      transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] },
+    },
+  };
+
   return (
     <nav className="container max-w-[1200px] my-5 px-6 mx-auto font-sans">
       <div className="flex justify-between h-20">
         <section className="flex items-center">
           <div className="flex mr-2 sm:mr-6">
             <Link
-              href="/"
+              href="/gatherings"
               aria-label="Go to homepage"
               className="flex items-center"
             >
@@ -55,19 +65,29 @@ export default function Navbar() {
 
           <div className="flex text-subhead-3 font-bold relative">
             <div className="flex flex-col items-center w-[98px]">
-              <Link className="my-1" href="/">
+              <Link className="my-1" href="/gatherings">
                 모임찾기
               </Link>
-              {isCurrentRoute("/") && (
-                <div className="w-[78px] h-[4px] bg-purple-4 rounded-full"></div>
+              {isCurrentRoute("/gatherings") && (
+                <motion.div
+                  className="w-[78px] h-1 bg-purple-4 rounded-full"
+                  initial="hidden"
+                  animate="visible"
+                  variants={scaleInCenter}
+                />
               )}
             </div>
             <div className="flex flex-col items-center w-[98px]">
               <Link className="my-1" href="/likes">
                 찜한모임
               </Link>
-              {isCurrentRoute("/favorites") && (
-                <div className="w-[78px] h-[4px] bg-purple-4 rounded-full"></div>
+              {isCurrentRoute("/likes") && (
+                <motion.div
+                  className="w-[78px] h-1 bg-purple-4 rounded-full"
+                  initial="hidden"
+                  animate="visible"
+                  variants={scaleInCenter}
+                />
               )}
             </div>
           </div>
