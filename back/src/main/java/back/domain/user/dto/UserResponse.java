@@ -41,12 +41,12 @@ public class UserResponse {
         private String profileImage;
         private int temperature;
         private List<String> techStacks;
-        private List<String> evaluations;
+        private List<EvaluationDto.Read> evaluations;
         private List<GatheringDto.Read> gatheringStudy;
         private List<GatheringDto.Read> gatheringProject;
         private boolean isOwner;
 
-        public Read(User user, List<String> userTechStacks, List<String> evaluations, Map<String, List<GatheringDto.Read>> gatherings , boolean isOwner) {
+        public Read(User user, List<String> userTechStacks, List<EvaluationDto.Read> evaluations, Map<String, List<GatheringDto.Read>> gatherings , boolean isOwner) {
             this.id = user.getId();
             this.username = user.getUsername();
             this.nickname = user.getNickname();
