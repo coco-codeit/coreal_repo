@@ -40,7 +40,7 @@ public class UserRequest {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Login{
-        private String email;
+        private String username;
         private String password;
     }
 

@@ -62,7 +62,10 @@ public class UserController {
         return CustomApiResponse.ok("회원 추가 정보 저장", userService.saveInfo(loginUser.getUser().getId(), request.toCommand()));
     }
 
-//    public CustomApiResponse<Void> getUserProfile(){
-//
-//    }
+    @Operation(summary = "닉네임 중복 체크")
+    @GetMapping("/check-nickname")
+    public CustomApiResponse<Void> getUserProfile(@RequestBody String nickname){
+        userService.checkNickname(nickname);
+        return CustomApiResponse.ok("사용 가능한 닉네임입니다.",null);
+    }
 }
