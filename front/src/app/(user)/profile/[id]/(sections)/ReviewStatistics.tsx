@@ -26,7 +26,7 @@ const Badge = ({ className }: { className: string }) => (
   ></div>
 );
 
-export default function Reviews() {
+export default function ReviewStatistics() {
   return (
     <Template>
       <h3 className="text-lg font-bold mb-8">받은 평가</h3>
