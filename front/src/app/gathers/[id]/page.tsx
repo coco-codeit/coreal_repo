@@ -1,17 +1,25 @@
 "use client";
-import DetailProjectCard from "./components/DetailProjectCard";
+
+import DetailHeader from "./_components/DetailHeader";
+import DetailProjectCard from "./_components/DetailProjectCard";
+import RecruitmentStatus from "./_components/RecruitmentStatus";
 
 export default function page() {
-  const handleParticipate = () => {
-    // TODO : 백엔드 로직으로 대체 예정
-    console.log("참여하기 버튼 클릭");
-  };
-
   return (
-    <DetailProjectCard
-      projectName="프로젝트명"
-      description="한줄소개?"
-      onParticipate={handleParticipate}
-    />
+    <div className="bg-white min-h-screen">
+      <DetailHeader />
+      <DetailProjectCard
+        projectName="이름"
+        description="설명"
+        onParticipate={() => {
+          console.log("test");
+        }}
+      />
+      <span className="text-[28px] font-semibold text-[#484848]">모집현황</span>
+      <RecruitmentStatus />
+      <span className="text-[28px] font-semibold text-[#484848]">
+        스터디 & 네트워킹 키워드
+      </span>
+    </div>
   );
 }
