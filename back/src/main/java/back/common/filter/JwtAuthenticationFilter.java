@@ -1,7 +1,6 @@
 package back.common.filter;
 
 import back.api.user.dto.UserRequest;
-import back.common.config.jwt.JwtUtil;
 import back.common.util.CookieUtil;
 import back.domain.user.User;
 import back.domain.user.UserRepository;
@@ -14,7 +13,6 @@ import back.domain.user.token.UserRedisRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -48,7 +46,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             UserRequest.Login loginRequest = om.readValue(request.getInputStream(), UserRequest.Login.class);
 
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                    loginRequest.getEmail(), loginRequest.getPassword());
+                    loginRequest.getUsername(), loginRequest.getPassword());
 
             return authenticationManager.authenticate(token);
         } catch (Exception e) {
