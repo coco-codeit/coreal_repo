@@ -33,7 +33,7 @@ function ImageUploader() {
           <Image
             src={image}
             fill
-            objectFit="cover"
+            style={{ objectFit: "cover" }}
             className="rounded-2xl"
             alt="대표 이미지"
           />
