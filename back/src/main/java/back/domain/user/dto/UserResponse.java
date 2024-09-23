@@ -40,22 +40,20 @@ public class UserResponse {
         private String nickname;
         private String profileImage;
         private int temperature;
-        private List<TechStackDto.Read> techStacks;
-        private List<EvaluationDto.Read> evaluations;
+        private List<String> techStacks;
+        private List<String> evaluations;
         private List<GatheringDto.Read> gatheringStudy;
         private List<GatheringDto.Read> gatheringProject;
         private boolean isOwner;
 
-        public Read(User user, List<TechStack> techStacks, List<Evaluation> evaluations, Map<String, List<GatheringDto.Read>> gatherings , boolean isOwner) {
+        public Read(User user, List<String> userTechStacks, List<String> evaluations, Map<String, List<GatheringDto.Read>> gatherings , boolean isOwner) {
             this.id = user.getId();
             this.username = user.getUsername();
             this.nickname = user.getNickname();
             this.profileImage = user.getProfileImage();
             this.temperature = user.getUserTemp();
-            this.techStacks = techStacks.stream().map(techStack -> new TechStackDto.Read(techStack.getName()))
-                    .collect(Collectors.toList());
-            this.evaluations = evaluations.stream().map(evaluation -> new EvaluationDto.Read(evaluation.getDescription()))
-                    .collect(Collectors.toList());
+            this.techStacks = userTechStacks;
+            this.evaluations = evaluations;
             this.gatheringStudy = gatherings.get(GatheringEnum.STUDY.getText());
             this.gatheringProject = gatherings.get(GatheringEnum.PROJECT.getText());
             this.isOwner = isOwner;
