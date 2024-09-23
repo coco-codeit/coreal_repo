@@ -1,60 +1,104 @@
+import { useEffect, useState } from "react";
 import Card from "./Card";
 
 interface ListProps {
   type?: "all" | "study" | "project";
+  organizer?: string;
 }
 
-function List({ type = "all" }: ListProps) {
-  const studyData = [
-    {
-      id: 1,
-      title: "React 스터디원 구함",
-      location: "온라인",
-      skills: ["React", "TypeScript"],
-      description: "React 심화 스터디원 구함!!!!!",
-      date: "2024-09-10",
-      time: "12:00",
-      participants: "10/20",
-      participantsList: [{ name: "참여자1" }, { name: "참여자2" }],
-    },
-  ];
+interface Data {
+  id: string;
+  title: string;
+  oranizer: string;
+  connection: string;
+  skills: string[];
+  content: string;
+  startDateTime: string;
+  participant: number;
+  capacity: number;
+  image: string;
+  type: "study" | "project";
+  recruitment?: { field: string; participant: number; capacity: number }[];
+}
 
-  const projectData = [
-    {
-      id: 42,
-      title: "Next.js로 개발자 모임 어플 만드실 분들",
-      location: "서울",
-      skills: ["Next.js", "Node.js"],
-      description: "Next.js로 개발자 모임 어플 만들 분들 구함",
-      date: "2024-09-15",
-      time: "18:00",
-      participants: "5/10",
-      participantsList: [{ name: "참여자1" }, { name: "참여자3" }],
-    },
-  ];
+interface Participant {
+  userId: number;
+  userNickname: string;
+  userProfileImage: string;
+  userTemp: number;
+  userSkills: string[];
+  position: string;
+}
 
-  const allData = [...studyData, ...projectData];
+function List({ type = "all", organizer = "선남" }: ListProps) {
+  const [data, setData] = useState<Data[]>([]);
+  const [participants, setParticipants] = useState<
+    Record<string, Participant[]>
+  >({});
 
-  const dataToRender =
-    type === "study" ? studyData : type === "project" ? projectData : allData;
+  useEffect(() => {
+    fetch("http://localhost:3001/gatheringsManage")
+      .then((response) => response.json())
+      .then((result) => {
+        const studyData = result[0].study.map((item: Data) => ({
+          ...item,
+          type: "study",
+        }));
+        const projectData = result[1].project.map((item: Data) => ({
+          ...item,
+          type: "project",
+        }));
+
+        let allData: Data[] = [...studyData, ...projectData];
+
+        if (type !== "all") {
+          allData = allData.filter((item) => item.type === type);
+        }
+
+        const filteredData = allData.filter(
+          (item) => item.oranizer === organizer,
+        );
+        setData(filteredData);
+
+        const participantsData = result[2].participants.reduce(
+          (
+            participantMap: Record<string, Participant[]>,
+            item: { id: string; applicantsPending: Participant[] },
+          ) => {
+            participantMap[item.id] = item.applicantsPending;
+            return participantMap;
+          },
+          {},
+        );
+        setParticipants(participantsData);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, [type, organizer]);
+
+  if (data.length === 0) return <div>없어요!</div>;
 
   return (
     <div>
-      {dataToRender.map((item) => (
+      {data.map((item) => (
         <Card
           key={item.id}
+          id={item.id}
           title={item.title}
-          location={item.location}
+          connection={item.connection}
           skills={item.skills}
-          description={item.description}
-          date={item.date}
-          time={item.time}
-          participants={item.participants}
-          participantsList={item.participantsList}
+          content={item.content}
+          startDateTime={item.startDateTime}
+          participant={item.participant}
+          capacity={item.capacity}
+          imageUrl={item.image}
+          recruitment={participants[item.id]}
+          type={item.type}
           onEdit={() => console.log("수정")}
           onManage={() => console.log("관리")}
-          onApprove={() => console.log("승인")}
-          onReject={() => console.log("거절")}
+          onApprove={(name) => console.log(`${name} 승인`)}
+          onReject={(name) => console.log(`${name} 거절`)}
         />
       ))}
     </div>
