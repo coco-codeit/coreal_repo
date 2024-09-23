@@ -3,7 +3,6 @@ package back.domain.user;
 import back.domain.common.exception.CustomGlobalException;
 import back.domain.common.exception.ErrorType;
 import back.domain.gathering.Gathering;
-import back.domain.gathering.GatheringEnum;
 import back.domain.gathering.dto.GatheringDto;
 import back.domain.user.dto.UserCommand;
 import back.domain.user.dto.UserResponse;
@@ -110,8 +109,15 @@ public class UserService {
                             List<TechStackDto.Read> techStackDtos = techStacks.stream()
                                     .map(ts -> new TechStackDto.Read(ts.getName()))
                                     .collect(Collectors.toList());
-                            return new GatheringDto.Read(gathering,techStackDtos);
-                        },Collectors.toList())));
+                            return new GatheringDto.Read(gathering, techStackDtos);
+                        }, Collectors.toList())));
         return new UserResponse.Read(profileUser, userTechStacks, evaluations, gatherings, isOwner);
+    }
+
+    public void checkNickname(String nickname) {
+        Optional<User> optionalUser = userRepository.findByNickname(nickname);
+        if (optionalUser.isPresent()){
+            throw new CustomGlobalException(ErrorType.DUPLICATE_NICKNAME);
+        }
     }
 }
