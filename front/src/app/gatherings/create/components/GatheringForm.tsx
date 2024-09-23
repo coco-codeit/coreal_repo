@@ -17,7 +17,6 @@ function GatheringForm() {
   const {
     category,
     title,
-    connection,
     description,
     day,
     time,
@@ -46,21 +45,6 @@ function GatheringForm() {
         {option}
       </Button>
     ));
-
-  const handleSubmit = () => {
-    const formData = {
-      category,
-      title,
-      connection,
-      description,
-      day,
-      time,
-      field,
-      participant,
-    };
-
-    console.log(formData);
-  };
 
   const handleParticipant = (value: string) => {
     const participantNumber = Number(value.replace("명", ""));
@@ -132,9 +116,7 @@ function GatheringForm() {
         </div>
 
         <div className="flex justify-end">
-          <Button variant="primary" onClick={handleSubmit}>
-            만들기
-          </Button>
+          <Button variant="primary">만들기</Button>
         </div>
       </div>
     </div>
