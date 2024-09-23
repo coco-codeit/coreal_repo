@@ -9,6 +9,7 @@ import back.domain.user.dto.UserCommand;
 import back.domain.user.dto.UserResponse;
 import back.domain.user.evaluation.Evaluation;
 import back.domain.user.evaluation.EvaluationRepository;
+import back.domain.user.evaluation.dto.EvaluationDto;
 import back.domain.user.stack.TechStack;
 import back.domain.user.stack.TechStackRepository;
 import back.domain.user.stack.dto.TechStackDto;
@@ -24,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 @RequiredArgsConstructor
@@ -87,8 +89,13 @@ public class UserService {
 
         List<String> userTechStacks = techStackRepository.findByUserId(profileUserId)
                 .stream().map(userTechStack -> userTechStack.getName()).collect(Collectors.toList());
-        List<String> evaluations = evaluationRepository.findTop3ByUserIdOrderByCountDesc(profileUserId)
-                .stream().map(userEvaluation->userEvaluation.getDescription()).collect(Collectors.toList());
+        List<Evaluation> top3Evaluations = evaluationRepository.findTop3ByUserIdOrderByCountDesc(profileUserId);
+        List<EvaluationDto.Read> evaluations = IntStream.range(0, top3Evaluations.size())
+                .mapToObj(i -> {
+                    EvaluationDto.Read dto = new EvaluationDto.Read(top3Evaluations.get(i));
+                    dto.setRank(i + 1);
+                    return dto;
+                }).collect(Collectors.toList());
         List<UserGathering> userGatherings = userGatheringRepository.findByUserIdWithGathering(profileUserId);
 
         // Gathering ID 목록 추출
