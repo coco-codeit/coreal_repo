@@ -23,7 +23,11 @@ export default function Projects(userProjects: UserGatheringInterface[]) {
       {Array.isArray(userProjects) && userProjects.length > 0 && (
         <Carousel className="rounded-lg overflow-hidden">
           {userProjects.map((item, index) => (
-            <Card key={`${item}-${index}`} item={item} />
+            <Card
+              key={`${item}-${index}`}
+              item={item}
+              bgColors={{ cardColor: "blue_sub", tagColor: "blue-2" }}
+            />
           ))}
         </Carousel>
       )}
