@@ -22,7 +22,7 @@ function List({ type }: ListProps) {
   const [data, setData] = useState<Data[]>([]);
 
   useEffect(() => {
-    fetch("http://localhost:3001/gatheringsManage")
+    fetch("http://localhost:5000/gatheringsManage")
       .then((response) => response.json())
       .then((result) => {
         let filteredData: Data[] = [];
@@ -48,7 +48,7 @@ function List({ type }: ListProps) {
           connection={item.connection}
           skills={item.skills}
           content={item.content}
-          satrtDateTime={item.startDateTime}
+          startDateTime={item.startDateTime}
           participant={item.participant}
           capacity={item.capacity}
           imageUrl={item.image}

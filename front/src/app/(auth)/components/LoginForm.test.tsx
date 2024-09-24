@@ -21,7 +21,7 @@ describe("LoginForm", () => {
     window.localStorage.removeItem("token");
   });
 
-  const renderLoginForm = () => render(<LoginForm title="로그인" />);
+  const renderLoginForm = () => render(<LoginForm />);
 
   const fillLoginForm = (email = "admin@naver.com", password = "01234567") => {
     fireEvent.change(screen.getByLabelText("아이디"), {

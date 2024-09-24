@@ -37,7 +37,7 @@ function List({ type = "all", organizer = "선남" }: ListProps) {
   >({});
 
   useEffect(() => {
-    fetch("http://localhost:3001/gatheringsManage")
+    fetch("http://localhost:5000/gatheringsManage")
       .then((response) => response.json())
       .then((result) => {
         const studyData = result[0].study.map((item: Data) => ({
