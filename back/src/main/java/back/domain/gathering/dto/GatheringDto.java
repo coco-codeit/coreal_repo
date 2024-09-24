@@ -1,10 +1,8 @@
 package back.domain.gathering.dto;
 
 import back.domain.gathering.Gathering;
-import back.domain.user.stack.dto.TechStackDto;
-import lombok.Getter;
-
 import java.util.List;
+import lombok.Getter;
 
 public class GatheringDto {
 
