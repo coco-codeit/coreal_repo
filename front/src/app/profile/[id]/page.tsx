@@ -23,8 +23,8 @@ export default async function Profile() {
   const userProjects = data.gatheringProject || [];
 
   return (
-    <div className="container mx-auto max-w-[1024px] flex flex-col gap-6 px-6 pb-10">
-      <div className="grid grid-cols-2 gap-6 w-full">
+    <div className="container mx-auto w-full sm:w-[500px] md:w-[700px] lg:w-full max-w-[1024px] flex flex-col gap-3 md:gap-6 px-3 pb-6 md:px-6 md:pb-10 text-sm md:text-base">
+      <div className="grid lg:grid-cols-2 gap-3 md:gap-6">
         <UserInfo {...userInfo} />
         <ReviewStatistics />
       </div>
