@@ -1,8 +1,8 @@
 import { getUserProfile } from "@/apis/profile";
-import Projects from "./(sections)/Projects";
-import ReviewStatistics from "./(sections)/ReviewStatistics";
-import Studies from "./(sections)/Studies";
-import UserInfo from "./(sections)/UserInfo";
+import Projects from "./components/Projects";
+import ReviewStatistics from "./components/ReviewStatistics";
+import Studies from "./components/Studies";
+import UserInfo from "./components/UserInfo";
 
 export default async function Profile() {
   // 유저 정보 받기
