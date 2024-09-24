@@ -1,29 +1,35 @@
 {
-  "studyList": [
+  "gathering": [
     {
-      "id": "1",
-      "name": "스터디 이름",
-      "imgUrl": "...",
-      "members": [
-        {
-          "id": "유저1",
-          "nickname": "...",
-          "imgUrl": "...",
-          "reviews": {
-            "created": "2020-12-20 15:34:20",
-            "updated": "2020-12-20 15:34:20",
-            "comments": ["c1", "c2", "c3", "c4", "c5"]
-          }
-        },
-        {
-          "id": "유저2",
-          "nickname": "...",
-          "imgUrl": "...",
-          "reviews": null
-        }
-      ]
+      "id": 0,
+      "type": "study",
+      "gatheringName": "스터디1",
+      "gatheringOwner": "나다",
+      "startDate": "2024-09-23T04:24:52.655Z",
+      "endDate": "2024-09-23T04:24:52.655Z",
+      "month": "",
+      "time": "",
+      "stacks": ["java", "javaScript"],
+      "image": "/",
+      "progress": "",
+      "totalCapacity": 0,
+      "currentCapacity": 0
+    },
+    {
+      "id": 0,
+      "type": "project",
+      "gatheringName": "프로젝트1",
+      "gatheringOwner": "나다",
+      "startDate": "2024-09-23T04:24:52.655Z",
+      "endDate": "2024-09-23T04:24:52.655Z",
+      "month": "",
+      "time": "",
+      "stacks": ["NodeJS", "TypeScript"],
+      "image": "/",
+      "progress": "",
+      "totalCapacity": 0,
+      "currentCapacity": 0
     }
   ],
-  "gathers": { "data": "hello" },
   "profile": {}
 }
