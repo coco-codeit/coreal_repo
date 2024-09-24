@@ -8,10 +8,9 @@ function ImageUploader() {
   const handleImage = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event?.target.files?.[0];
     if (!file) return;
+
     const reader = new FileReader();
-
     reader.readAsDataURL(file);
-
     reader.onload = (event) => {
       if (reader.readyState === 2 && event.target) {
         const imgUrl = event.target.result as string;

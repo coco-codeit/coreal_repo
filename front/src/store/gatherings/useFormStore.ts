@@ -2,15 +2,17 @@ import { create } from "zustand";
 import { fieldOptions } from "@/types/options";
 
 interface FormState {
-  category: "project" | "study";
+  type: "project" | "study";
   title: string;
   connection: "online" | "offline" | "";
   description: string;
   day: string;
   time: string;
-  field: string;
+  field: string | undefined;
   participant: number;
-  setCategory: (category: "project" | "study") => void;
+  startDate: string;
+  endDate: string;
+  setType: (type: "project" | "study") => void;
   setTitle: (meetingName: string) => void;
   setConnection: (mode: "online" | "offline" | "") => void;
   setDescription: (description: string) => void;
@@ -18,10 +20,12 @@ interface FormState {
   setTime: (time: string) => void;
   setField: (field: string) => void;
   setParticipant: (participant: number) => void;
+  setStartDate: (startDate: string) => void;
+  setEndDate: (endDate: string) => void;
 }
 
 const useFormStore = create<FormState>((set) => ({
-  category: "project",
+  type: "project",
   title: "",
   connection: "",
   description: "",
@@ -29,7 +33,9 @@ const useFormStore = create<FormState>((set) => ({
   time: "",
   field: fieldOptions[0],
   participant: 1,
-  setCategory: (category) => set({ category }),
+  startDate: "",
+  endDate: "",
+  setType: (type) => set({ type }),
   setTitle: (title) => set({ title }),
   setConnection: (connection) => set({ connection }),
   setDescription: (description) => set({ description }),
@@ -37,6 +43,8 @@ const useFormStore = create<FormState>((set) => ({
   setTime: (time) => set({ time: time }),
   setField: (field) => set({ field: field }),
   setParticipant: (particiapnt) => set({ participant: particiapnt }),
+  setStartDate: (startDate) => set({ startDate: startDate }),
+  setEndDate: (endDate) => set({ endDate: endDate }),
 }));
 
 export default useFormStore;
