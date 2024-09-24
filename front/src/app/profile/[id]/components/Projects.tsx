@@ -12,7 +12,7 @@ export default function Projects(userProjects: UserGatheringInterface[]) {
   return (
     <Template>
       <div className="flex flex-row justify-between items-center mb-5">
-        <h3 className="text-lg font-bold">
+        <h3 className="text-base md:text-lg font-bold">
           참여하는 프로젝트
           <span className="ml-2 font-normal text-[#8C8C8C]">
             {userProjects.length}

@@ -15,7 +15,7 @@ export default function ProgressBar({
   const dotPosition = (value / Math.max(max - min, 1)) * 100;
   return (
     <div
-      className={`w-full relative bg-[#EAC5FF] rounded-lg ${className}`}
+      className={`w-full relative bg-purple-2 rounded-lg ${className}`}
       style={{ height: `${diameter}px` }}
     >
       <div

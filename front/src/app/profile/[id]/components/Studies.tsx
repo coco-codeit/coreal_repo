@@ -12,7 +12,7 @@ export default function Studies(userStudies: UserGatheringInterface[]) {
   return (
     <Template>
       <div className="flex flex-row justify-between items-center mb-5">
-        <h3 className="text-lg font-bold">
+        <h3 className="text-base md:text-lg font-bold">
           참여하는 스터디
           <span className="ml-2 font-normal text-[#8C8C8C]">
             {userStudies.length}
@@ -26,7 +26,7 @@ export default function Studies(userStudies: UserGatheringInterface[]) {
             <Card
               key={`${item}-${index}`}
               item={item}
-              bgColors={{ cardColor: "purple_sub", tagColor: "Purple-03" }}
+              bgColors={{ cardColor: "purple_sub", tagColor: "purple-3" }}
             />
           ))}
         </Carousel>
