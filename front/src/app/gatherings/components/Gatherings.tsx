@@ -25,7 +25,7 @@ function Gatherings() {
 
       <div className="flex justify-between items-center font-title">
         <Category />
-        <Link href="/create">
+        <Link href="/gatherings/create">
           <Button variant="primary" rounded="full">
             모임 만들기
           </Button>
