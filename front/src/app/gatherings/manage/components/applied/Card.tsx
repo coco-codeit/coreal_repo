@@ -5,7 +5,7 @@ interface CardProps {
   connection: string;
   skills?: string[];
   content?: string;
-  satrtDateTime: string;
+  startDateTime: string;
   participant: number;
   capacity: number;
   imageUrl?: string;
@@ -19,7 +19,7 @@ function Card({
   connection,
   skills,
   content,
-  satrtDateTime,
+  startDateTime,
   participant,
   capacity,
   imageUrl,
@@ -73,9 +73,9 @@ function Card({
 
         <div className="flex flex-row gap-4 mb-2">
           <p className="flex gap-2">
-            {`${new Date(satrtDateTime).getMonth() + 1}월 ${new Date(satrtDateTime).getDate()}일`}
+            {`${new Date(startDateTime).getMonth() + 1}월 ${new Date(startDateTime).getDate()}일`}
             <span>·</span>
-            {new Date(satrtDateTime).toLocaleTimeString("ko-KR", {
+            {new Date(startDateTime).toLocaleTimeString("ko-KR", {
               hour: "2-digit",
               minute: "2-digit",
               hour12: false,

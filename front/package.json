@@ -1,0 +1,66 @@
+{
+  "name": "front",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "test": "vitest run --coverage",
+    "json-server": "json-server -w db.json -r routes.json -p 5000",
+    "ci": "yarn install --frozen-lockfile",
+    "postinstall": "cd .. && husky front/.husky",
+    "prepack": "pinst --disable",
+    "postpack": "pinst --enable"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^3.9.0",
+    "@sentry/browser": "^8.28.0",
+    "@sentry/nextjs": "8",
+    "@tanstack/react-query": "^5.55.0",
+    "@types/react-slick": "^0.23.13",
+    "@vitest/coverage-v8": "^2.0.5",
+    "axios": "^1.7.7",
+    "framer-motion": "^11.5.6",
+    "next": "14.2.8",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-hook-form": "^7.53.0",
+    "zod": "^3.23.8",
+    "react-icons": "^5.3.0",
+    "react-slick": "^0.30.2",
+    "slick-carousel": "^1.8.1",
+    "zustand": "^4.5.5",
+    "@headlessui/react": "^2.1.8"
+  },
+  "devDependencies": {
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.5.0",
+    "@testing-library/react": "^16.0.1",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "@vitejs/plugin-react": "^4.3.1",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.8",
+    "husky": "^9.1.5",
+    "jsdom": "^25.0.0",
+    "json-server": "^0.17.4",
+    "lint-staged": "^15.2.10",
+    "pinst": "^3.0.0",
+    "postcss": "^8",
+    "prettier": "^3.3.3",
+    "prettier-plugin-tailwindcss": "^0.6.6",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5",
+    "vitest": "^2.1.1"
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
+}
