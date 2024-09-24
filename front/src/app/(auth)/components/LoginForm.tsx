@@ -4,18 +4,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import open from "../../public/images/visibility_on.svg";
-import close from "../../public/images/visibility_off.svg";
-import Image from "next/image";
-import { useState } from "react";
 
 type FormData = z.infer<typeof schema>;
 
 // TODO: 백엔드 KEY 이슈
 const API_URL = "Bearer ";
 
-export default function LoginForm({ title }: { title: string }) {
-  const [showPassword, setShowPassword] = useState(false);
+export default function LoginForm() {
   const {
     register,
     handleSubmit,
@@ -27,23 +22,23 @@ export default function LoginForm({ title }: { title: string }) {
     resolver: zodResolver(schema),
   });
 
-  const togglePasswordVisibility = () => {
-    setShowPassword((prev) => !prev);
-  };
-
   const onSubmit = async (data: FormData) => {
     clearErrors();
+    //console.log("onSubmit");
+    //console.log(JSON.stringify(data));
+    // TODO: reset()은 완성 후 try문 if에만 남겨두기
+    reset();
 
     // TODO: 백엔드 보류 이슈
 
     try {
       const response = await axios.post(API_URL, data);
-      console.log(response);
+      //console.log(response);
 
       if (response.data.success) {
         reset();
         console.log("로 그 인 성 공 🎉", response.data);
-        // TODO: 첫 로그인 시 마이페이지로 리다이렉트
+        // TODO: 로그인 후 성공 페이지로 이동
       } else {
         if (response.data.error === "401") {
           setError("id", {
@@ -77,7 +72,6 @@ export default function LoginForm({ title }: { title: string }) {
         placeholder="이메일을 입력해 주세요."
         {...register("id")}
         className={`${INPUT_CLASS} ${errors.id && ERROR_CLASS}`}
-        required
         autoFocus
         aria-required="true"
       />
@@ -89,20 +83,14 @@ export default function LoginForm({ title }: { title: string }) {
       </label>
       <div className="relative">
         <input
-          type={showPassword ? "text" : "password"}
+          type="type"
           id="password"
           placeholder="비밀번호를 입력해 주세요."
           {...register("password")}
           className={`${INPUT_CLASS} ${errors.password && ERROR_CLASS}`}
-          required
           aria-required="true"
         />
-        <Image
-          src={showPassword ? open : close}
-          alt={showPassword ? "비밀번호 숨기기" : "비밀번호 보이기"}
-          onClick={togglePasswordVisibility}
-          className="absolute right-2 top-1/2 transform -translate-y-1/2 cursor-pointer w-4 h-4 sm:w-6 sm:h-6 "
-        />
+        {/* TODO: React-icons로 password visibility 수정 */}
       </div>
       <p
         className={ERROR_TEXT_CLASS}
@@ -112,7 +100,7 @@ export default function LoginForm({ title }: { title: string }) {
         disabled={isSubmitting}
         className="bg-gray-8 text-white py-[6px] md:py-[10px] rounded-lg sm:rounded-xl mt-[15px] sm:mt-4 mb-4 sm:mb-6 text-xs sm:text-base"
       >
-        {isSubmitting ? title + " 중" : title}
+        {isSubmitting ? "로그인 중" : "로그인"}
       </button>
     </form>
   );
