@@ -3,10 +3,13 @@
 import { UserGatheringInterface } from "@/types/common";
 import Template from "../components/Template";
 import useCarousel from "./useCarousel";
+import Card from "./Card";
 
 export default function Studies(userStudies: UserGatheringInterface[]) {
   console.log(userStudies);
-  const { Carousel, CarouselBtns } = useCarousel();
+  const { Carousel, CarouselBtns } = useCarousel({
+    length: userStudies.length,
+  });
   return (
     <Template>
       <div className="flex flex-row justify-between items-center mb-5">
@@ -18,29 +21,16 @@ export default function Studies(userStudies: UserGatheringInterface[]) {
         </h3>
         <CarouselBtns />
       </div>
-      <Carousel className="rounded-lg overflow-hidden">
-        {Array.isArray(userStudies) &&
-          userStudies?.map((item, index) => {
-            return (
-              <div key={`${item}-${index}`}>
-                <div className="w-[calc(100%-20px)] h-[200px] bg-[#CEBCFF] rounded-xl p-4 flex flex-col justify-between">
-                  <h5 className="font-bold mb-3">{item.gatheringName}</h5>
-                  <div>{item.description}</div>
-                  <div>
-                    {item.techStacks?.map((tech, index) => (
-                      <span
-                        key={`${tech}-${index}`}
-                        className="bg-[#EEEEEE] rounded-2xl py-[2px] px-2 mr-1"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-      </Carousel>
+      {Array.isArray(userStudies) && userStudies.length > 0 && (
+        <Carousel className="rounded-lg overflow-hidden">
+          {userStudies.map((item, index) => (
+            <Card key={`${item}-${index}`} item={item} />
+          ))}
+        </Carousel>
+      )}
+      {(!Array.isArray(userStudies) || userStudies.length === 0) && (
+        <div className="py-10 text-center">아직 참여중인 스터디가 없어요</div>
+      )}
     </Template>
   );
 }
