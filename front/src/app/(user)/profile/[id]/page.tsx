@@ -1,11 +1,35 @@
-"use client";
+import { getUserProfile } from "@/apis/profile";
+import Projects from "./(sections)/Projects";
+import ReviewStatistics from "./(sections)/ReviewStatistics";
+import Studies from "./(sections)/Studies";
+import UserInfo from "./(sections)/UserInfo";
 
-import Gathers from "./(submenu)/gathers/page";
+export default async function Profile() {
+  // 유저 정보 받기
+  const id = 1;
+  const data = await getUserProfile(id);
 
-export default function Profile() {
+  const userInfo = {
+    id: data.id,
+    username: data.username,
+    nickname: data.nickname,
+    profileImage: data.profileImage,
+    temperature: data.temperature,
+    techStacks: data.techStacks,
+  };
+
+  // const userRiviews = {};
+  const userStudies = data.gatheringStudy;
+  const userProjects = data.gatheringProject || [];
+
   return (
-    <>
-      <Gathers />
-    </>
+    <div className="container mx-auto max-w-[1024px] flex flex-col gap-6 px-6 pb-10">
+      <div className="grid grid-cols-2 gap-6 w-full">
+        <UserInfo {...userInfo} />
+        <ReviewStatistics />
+      </div>
+      <Studies {...userStudies} />
+      <Projects {...userProjects} />
+    </div>
   );
 }

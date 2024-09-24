@@ -1,4 +1,1 @@
-{
-  "/auth/reviews/studyId=:id": "/studyList/:id",
-  "/auth/reviews/projectId=:id": "/projectList/:id"
-}
+{}
