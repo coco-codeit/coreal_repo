@@ -1,54 +1,60 @@
+import React, { useEffect, useState } from "react";
 import Card from "./Card";
 
 interface ListProps {
   type?: "all" | "study" | "project";
 }
 
+interface Data {
+  id: string;
+  title: string;
+  image: string;
+  content: string;
+  startDateTime: string;
+  participant: number;
+  capacity: number;
+  connection: string;
+  skills: string[];
+  recruitment?: { field: string; participant: number; capacity: number }[];
+}
+
 function List({ type }: ListProps) {
-  const studyData = [
-    {
-      id: 1,
-      title: "React 심화 스터디 구함",
-      location: "온라인",
-      skills: ["React", "TypeScript"],
-      description: "React 심화 스터디원 구함!!!!!",
-      date: "2024-09-10",
-      time: "12:00",
-      participants: "10/20",
-    },
-  ];
+  const [data, setData] = useState<Data[]>([]);
 
-  const projectData = [
-    {
-      id: 42,
-      title: "Next.js로 프로젝트 만드실 분",
-      location: "서울",
-      skills: ["React", "TypeScript"],
-      description: "Next.js로 개발자 모임 어플 만들 분들 구함",
-      date: "2024-09-15",
-      time: "12:00",
-      participants: "5/10",
-    },
-  ];
+  useEffect(() => {
+    fetch("http://localhost:5000/gatheringsManage")
+      .then((response) => response.json())
+      .then((result) => {
+        let filteredData: Data[] = [];
 
-  const allData = [...studyData, ...projectData];
+        if (type === "study") {
+          filteredData = result[0].study;
+        } else if (type === "project") {
+          filteredData = result[1].project;
+        } else {
+          filteredData = [...result[0].study, ...result[1].project];
+        }
 
-  const dataToRender =
-    type === "study" ? studyData : type === "project" ? projectData : allData;
+        setData(filteredData);
+      });
+  }, [type]);
 
   return (
     <div>
-      {dataToRender.map((item) => (
+      {data.map((item) => (
         <Card
           key={item.id}
           title={item.title}
-          location={item.location}
+          connection={item.connection}
           skills={item.skills}
-          description={item.description}
-          date={item.date}
-          time={item.time}
-          participants={item.participants}
+          content={item.content}
+          startDateTime={item.startDateTime}
+          participant={item.participant}
+          capacity={item.capacity}
+          imageUrl={item.image}
           onCancel={() => console.log("취소")}
+          recruitment={item.recruitment}
+          type={item.recruitment ? "project" : "study"}
         />
       ))}
     </div>
