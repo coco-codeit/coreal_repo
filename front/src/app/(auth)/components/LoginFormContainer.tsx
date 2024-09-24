@@ -1,8 +1,8 @@
 import LoginForm from "./LoginForm";
-import SignUpPrompt from "./SignUpPrompt";
-import SocialLogin from "./SocialLogin";
+import OpenAuthorization from "./OpenAuthorization";
+import SignupPrompt from "./SignupPrompt";
 
-export default function AuthenticationForm({ title }: { title: string }) {
+export default function LoginFormContainer() {
   return (
     <section aria-labelledby="login-heading">
       <div className="w-full mx-auto max-w-[343px] sm:max-w-[510px] bg-white rounded-2xl sm:rounded-3xl px-8 py-6 sm:px-14 sm:py-8 md:mx-[102px]">
@@ -10,11 +10,11 @@ export default function AuthenticationForm({ title }: { title: string }) {
           id="login-heading"
           className="text-base sm:text-display-3 md:text-display-1 font-bold pb-8 text-center"
         >
-          {title}
+          로그인
         </h2>
-        <LoginForm title={title} />
-        <SignUpPrompt title={title} />
-        <SocialLogin />
+        <LoginForm />
+        <SignupPrompt />
+        <OpenAuthorization />
       </div>
     </section>
   );
