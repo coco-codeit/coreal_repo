@@ -1,12 +1,11 @@
 "use client";
 
 import Button from "@/app/gatherings/components/Button";
-import Type from "@/app/gatherings/create/components/Type";
+import GatheringType from "@/app/gatherings/create/components/GatheringType";
 import Connection from "@/app/gatherings/create/components/Connection";
-import ImageUploader from "./ImageUploader";
+import ImageUploader from "@/app/gatherings/create/components/ImageUploader";
 import Dropdown from "@/app/gatherings/create/components/Dropdown";
 import Calendar from "@/app/gatherings/create/components/Calendar";
-
 import {
   daysOptions,
   timeOptions,
@@ -56,7 +55,7 @@ function GatheringForm() {
   return (
     <div className="flex flex-col">
       <p className="font-title text-headline py-2">모임 만들기</p>
-      <Type />
+      <GatheringType />
       <div className="flex flex-col gap-14 py-10 px-8">
         <div className="flex flex-col gap-2">
           <label>모임이름</label>
