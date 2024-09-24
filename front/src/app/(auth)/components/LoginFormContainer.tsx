@@ -1,6 +1,6 @@
 import LoginForm from "./LoginForm";
-import SignUpPrompt from "./SignUpPrompt";
 import OpenAuthorization from "./OpenAuthorization";
+import SignupPrompt from "./SignupPrompt";
 
 export default function LoginFormContainer() {
   return (
@@ -13,7 +13,7 @@ export default function LoginFormContainer() {
           로그인
         </h2>
         <LoginForm />
-        <SignUpPrompt />
+        <SignupPrompt />
         <OpenAuthorization />
       </div>
     </section>
