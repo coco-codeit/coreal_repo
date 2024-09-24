@@ -6,7 +6,6 @@ import useCarousel from "./useCarousel";
 import Card from "./Card";
 
 export default function Studies(userStudies: UserGatheringInterface[]) {
-  console.log(userStudies);
   const { Carousel, CarouselBtns } = useCarousel({
     length: userStudies.length,
   });
@@ -24,7 +23,11 @@ export default function Studies(userStudies: UserGatheringInterface[]) {
       {Array.isArray(userStudies) && userStudies.length > 0 && (
         <Carousel className="rounded-lg overflow-hidden">
           {userStudies.map((item, index) => (
-            <Card key={`${item}-${index}`} item={item} />
+            <Card
+              key={`${item}-${index}`}
+              item={item}
+              bgColors={{ cardColor: "purple_sub", tagColor: "Purple-03" }}
+            />
           ))}
         </Carousel>
       )}
