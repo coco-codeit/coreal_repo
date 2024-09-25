@@ -53,7 +53,11 @@ export default function useModal() {
   }) {
     return (
       <div
-        className={`fixed top-0 left-0 w-full h-full ${className ? className : ""}`}
+        className={`absolute top-0 left-0 ${className ? className : ""}`}
+        style={{ width: "100vw", height: "100vh" }}
+        // 특정 조건에서 tailwindCSS의 w-*와 h-*가 읽어지지 않는 경우가 있어 인라인 스타일로 지정했습니다.
+        // https://github.com/tailwindlabs/tailwindcss/discussions/12358
+        // 작성자 : 이은혁
       >
         {children}
       </div>
@@ -75,8 +79,12 @@ export default function useModal() {
 
     return (
       <div
-        className="absolute top-0 left-0 w-screen h-screen flex flex-col justify-center items-center"
+        className="absolute top-0 left-0 flex flex-col justify-center items-center"
         onClick={handleClickOutside}
+        style={{ width: "100vw", height: "100vh" }}
+        // 특정 조건에서 tailwindCSS의 w-*와 h-*가 읽어지지 않는 경우가 있어 인라인 스타일로 지정했습니다.
+        // https://github.com/tailwindlabs/tailwindcss/discussions/12358
+        // 작성자 : 이은혁
       >
         <div
           ref={containerRef}
