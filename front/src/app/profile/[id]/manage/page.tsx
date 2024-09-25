@@ -32,7 +32,7 @@ export default function ManageProfile() {
   //   }
   // }, [nickname]);
 
-  const handleOnSubmit = (e: FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
   };
 
@@ -53,7 +53,7 @@ export default function ManageProfile() {
           <LuPencil color="white" />
         </button>
       </div>
-      <form className="w-full" onSubmit={handleOnSubmit}>
+      <form className="w-full" onSubmit={handleSubmit}>
         <Section className="border-b">
           <Label htmlFor="nickname">닉네임</Label>
           <Input
