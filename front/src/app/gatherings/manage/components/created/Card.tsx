@@ -3,6 +3,9 @@ import { useState } from "react";
 import Image from "next/image";
 import { WiTime5 } from "react-icons/wi";
 import { BsArrowDown } from "react-icons/bs";
+import { GrFormNext } from "react-icons/gr";
+import { IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowUp } from "react-icons/io";
 
 interface CardProps {
   id: string;
@@ -117,16 +120,7 @@ function Card({
         <div className="flex justify-end items-end">
           {recruitment && (
             <button onClick={() => setShowParticipants(!showParticipants)}>
-              <Image
-                width={24}
-                height={24}
-                alt={showParticipants ? "arrow-up" : "arrow-down"}
-                src={
-                  showParticipants
-                    ? "/images/arrow-up.svg"
-                    : "/images/arrow-down.svg"
-                }
-              />
+              {showParticipants ? <IoIosArrowUp /> : <IoIosArrowDown />}
             </button>
           )}
         </div>
@@ -147,7 +141,12 @@ function Card({
               </span>
             </li>
             <li className="ml-auto">
-              더보기 <span>&gt;</span>
+              <button className="flex items-center">
+                더보기
+                <span className="text-display-1">
+                  <GrFormNext />
+                </span>
+              </button>
             </li>
           </ul>
 
