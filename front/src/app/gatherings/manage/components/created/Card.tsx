@@ -1,6 +1,8 @@
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Image from "next/image";
+import { WiTime5 } from "react-icons/wi";
+import { BsArrowDown } from "react-icons/bs";
 
 interface CardProps {
   id: string;
@@ -17,6 +19,7 @@ interface CardProps {
     userId: number;
     userNickname: string;
     userProfileImage: string;
+    position: string;
   }[];
   type: "study" | "project";
   onEdit?: () => void;
@@ -26,177 +29,173 @@ interface CardProps {
 }
 
 function Card({
-  id,
+  // id,
   title,
-  connection,
   skills,
   content,
-  startDateTime,
-  participant,
-  capacity,
   imageUrl,
-  onCancel,
+  // onCancel,
   recruitment,
-  type,
-  onEdit,
-  onManage,
   onApprove,
   onReject,
 }: CardProps) {
   const [showParticipants, setShowParticipants] = useState(false);
-  const router = useRouter();
+  // const router = useRouter();
 
-  const defaultImage = "/images/profile.png";
+  const defaultImage = "/images/arrow-up.svg"; // 임시 이미지
 
-  const badgeColor = type === "study" ? "bg-green-200" : "bg-blue-200";
-  const badgeText = type === "study" ? "스터디" : "프로젝트";
+  // const badgeColor = type === "study" ? "bg-green-200" : "bg-blue-200";
+  // const badgeText = type === "study" ? "스터디" : "프로젝트";
 
   return (
-    <div className="p-6 rounded-lg bg-white border border-[#DDDCE3] mb-5">
-      <div className="flex gap-6">
-        <div className="bg-slate-600 w-[320px] h-[172px] rounded-lg overflow-hidden relative">
+    <div className=" text-display-1 rounded-lg bg-white border border-[#DDDCE3] mb-5 md:p-6 p-4 ">
+      <div className="flex gap-4">
+        <div className="bg-slate-600 flex-shrink-0 w-[80px] h-[80px] md:w-[130px] md:h-[130px] lg:w-[199px] lg:h-[130px] rounded-2xl overflow-hidden">
           <Image
             src={imageUrl && imageUrl !== "string" ? imageUrl : defaultImage}
-            alt="모임 이미지"
-            fill
-            style={{ objectFit: "cover" }}
+            layout="responsive"
+            alt="main_image"
+            width={199}
+            height={130}
+            objectFit="cover"
           />
         </div>
 
-        <div className="flex-1">
-          <div
+        <div className="flex justify-center  flex-col  w-full text-caption font-body">
+          {/* 뱃지
+           <div
             className={`inline-block px-4 py-1 mb-2 rounded-full ${badgeColor} self-start`}
           >
             {badgeText}
           </div>
+           */}
 
-          <div className="flex flex-row gap-2 mb-2 text-2xl">
-            <h3 className="mb-2 font-medium">{title}</h3>
-            <span>|</span>
-            <span>{connection === "online" ? "온라인" : "오프라인"}</span>
-          </div>
-
-          {skills && (
-            <div className="flex gap-2 mb-2">
-              {skills.map((skill, index) => (
-                <span
-                  key={index}
-                  className="px-4 py-1 rounded-full bg-[#FFEDD5] text-[#EA580C]"
-                >
-                  {skill}
-                </span>
-              ))}
+          {/* 스킬 - 제목 위 */}
+          <div className="flex flex-col w-full ">
+            <div className="lg:hidden flex flex-col gap-2 mb-2">
+              {skills && (
+                <div className="flex flex-row flex-wrap gap-2 text-subhead-1  items-center">
+                  {skills.map((skill, index) => (
+                    <span
+                      key={index}
+                      className="flex justify-center items-center px-2 py-[2px] h-5 rounded-2xl bg-gray-6"
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
-          )}
 
-          {content && <p>{content}</p>}
+            <h3 className="font-title flex flex-row gap-2 mb-2 md:text-headline text-subhead-3">
+              {title}
+            </h3>
 
-          <div className="flex flex-row gap-4 mb-4">
-            <span>
-              {`${new Date(startDateTime).getMonth() + 1}월 ${new Date(startDateTime).getDate()}일`}
-              <span>·</span>
-              {new Date(startDateTime).toLocaleTimeString("ko-KR", {
-                hour: "2-digit",
-                minute: "2-digit",
-                hour12: false,
-              })}
-            </span>
-            <span>{`${participant}/${capacity}`}</span>
-          </div>
-
-          <div className="flex flex-row justify-between">
-            {(onEdit || onManage) && (
-              <div className="flex flex-row justify-start gap-3">
-                {onEdit && (
-                  <button
-                    className="w-[120px] p-2 flex justify-center items-center rounded-xl border border-[#EA580C] bg-white text-[#EA580C]"
-                    onClick={onEdit}
-                  >
-                    수정하기
-                  </button>
-                )}
-                {onManage && (
-                  <button
-                    className="w-[120px] p-2 flex justify-center items-center rounded-xl border border-[#EA580C] bg-white text-[#EA580C]"
-                    onClick={() => router.push(`/gatherings/manage/${id}`)}
-                  >
-                    관리하기
-                  </button>
+            <div className="flex flex-row text-caption font-body ">
+              {/* 스킬 - 모임명의 아래, 모임 설명의 왼쪽 */}
+              <div className="hidden lg:flex flex-row flex-wrap gap-2 text-subhead-1  items-center">
+                {skills && (
+                  <>
+                    {skills.map((skill, index) => (
+                      <span
+                        key={index}
+                        className="flex justify-center items-center px-2 py-[2px] h-5 rounded-2xl bg-gray-6"
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </>
                 )}
               </div>
-            )}
-
-            {recruitment && (
-              <button onClick={() => setShowParticipants(!showParticipants)}>
-                <Image
-                  width={24}
-                  height={24}
-                  alt={showParticipants ? "arrow-up" : "arrow-down"}
-                  src={
-                    showParticipants
-                      ? "/images/arrow-up.svg"
-                      : "/images/arrow-down.svg"
-                  }
-                />
-              </button>
-            )}
+              {content && (
+                <p className="lg:ml-2 lg:text-body-2 text-body-1">{content}</p>
+              )}
+            </div>
           </div>
+        </div>
+        {/* 대기 상태 신청자 아코디언 토글 버튼 */}
+        <div className="flex justify-end items-end">
+          {recruitment && (
+            <button onClick={() => setShowParticipants(!showParticipants)}>
+              <Image
+                width={24}
+                height={24}
+                alt={showParticipants ? "arrow-up" : "arrow-down"}
+                src={
+                  showParticipants
+                    ? "/images/arrow-up.svg"
+                    : "/images/arrow-down.svg"
+                }
+              />
+            </button>
+          )}
         </div>
       </div>
 
       {showParticipants && recruitment && recruitment.length > 0 && (
-        <div className="border-t border-gray-300 mt-6">
-          {recruitment.map((participant, index) => (
-            <div
-              key={index}
-              className="flex items-center justify-between space-y-5"
-            >
-              <div className="flex flex-col gap-3">
-                <div className="flex flex-row justify-start gap-2">
+        <div className="border-t border-gray-6 mt-6 pt-6 md:text-body-2 text-body-1 font-body text-gray-15">
+          <ul className="hidden  lg:w-full lg:flex lg:gap-28 lg:py-5 lg:pr-4 lg:pl-11 lg:border-b lg:border-gray-6 lg:text-center lg:list-none">
+            <li>프로필</li>
+            <li className="mr-4">이름</li>
+            <li className="mr-7">직무</li>
+            <li className="flex items-center">
+              <span>
+                <WiTime5 className="text-headline" />
+              </span>
+              <span>
+                <BsArrowDown className="text-subhead-3" />
+              </span>
+            </li>
+            <li className="ml-auto">
+              더보기 <span>&gt;</span>
+            </li>
+          </ul>
+
+          <div className="space-y-4 lg:space-y-0">
+            {recruitment.map((participant, index) => (
+              <ul
+                key={index}
+                className="px-4 gap-3 py-4 md:py-6 border border-gray-6 lg:border-0 rounded-lg w-full flex lg:gap-28 lg:py-5 lg:pr-4 lg:pl-11 items-center lg:border-b lg:border-gray-4 text-center list-none"
+              >
+                <li className="mr-1">
                   <Image
                     src={participant.userProfileImage || "/images/profile.png"}
                     alt={`${participant.userNickname}의 프로필 이미지`}
-                    width={50}
-                    height={50}
+                    width={40}
+                    height={40}
                     className="rounded-full"
                   />
-                  <span className="flex items-center">
-                    {participant.userNickname}
-                  </span>
-                </div>
-                <div className="w-56 h-2 bg-slate-500 rounded-full"></div>
-              </div>
-
-              <div className="flex flex-col gap-2">
-                {onApprove && (
-                  <button
-                    className="w-[120px] p-2 rounded-xl border border-[#EA580C] bg-white text-[#EA580C]"
-                    onClick={() => onApprove(participant.userNickname)}
-                  >
-                    승인하기
-                  </button>
-                )}
-                {onReject && (
-                  <button
-                    className="w-[120px] p-2 rounded-xl border border-[#EA580C] bg-white text-[#EA580C]"
-                    onClick={() => onReject(participant.userNickname)}
-                  >
-                    거절하기
-                  </button>
-                )}
-              </div>
-            </div>
-          ))}
+                </li>
+                <li>{participant.userNickname}</li>
+                <li className="hidden lg:block">{participant.position}</li>
+                <li className="hidden lg:block">24.09.24</li>
+                <li className="ml-auto">
+                  <div className="flex gap-2 text-body-1 md:text-subhead-3 font-title">
+                    {onApprove && (
+                      <button
+                        className="w-[58px] px-[14px] py-[5px] md:w-[78px] md:px-6 md:py-2 rounded-lg bg-purple-4 text-white"
+                        onClick={() => onApprove(participant.userNickname)}
+                      >
+                        승인
+                      </button>
+                    )}
+                    {onReject && (
+                      <button
+                        className="w-[58px] px-[14px] py-[5px] md:w-[78px] md:px-5 md:py-2 rounded-lg bg-white text-gray-10 border border-gray-10"
+                        onClick={() => onReject(participant.userNickname)}
+                      >
+                        거절
+                      </button>
+                    )}
+                  </div>
+                </li>
+              </ul>
+            ))}
+          </div>
+          <button className=" lg:hidden text-white bg-gray-7 rounded-lg w-full py-[10px] mt-5 ">
+            더보기
+          </button>
         </div>
-      )}
-
-      {onCancel && (
-        <button
-          className="w-[120px] p-2 flex justify-center items-center rounded-xl border border-[#EA580C] bg-white text-[#EA580C]"
-          onClick={onCancel}
-        >
-          취소하기
-        </button>
       )}
     </div>
   );
