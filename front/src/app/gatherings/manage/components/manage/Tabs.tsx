@@ -35,7 +35,7 @@ function Tabs() {
 
   return (
     <div>
-      <div className="lg:text-display-1 md:text-headline text-subhead-3 h-8 flex gap-8 md:gap-0 md:flex-row flex-col justify-between md:mb-10 mb-16 text-gray-15">
+      <div className="lg:text-display-1 md:text-headline text-subhead-3 h-8 flex gap-8 md:gap-0 md:flex-row flex-col justify-between md:mb-10 mb-20 text-gray-15">
         <div className="flex justify-start gap-6">
           {tabs.map((tab) => (
             <button
@@ -51,10 +51,10 @@ function Tabs() {
           ))}
         </div>
 
-        <div className="flex gap-4 items-center font-sans">
+        <div className="flex lg:gap-4 gap-2 items-center font-sans justify-end lg:text-display-1 text-body-2 md:text-headline">
           <Menu>
             <p>{selectedLabel}</p>
-            <MenuButton className="flex justify-center items-center w-10 h-10 bg-gray-3 rounded-full">
+            <MenuButton className="flex justify-center items-center w-8 h-8 md:w-10 md:h-10 bg-gray-3 rounded-full">
               <span>
                 <IoIosArrowDown />
               </span>
@@ -62,17 +62,16 @@ function Tabs() {
             <MenuItems
               anchor={{
                 to: "bottom end",
-                gap: "4px",
                 offset: "-40px",
               }}
-              className="px-4 py-2 text-display-1 w-[171px] rounded-2xl flex flex-col justify-start bg-white border border-gray-4 shadow-custom"
+              className="md:gap-1 gap-2 lg:text-display-1 text-body-2 md:text-headline p-4 lg:px-4 lg:py-2 w-[111px] md:w-[171px] rounded-2xl flex flex-col justify-start bg-white border border-gray-4 shadow-custom"
             >
               {dropdownOptions.map((option) => (
                 <MenuItem
                   key={option.id}
                   as="button"
                   onClick={() => handleDropdownClick(option)}
-                  className={`text-start ${activeDropdown === option.id ? "font-bold" : ""}`}
+                  className={`text-start ${activeDropdown === option.id ? "font-title" : ""}`}
                 >
                   {option.label}
                 </MenuItem>
