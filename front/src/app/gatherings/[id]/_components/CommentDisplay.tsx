@@ -12,7 +12,7 @@ export default function CommentDisplay() {
   const renderComment = (comment: Comment, isReply = false) => (
     <div key={comment.id} className={`mb-4 ${isReply ? "ml-12" : ""}`}>
       <div className="flex items-start space-x-4">
-        <div className="w-10 h-10 bg-gray-400 rounded-full flex-shrink-0" />
+        <div className="w-10 h-10  bg-gray-200 rounded-full" />
         <div className="flex-grow">
           <p className="text-xl text-[#484848] font-semibold">{comment.user}</p>
           <p className="text-lg text-[#484848] mt-1">{comment.text}</p>
