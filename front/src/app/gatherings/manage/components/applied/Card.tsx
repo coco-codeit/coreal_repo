@@ -52,9 +52,11 @@ function Card({ title, skills, content, imageUrl, onCancel }: CardProps) {
               </div>
             )}
           </div>
-          <div className="font-title flex flex-row gap-2 mb-2 md:text-headline text-subhead-3">
-            <p>{title}</p>
-          </div>
+
+          <h3 className="font-title flex flex-row gap-2 mb-2 md:text-headline text-subhead-3">
+            {/* <p>{title}</p> */}
+            {title}
+          </h3>
 
           <div className="flex flex-row text-caption font-body ">
             {/* 스킬 - 모임명의 아래, 모임 설명의 왼쪽 */}
