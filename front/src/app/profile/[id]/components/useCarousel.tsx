@@ -6,7 +6,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 
-export default function useCarousel() {
+export default function useCarousel({ length }: { length: number }) {
   const settings = {
     dots: false,
     infinite: true,
@@ -40,18 +40,22 @@ export default function useCarousel() {
     </Slider>
   );
 
-  const CarouselBtns = ({ className }: { className?: string }) => (
-    <div className={`flex flex-row gap-2 ${className ? className : ""}`}>
-      <SlArrowLeft
-        onClick={onClickPrev}
-        className="cursor-pointer w-[30px] h-[30px] p-2 rounded-full text-gray-10 bg-gray-5 hover:bg-gray-3 active:bg-gray-5"
-      />
-      <SlArrowRight
-        onClick={onClickNext}
-        className="cursor-pointer w-[30px] h-[30px] p-2 rounded-full text-gray-10 bg-gray-5 hover:bg-gray-3 active:bg-gray-5"
-      />
-    </div>
-  );
+  const CarouselBtns = ({ className }: { className?: string }) => {
+    if (length > 0)
+      return (
+        <div className={`flex flex-row gap-2 ${className ? className : ""}`}>
+          <SlArrowLeft
+            onClick={onClickPrev}
+            className="cursor-pointer w-[30px] h-[30px] p-2 rounded-full text-gray-10 bg-gray-5 hover:bg-gray-3 active:bg-gray-5"
+          />
+          <SlArrowRight
+            onClick={onClickNext}
+            className="cursor-pointer w-[30px] h-[30px] p-2 rounded-full text-gray-10 bg-gray-5 hover:bg-gray-3 active:bg-gray-5"
+          />
+        </div>
+      );
+    else return <></>;
+  };
   return {
     Carousel,
     CarouselBtns,
