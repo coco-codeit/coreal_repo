@@ -6,7 +6,7 @@ import { useTabStore } from "@/store/gathers/manage/useTabStore";
 import { useDropdownStore } from "@/store/gathers/manage/useDropdownStore";
 
 const tabs: { id: "applied" | "created"; label: string }[] = [
-  { id: "applied", label: "내가 참여 중인 모임" },
+  { id: "applied", label: "내가 참여중인 모임" },
   { id: "created", label: "내가 만든 모임" },
 ];
 
@@ -22,36 +22,36 @@ function Tabs() {
 
   return (
     <div>
-      <div className="h-20 flex flex-row justify-around bg-white border border-gray-300 rounded-xl shadow-[0px_45px_100px_rgba(0, 0, 0, 0.3)]">
-        {tabs.map((tab) => (
-          <button
-            key={tab.id}
-            className={`w-full py-2 h-full flex items-center justify-center ${
-              activeTab === tab.id
-                ? "border-b-4 border-purple-500 font-semibold"
-                : "border-b-4 border-transparent"
-            }`}
-            onClick={() => setActiveTab(tab.id)}
-          >
-            {tab.label}
-          </button>
-        ))}
-      </div>
-
-      <div className="flex justify-start my-4">
-        <select
-          value={activeDropdown}
-          onChange={(e) =>
-            setActiveDropdown(e.target.value as "all" | "study" | "project")
-          }
-          className="p-2 border border-gray-300 rounded-md"
-        >
-          {dropdownOptions.map((option) => (
-            <option key={option.id} value={option.id}>
-              {option.label}
-            </option>
+      <div className="lg:text-display-1 md:text-headline text-subhead-3 h-8 flex gap-8 md:gap-0 md:flex-row flex-col justify-between md:mb-10 mb-16 text-gray-15">
+        <div className="flex justify-start gap-6">
+          {tabs.map((tab) => (
+            <button
+              key={tab.id}
+              className="relative flex items-center justify-center"
+              onClick={() => setActiveTab(tab.id)}
+            >
+              <span>{tab.label}</span>
+              {activeTab === tab.id && (
+                <div className="absolute bottom-[-5px] left-0 right-0 h-1 bg-purple-4 rounded-2xl"></div>
+              )}
+            </button>
           ))}
-        </select>
+        </div>
+
+        <div className="flex justify-end md:justify-start font-sans">
+          <select
+            value={activeDropdown}
+            onChange={(e) =>
+              setActiveDropdown(e.target.value as "all" | "study" | "project")
+            }
+          >
+            {dropdownOptions.map((option) => (
+              <option key={option.id} value={option.id}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
       <div>
