@@ -1,5 +1,4 @@
-import { CiHeart } from "react-icons/ci";
-import { CiShare2 } from "react-icons/ci";
+import { CiHeart, CiShare2 } from "react-icons/ci";
 
 export default function DetailHeader() {
   const buttons = {

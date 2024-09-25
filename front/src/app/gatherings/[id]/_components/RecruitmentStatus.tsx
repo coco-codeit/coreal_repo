@@ -1,35 +1,51 @@
-export default function RecruitmentStatus() {
-  interface DeveloperTypeItem {
-    title: string;
-    current: number;
-    total: number;
-  }
+import React from "react";
+import Image from "next/image";
+import UserInfoCard from "./UserInfoCard";
 
-  const developerTypes = [
-    { title: "웹프론트엔드", current: 1, total: 4 },
-    { title: "웹프론트엔드", current: 2, total: 4 },
-    { title: "백엔드", current: 2, total: 4 },
-    { title: "안드개발자", current: 1, total: 3 },
-    { title: "AI개발자", current: 1, total: 4 },
-    { title: "IOS개발자", current: 1, total: 2 },
-  ];
+interface DeveloperTypeItem {
+  title: string;
+  current: number;
+  total: number;
+}
 
-  const DeveloperTypeItem = ({ title, current, total }: DeveloperTypeItem) => (
-    <div className="flex w-[222px] justify-between items-center">
-      <span className="text-2xl text-[#9a9a9a]">{title}</span>
-      <span className="text-2xl text-[#484848]">
-        {current}/{total}
-      </span>
-    </div>
-  );
+const tempUserData = {
+  nickname: "사용자닉네임",
+  avatar: "/api/placeholder/40/40",
+  temperature: 75,
+};
+
+export default function DeveloperTypeItem({
+  title,
+  current,
+  total,
+}: DeveloperTypeItem) {
+  const displayAvatars = current >= 5;
 
   return (
-    <div className="w-[753px] h-[210px] p-10 rounded-lg bg-[#f4f5f6]">
-      <div className="grid grid-cols-2 gap-x-4 gap-y-5">
-        {developerTypes.map((developerType, title) => (
-          <DeveloperTypeItem key={title} {...developerType} />
-        ))}
-      </div>
+    <div className="flex w-[222px] justify-between items-center">
+      <span className="text-2xl text-[#9a9a9a] ">{title}</span>
+      {displayAvatars ? (
+        <div className="flex -space-x-2 overflow-hidden group">
+          {[...Array(4)].map((_, index) => (
+            <div
+              key={index}
+              className="relative w-10 h-10 rounded-full bg-gray-300 hover:z-10 group"
+            >
+              <Image
+                src={tempUserData.avatar}
+                alt="avatar"
+                layout="fill"
+                className="rounded-full"
+              />
+              <div className="absolute top-12 left-0 hidden group-hover:block z-20">
+                <UserInfoCard tempUserData={tempUserData} />
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <span className="text-2xl text-gray-12">{`${current}/${total}`}</span>
+      )}
     </div>
   );
 }
