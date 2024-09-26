@@ -43,14 +43,13 @@ function Calendar() {
         <DateLabel label="시작일" date={selectedDate.from} />
         <DateLabel label="종료일" date={selectedDate.to} />
       </div>
-      <div className="flex justify-center py-3">
+      <div className="flex justify-center py-3 border-2 rounded-3xl border-gray-7">
         <DayPicker
           locale={ko}
           mode="range"
           selected={selectedDate}
           onSelect={handleSelectedDate}
           showOutsideDays
-          className="font-body [--rdp-accent-color:#B773FB!important] [--rdp-accent-background-color:#f4e9ff!important]"
           formatters={{
             formatCaption,
           }}
@@ -58,6 +57,7 @@ function Calendar() {
             today: "text-purple-7",
             caption: "font-title",
           }}
+          className="custom-daypicker"
         />
       </div>
     </div>
