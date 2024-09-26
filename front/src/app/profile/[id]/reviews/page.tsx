@@ -27,7 +27,7 @@ export default function ManageReviews() {
       setData(data);
     };
     getData();
-  }, []);
+  }, [select]);
 
   return (
     <div className="container mx-auto max-w-[1024px]">
