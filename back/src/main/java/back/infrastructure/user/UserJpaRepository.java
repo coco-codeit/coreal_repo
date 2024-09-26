@@ -10,4 +10,5 @@ public interface UserJpaRepository extends JpaRepository<User,Long> {
     Optional<User> findByEmail(String email);
     Long findFirstIdByOrderByIdDesc();
     Optional<User> findFirstByOrderByIdDesc();
+    Optional<User> findByNickname(String nickname);
 }

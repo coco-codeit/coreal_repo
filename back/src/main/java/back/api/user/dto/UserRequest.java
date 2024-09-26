@@ -1,9 +1,12 @@
 package back.api.user.dto;
 
 import back.domain.user.dto.UserCommand;
+import back.domain.user.stack.TechStack;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 public class UserRequest {
 
@@ -37,7 +40,27 @@ public class UserRequest {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Login{
-        private String email;
+        private String username;
         private String password;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class Info{
+        private String username;
+        private String nickname;
+        private String profileImage;
+        private String jobField;
+        private List<TechStack> techStacks;
+
+        public UserCommand.Info toCommand(){
+            return UserCommand.Info.builder()
+                    .username(username)
+                    .nickname(nickname)
+                    .profileImage(profileImage)
+                    .jobField(jobField)
+                    .techStacks(techStacks)
+                    .build();
+        }
     }
 }

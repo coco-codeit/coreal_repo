@@ -1,6 +1,7 @@
 package back.common.filter;
 
 import back.api.user.dto.UserRequest;
+import back.common.util.CookieUtil;
 import back.domain.user.User;
 import back.domain.user.UserRepository;
 import back.domain.user.dto.UserResponse;
@@ -45,7 +46,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             UserRequest.Login loginRequest = om.readValue(request.getInputStream(), UserRequest.Login.class);
 
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                    loginRequest.getEmail(), loginRequest.getPassword());
+                    loginRequest.getUsername(), loginRequest.getPassword());
 
             return authenticationManager.authenticate(token);
         } catch (Exception e) {
@@ -61,16 +62,19 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         LoginUser loginUser = (LoginUser) authResult.getPrincipal();
         String accessToken = JwtProcess.create(loginUser);
         String refreshToken = JwtProcess.createRefreshToken();
-
+        log.info("refreshToken======== " + refreshToken);
         userRedisRepository.save(new RefreshToken(String.valueOf(loginUser.getUser().getId()), refreshToken));
 
         User user = userRepository.findByEmail(loginUser.getUsername()).get();
         boolean firstLoginCheck = user.isFirstLoginCheck();
-        UserResponse.Login loginResponse = new UserResponse.Login(loginUser.getUser(), accessToken, refreshToken, firstLoginCheck);
+        UserResponse.Login loginResponse = new UserResponse.Login(loginUser.getUser(), accessToken, firstLoginCheck);
         if (firstLoginCheck == true) {
             user.changeFirstLogin();
             userRepository.save(user);
         }
+
+        CookieUtil.addRefreshTokenCookie(response, refreshToken);
+
         CustomResponseUtil.success(response, loginResponse);
     }
 }
