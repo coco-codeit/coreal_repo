@@ -1,0 +1,63 @@
+name: sentry
+run-name: Sentry 릴리즈를 생성합니다. 🚀
+on: [push, pull_request]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  actions: write #  to cancel/stop running workflows (styfle/cancel-workflow-action)
+  contents: read #  to fetch code (actions/checkout)
+
+jobs:
+  main:
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [20]
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 10
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Install dependencies
+        working-directory: ./front
+        run: yarn ci
+
+      - name: ▶️ Run build
+        working-directory: ./front
+        run: yarn build
+
+      - name: Install sentry-cli
+        working-directory: ./front
+        run: yarn global add @sentry/cli
+
+      - name: Create Sentry release
+        working-directory: ./front
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: junyup
+          SENTRY_PROJECT: coreal_project
+        run: |
+          export SENTRY_LOG_LEVEL=debug
+          export VERSION=$(sentry-cli releases propose-version)
+          sentry-cli releases new $VERSION
+          sentry-cli releases set-commits --auto --ignore-missing $VERSION
+
+      - name: Finalize Sentry release
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: junyup
+          SENTRY_PROJECT: coreal_project
+        run: |
+          export SENTRY_LOG_LEVEL=debug
+          export VERSION=$(sentry-cli releases propose-version)
+          sentry-cli releases finalize $VERSION
