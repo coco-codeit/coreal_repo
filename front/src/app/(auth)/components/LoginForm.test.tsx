@@ -52,6 +52,7 @@ describe("LoginForm", () => {
       });
     });
 
+    // 로컬 스토리지에 저장된 토큰이 제대로 유지되는지를 확인
     test("API key가 있는 경우, axios 요청이 성공합니다.", async () => {
       const FAKE_TOKEN = "내가만든쿠키";
       window.localStorage.setItem("token", FAKE_TOKEN);
