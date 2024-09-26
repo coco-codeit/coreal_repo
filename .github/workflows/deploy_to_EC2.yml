@@ -29,10 +29,12 @@ jobs:
           ssh -i ec2_key.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST '
             set -x
             cd ~/coreal_repo
-            git pull origin develop
+            git fetch
+            git pull origin main
             cd front
             echo "Installing dependencies"
-            yarn install
+            yarn install --ignore-scripts
+            cd ~/coreal_repo/front
             echo "Building project"
             yarn build
             echo "PM2 프로세스 상태 확인"
