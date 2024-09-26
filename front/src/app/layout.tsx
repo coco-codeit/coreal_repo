@@ -35,6 +35,11 @@ export default function RootLayout({
       >
         <Navbar />
         <main>{children}</main>
+        <div id="modal_root" />
+        {/*
+        작성자 : 이은혁
+        modal_root -> 최상위에 모달을 띄우기 위한 루트 노드
+        */}
       </body>
     </html>
   );
