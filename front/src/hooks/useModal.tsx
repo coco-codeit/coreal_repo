@@ -8,6 +8,7 @@ interface InlineStyleInterface {
 // tailwindCSS가 특정 조건에서 CSS가 입혀지지 않는 문제가 있어
 // 아래와 같이 인라인 스타일을 지정해서 적용해두었습니다.
 // 작성자: 이은혁
+const backDropFilter = "blur(16px) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)"
 
 const bgStyle: InlineStyleInterface = {
   position: "fixed",
@@ -19,10 +20,8 @@ const bgStyle: InlineStyleInterface = {
   justifyContent: "center",
   alignItems: "center",
   backgroundColor: "rgb(0 0 0 / 0.5)",
-  WebkitBackdropFilter:
-    "blur(16px) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)",
-  backdropFilter:
-    "blur(16px) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)",
+  WebkitBackdropFilter: backDropFilter,
+  backdropFilter: backDropFilter,
 };
 
 /**
