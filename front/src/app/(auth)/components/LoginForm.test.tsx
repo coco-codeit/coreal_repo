@@ -5,7 +5,6 @@ import LoginForm from "./LoginForm";
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import axios, { AxiosResponse } from "axios";
 
-// 서버 응답 타입 정의
 interface LoginResponse {
   success: boolean;
   error?: string;
@@ -53,7 +52,6 @@ describe("LoginForm", () => {
       });
     });
 
-    // 로컬 스토리지에 저장된 토큰이 제대로 유지되는지를 확인
     test("API key가 있는 경우, axios 요청이 성공합니다.", async () => {
       const FAKE_TOKEN = "내가만든쿠키";
       window.localStorage.setItem("token", FAKE_TOKEN);
@@ -69,7 +67,6 @@ describe("LoginForm", () => {
       expect(window.localStorage.getItem("token")).toEqual(FAKE_TOKEN);
     });
 
-    // 폼이 제출된 후 axios.post가 올바른 데이터로 호출되는지를 검증
     test("API key가 있는 경우 로그인 성공", async () => {
       const mockResponse = { data: { token: "fake-token" } };
       vi.mocked(axios.post).mockResolvedValue(mockResponse);
@@ -178,7 +175,7 @@ describe("LoginForm", () => {
 
       await waitFor(() => {
         expect(window.localStorage.getItem("token")).toBeNull();
-        // 서버 에러 메시지 확인 로직 추가 필요
+        // TODO: 서버 에러 메시지 확인 로직 추가 필요
       });
     });
   });
