@@ -7,6 +7,7 @@ import back.api.gathering.dto.study.request.UpdateStudyRequest;
 import back.api.gathering.dto.study.response.CreateStudyResponse;
 import back.api.gathering.dto.study.response.GetStudyResponse;
 import back.api.gathering.dto.study.response.MyGatheringResponse;
+import back.api.gathering.dto.study.response.StudyListResponse;
 import back.common.config.auth.LoginUser;
 import back.domain.gathering.Study;
 import back.domain.gathering.service.StudyService;
@@ -32,17 +33,37 @@ public class StudyController {
 
     private final StudyService studyService;
 
+    /***
+     * 1. study 생성
+     * 2. study 목록
+     * 서영님 파트
+     */
+
     @Operation(summary = "스터디 생성")
     @PostMapping("/studies")
     public CustomApiResponse<CreateStudyResponse> saveStudy(
         @RequestBody @Valid CreateStudyRequest request
+//         @AuthenticationPrincipal LoginUser loginUser
     ){
 //        @RequestPart("image") MultipartFile image
+//
+//        if(loginUser!=null){
+//
+//        }
 
-        Study savedStudy = studyService.write(request);
-
+        Study savedStudy = studyService.write(request,1L);
         return CustomApiResponse.ok(CreateStudyResponse.from(savedStudy));
     }
+
+    @Operation(summary = "스터디 리스트 조회")
+    @GetMapping("/studies")
+    public CustomApiResponse<List<StudyListResponse>> GetStudyListResponse(@RequestParam(defaultValue = "0") int page) {
+
+        return CustomApiResponse.ok(studyService.getList(page));
+    }
+
+
+
 
     @Operation(summary = "스터디 조회")
     @GetMapping("/studies/{studyId}")
@@ -50,13 +71,6 @@ public class StudyController {
         GetStudyResponse study = studyService.get(id);
 
         return study;
-    }
-
-    @Operation(summary = "스터디 리스트 조회")
-    @GetMapping("/studies")
-    public List<GetStudyResponse> GetStudyListResponse(@RequestParam(defaultValue = "0") int page) {
-        System.out.println(page);
-        return studyService.getList(page);
     }
 
     //내가 만든 모임 상세 수정

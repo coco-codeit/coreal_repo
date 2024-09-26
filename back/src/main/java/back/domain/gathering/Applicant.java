@@ -10,8 +10,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.NoArgsConstructor;
 
 @Entity
+@NoArgsConstructor
 @Table(name = "applicants")
 public class Applicant {
     @Id
@@ -22,7 +24,6 @@ public class Applicant {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "gathering_id")
     private Gathering gathering;
-
     @Enumerated(EnumType.STRING)
     private ApplicantStatus applicantStatus;
     public Applicant(Long userId, String username, Gathering gathering) {

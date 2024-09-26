@@ -23,5 +23,6 @@ public class UserGathering {
     private User user;
 
     @ManyToOne
+    @JoinColumn(name = "gathering_id")
     private Gathering gathering;
 }

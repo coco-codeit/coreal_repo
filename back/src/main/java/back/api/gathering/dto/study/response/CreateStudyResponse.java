@@ -14,32 +14,33 @@ import lombok.Data;
 @Builder
 @AllArgsConstructor
 public class CreateStudyResponse {
-    private Long gatheringId;
-    private String category; //Project, Study
-    private String gatheringName; //모임명
-    private GatheringStatus progress;
-    private String location; //위치
-    private LocalDateTime startDate; //시작일
-    private LocalDateTime endDate; //종료일
-    private String description; //설명
-    private List<String> stackList;
-    private int totalCapacity; //인원수
-    private GatheringType gatheringType; //on,off
-    private Long masterId;
+    private Long id;
+    private String image;
+    private String title; // 모임명 (gatheringName을 title로 변경)
+    private String type; // "Study"로 고정
+    private GatheringType connection; // on,off (gatheringType을 connection으로 변경)
+    private String day;
+    private String time;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
+    private List<String> techStacks; // stackList를 techStacks로 변경
+    private String description;
+    private int totalCapacity;
 
     public static CreateStudyResponse from(Study study) {
         return CreateStudyResponse.builder()
-            .category("Study")
-            .gatheringName(study.getGatheringName())
-            .progress(study.getGatheringStatus())
-            .location(study.getLocation())
+            .id(study.getId())
+            .image(study.getImage())
+            .title(study.getGatheringName())
+            .type("STUDY")
+            .connection(study.getGatheringType())
+            .day(study.getDay())
+            .time(study.getTime())
             .startDate(study.getStartDate())
             .endDate(study.getEndDate())
+            .techStacks(study.getStackList().stream().map(GatheringStack::getName).toList())
             .description(study.getDescription())
-            .stackList(study.getStackList().stream().map(GatheringStack::getName).toList())
             .totalCapacity(study.getTotalCapacity())
-            .gatheringType(study.getGatheringType())
-            .masterId(study.getMasterId())
             .build();
     }
 }

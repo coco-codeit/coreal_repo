@@ -2,12 +2,16 @@ package back.api.user;
 
 import back.api.common.dto.CustomApiResponse;
 import back.api.user.dto.UserRequest;
+import back.common.config.auth.LoginService;
 import back.common.config.auth.LoginUser;
+import back.domain.gathering.Applicant;
+import back.domain.gathering.service.GatheringService;
 import back.domain.user.dto.UserResponse;
 import back.domain.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -18,7 +22,7 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-
+    private final GatheringService gatheringService;
     @Operation(summary = "유저 회원가입")
     @PostMapping("/join")
     public CustomApiResponse<UserResponse.Join> join(@RequestBody UserRequest.Join request) {
@@ -39,20 +43,31 @@ public class UserController {
         return CustomApiResponse.ok("프로필 정보 수정", new UserResponse.Update(1L, "닉네임", "coreal@naver.com", "s3주소"));
     }
 
-    @Operation(summary = "신청한 스터디 목록 조회")
+//    @Operation(summary = "신청한 스터디 목록 조회")
+//    @GetMapping("/user/gathering")
+//    public CustomApiResponse<List<UserResponse.ReadGathering>> getAppliedGathering() {
+//        return CustomApiResponse.ok("신청한 스터디 목록 조회", List.of(
+//                new UserResponse.ReadGathering(
+//                        1L, "인프런 스프링 강의 스터디1", "코리얼", LocalDateTime.now(), LocalDateTime.now(),
+//                        "월~금", "오전~오후 파트", List.of("java", "spring"), "s3 주소", "온라인",
+//                        20, 3
+//                ),
+//                new UserResponse.ReadGathering(
+//                        2L, "인프런 스프링 강의 스터디2", "리얼코", LocalDateTime.now(), LocalDateTime.now(),
+//                        "목", "오전 파트", List.of("java", "spring"), "s3 주소", "오프라인",
+//                        20, 3
+//                )));
+//    }
+
+    //==user + gathering codes==//
+    @Operation(summary = "내가 신청한 모임 목록의 엔드포인트")
     @GetMapping("/user/gathering")
-    public CustomApiResponse<List<UserResponse.ReadGathering>> getAppliedGathering() {
-        return CustomApiResponse.ok("신청한 스터디 목록 조회", List.of(
-                new UserResponse.ReadGathering(
-                        1L, "인프런 스프링 강의 스터디1", "코리얼", LocalDateTime.now(), LocalDateTime.now(),
-                        "월~금", "오전~오후 파트", List.of("java", "spring"), "s3 주소", "온라인",
-                        20, 3
-                ),
-                new UserResponse.ReadGathering(
-                        2L, "인프런 스프링 강의 스터디2", "리얼코", LocalDateTime.now(), LocalDateTime.now(),
-                        "목", "오전 파트", List.of("java", "spring"), "s3 주소", "오프라인",
-                        20, 3
-                )));
+    public void getMyAppliedGatherings(
+//        @AuthenticationPrincipal LoginUser loginUser
+    ) {
+        long tmp = 1L;
+//        gatheringService.getApplicants(loginUser.getUser().getId());
+        List<Applicant> applicants = gatheringService.getApplicants(tmp);
     }
 
     @Operation(summary = "유저 추가 정보 저장")

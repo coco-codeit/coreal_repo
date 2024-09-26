@@ -2,10 +2,10 @@ package back.domain.gathering.service;
 
 import back.api.gathering.dto.study.request.CreateStudyRequest;
 import back.api.gathering.dto.study.request.UpdateStudyRequest;
-import back.api.gathering.dto.study.response.CreateStudyResponse;
 import back.api.gathering.dto.study.response.GetStudyResponse;
 import back.api.gathering.dto.study.response.MyGatheringResponse;
-import back.api.gathering.dto.study.response.MyStudiesResponse;
+import back.api.gathering.dto.study.response.StudyListResponse;
+import back.api.gathering.dto.study.response.StudyListResponse.StudyListResponseBuilder;
 import back.common.config.auth.LoginUser;
 import back.domain.gathering.Study;
 import back.domain.gathering.repository.StudyRepository;
@@ -28,14 +28,9 @@ public class StudyService {
     private final UserRepository userRepository;
 
     @Transactional
-    public Study write(CreateStudyRequest request) {
-        Study study = Study.from(request); //리퀘스트를 스터디로 변경
-        Study savedStudy = studyRepository.save(study);
-        /**
-         * 삭제용
-         * */
-        System.out.println(request.getMasterId());
-        return savedStudy;
+    public Study write(CreateStudyRequest request, Long userId) {
+        Study study = Study.from(request, userId);
+        return studyRepository.save(study);
     }
 
     @Transactional
@@ -54,11 +49,11 @@ public class StudyService {
         return GetStudyResponse.from(study);
     }
 
-    public List<GetStudyResponse> getList(int page) {
+    public List<StudyListResponse> getList(int page) {
         PageRequest pageRequest = PageRequest.of(page, 3, Sort.by("id"));
 
         return studyRepository.findAll(pageRequest).stream()
-            .map(GetStudyResponse::from)
+            .map(StudyListResponse::from)
             .toList();
     }
 

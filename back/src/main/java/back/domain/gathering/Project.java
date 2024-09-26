@@ -1,66 +1,70 @@
-//package back.domain.gathering;
-//
-//import back.domain.gathering.status.GatheringStatus;
-//import back.domain.gathering.status.GatheringType;
-//import jakarta.persistence.CascadeType;
-//import jakarta.persistence.Entity;
-//import jakarta.persistence.OneToMany;
-//import java.time.LocalDateTime;
-//import java.util.ArrayList;
-//import java.util.List;
-//import lombok.AccessLevel;
-//import lombok.Getter;
-//import lombok.NoArgsConstructor;
-//
-//@Getter
-//@Entity
-//@NoArgsConstructor(access = AccessLevel.PUBLIC)
-//public class Project extends Gathering{
-//
-//    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-//    private List<Position> positions = new ArrayList<>();
-//
-//    public Project(String name, LocalDateTime startDate, LocalDateTime endDate,
-//        int totalCapacity, String location, String description,
-//        GatheringType gatheringType, List<String> techStacks,
-//        List<Position> positions) {
-//        super(name, startDate, endDate, totalCapacity, 0, location, description,
-//            GatheringStatus.OPEN, gatheringType, new ArrayList<>());
-//
-//        setTechStacks(techStacks);
-//        setPositions(positions);
-//    }
-//
-//    public static Project from(ProjectRequest.Create request) {
-//        return new Project(
-//            request.getGatheringName(),
-//            request.getStartDate(),
-//            request.getEndDate(),
-//            request.getTotalCapacity(),
-//            request.getLocation(),
-//            request.getDescription(),
-//            request.getGatheringType(),
-//            request.getStackList(),
-//            request.getPositions()
-//        );
-//    }
-//
-//    private void setTechStacks(List<String> techStackNames) {
-//        if (techStackNames != null) {
-//            for (String stackName : techStackNames) {
-//                GatheringStack techStack = new GatheringStack(stackName, this);
-//                super.getStackList().add(techStack);
-//            }
-//        }
-//    }
-//
-//    private void setPositions(List<Position> positions) {
-//        if (positions != null) {
-//            for (Position position : positions) {
-//                position.changeProject(this);
-//            }
-//            this.positions.addAll(positions);
-//        }
-//    }
-//
-//}
+package back.domain.gathering;
+
+import back.api.gathering.dto.project.request.CreateProjectRequest;
+import back.domain.gathering.status.GatheringStatus;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.BatchSize;
+
+@Getter
+@Entity
+@SuperBuilder
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
+@DiscriminatorValue("PROJECT")
+public class Project extends Gathering{
+
+    @BatchSize(size = 100)
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    private List<Position> positions = new ArrayList<>();
+
+    public static Project from(CreateProjectRequest request, Long masterId) {
+        Project project = Project.builder()
+            .gatheringName(request.getTitle())
+            .image(request.getImage())
+            .gatheringType(request.getConnection())
+            .gatheringStatus(GatheringStatus.OPEN)
+            .day(request.getDay())
+            .time(request.getTime())
+            .startDate(request.getStartDate())
+            .endDate(request.getEndDate())
+            .description(request.getDescription())
+            .positions(new ArrayList<>())
+            .stackList(new ArrayList<>())
+            .currentCapacity(1)
+            .masterId(masterId)
+            .build();
+
+        for (String stackName : request.getTechStacks()) {
+            project.addTechStack(stackName);
+        }
+        
+        for (CreateProjectRequest.PositionDto positionDto : request.getRecruitment()) {
+            project.addPosition(positionDto);
+        }
+
+        return project;
+    }
+
+    private void addPosition(CreateProjectRequest.PositionDto positionDto) {
+        Position position = Position.builder()
+            .project(this)
+            .techPosition(positionDto.getField())
+            .totalCapacity(positionDto.getTotalCapacity())
+            .build();
+        this.positions.add(position);
+    }
+
+    public void addTechStack(String stackName) {
+        GatheringStack stack = new GatheringStack(stackName, this);
+        this.getStackList().add(stack);
+    }
+
+}

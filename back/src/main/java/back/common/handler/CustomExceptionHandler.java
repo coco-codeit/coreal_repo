@@ -46,6 +46,7 @@ public class CustomExceptionHandler {
                         error -> error.getDefaultMessage() != null ? error.getDefaultMessage() : "알 수 없는 오류",
                         (existing, replacement) -> existing));
         return CustomApiResponse.of(HttpStatus.BAD_REQUEST, "바인딩 오류", errorMap);
-
     }
+
+
 }

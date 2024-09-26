@@ -25,14 +25,17 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.BatchSize;
 
 @Getter
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SuperBuilder
+@NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "gatherings")
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn
+@Table(name = "gatherings")
 public class Gathering extends BaseEntity {
 
     @Id
@@ -45,34 +48,40 @@ public class Gathering extends BaseEntity {
     private int totalCapacity;
     private int currentCapacity;
     private String image;
+    @BatchSize(size = 100)
     @OneToMany(mappedBy = "gathering", cascade = CascadeType.ALL)
     private List<GatheringStack> stackList = new ArrayList<>();
     @OneToMany(mappedBy = "gathering")
     private List<Applicant> applicants = new ArrayList<>();
-    private String location;
+    @Column(name = "gathering_day")
+    private String day;
+    private String time;
     @Lob
     private String description;
     @Enumerated(EnumType.STRING)
-    private GatheringStatus gatheringStatus;
+    private GatheringStatus gatheringStatus; //진행중~
     @Enumerated(EnumType.STRING)
-    private GatheringType gatheringType;
+    private GatheringType gatheringType;//ONLINE, OFFLINE
     private Long masterId;
-    @Builder(builderMethodName = "gatheringBuilder")
-    protected Gathering(String name, LocalDateTime startDate, LocalDateTime endDate,
-        int totalCapacity, int currentCapacity, String location,
-        String description, GatheringStatus gatheringStatus,
-        GatheringType gatheringType, List<GatheringStack> stackList, Long masterId) {
-        this.gatheringName = name;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.totalCapacity = totalCapacity;
-        this.currentCapacity = currentCapacity;
-        this.location = location;
-        this.description = description;
-        this.gatheringStatus = gatheringStatus;
-        this.gatheringType = gatheringType;
-        this.masterId = masterId;
-        this.stackList = stackList != null ? stackList : new ArrayList<>();
-    }
+    @Column(name = "DTYPE", insertable = false, updatable = false)
+    private String dtype;
 
 }
+
+//    @Builder(builderMethodName = "gatheringBuilder")
+//    protected Gathering(String name, LocalDateTime startDate, LocalDateTime endDate,
+//        int totalCapacity, int currentCapacity, String location,
+//        String description, GatheringStatus gatheringStatus,
+//        GatheringType gatheringType, List<GatheringStack> stackList, Long masterId) {
+//        this.gatheringName = name;
+//        this.startDate = startDate;
+//        this.endDate = endDate;
+//        this.totalCapacity = totalCapacity;
+//        this.currentCapacity = currentCapacity;
+//        this.
+//        this.description = description;
+//        this.gatheringStatus = gatheringStatus;
+//        this.gatheringType = gatheringType;
+//        this.masterId = masterId;
+//        this.stackList = stackList != null ? stackList : new ArrayList<>();
+//    }
