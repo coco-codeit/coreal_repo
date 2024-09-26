@@ -18,4 +18,10 @@
   .text-balance {
     text-wrap: balance;
   }
+
+  .custom-daypicker {
+    --rdp-accent-color: #b773fb !important;
+    --rdp-accent-background-color: #f4e9ff !important;
+    --rdp-font-family: var(--font-spoqa-han-sans-neo-regular), sans-serif !important;
+  }
 }
