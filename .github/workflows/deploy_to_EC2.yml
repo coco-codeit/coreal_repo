@@ -1,9 +1,9 @@
 name: Deploy to EC2
 
 on:
-  push:
+  pull_request:
     branches:
-      - main
+      - develop
 
 jobs:
   deploy:
@@ -32,6 +32,10 @@ jobs:
       - name: Build project
         run: yarn build
         working-directory: ./front
+       
+      - name: Check build output
+        run: ls -la .next
+        working-directory: ./front
 
       - name: Deploy to EC2
         env:
@@ -41,7 +45,7 @@ jobs:
         run: |
           echo "$EC2_SSH_KEY" > ec2_key.pem
           chmod 600 ec2_key.pem
-          scp -i ec2_key.pem -o StrictHostKeyChecking=no -r front/build/* $EC2_USER@$EC2_HOST:~/coreal_repo/front/build/
+          scp -i ec2_key.pem -o StrictHostKeyChecking=no -r ./front/.next ./front/public ./front/package.json ./front/yarn.lock $EC2_USER@$EC2_HOST:~/coreal_repo/front/
           ssh -i ec2_key.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST '
             set -x
             cd ~/coreal_repo/front
@@ -52,7 +56,9 @@ jobs:
               pm2 stop coreal_frontend
               pm2 delete coreal_frontend
             fi
+            echo "의존성 설치"
+            yarn install
             echo "새 프로세스 시작"
-            pm2 start yarn --name "coreal_frontend" -- start --port 8080
+            pm2 start yarn --name "coreal_frontend" -- start -- -port 8080
             echo "프론트엔드 배포 완료."
           '
