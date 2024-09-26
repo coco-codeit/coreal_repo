@@ -55,6 +55,7 @@ export default function CommentForm({
     >
       <textarea
         {...register("comment")}
+        //TODO : onKeyDown 쓰면 이상하게 오류가나감.. 수정필요
         onKeyPress={handleKeyPress}
         className="w-full text-lg leading-relaxed text-slate-700 bg-transparent border-none resize-none outline-none placeholder-slate-400"
         placeholder={placeholder}
