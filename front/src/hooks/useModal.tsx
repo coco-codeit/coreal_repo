@@ -25,12 +25,6 @@ const bgStyle: InlineStyleInterface = {
     "blur(16px) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)",
 };
 
-const modalStyle: InlineStyleInterface = {
-  minWidth: "150px",
-  minHeight: "200px",
-  padding: "1rem",
-};
-
 /**
  * 모달을 쉽게 제작하기 위한 훅으로,
  * Modal 컴포넌트와 모달의 상태를 관리하는 open, setOpen이 제공됩니다.
@@ -74,7 +68,7 @@ export default function useModal() {
             onClick={handleClickOverlay}
             style={bgStyle}
           >
-            <div className={className} style={modalStyle}>
+            <div className={className}>
               {children}
             </div>
           </div>
