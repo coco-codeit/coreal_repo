@@ -3,7 +3,11 @@ package back.api.gathering;
 import back.api.common.dto.CustomApiResponse;
 import back.api.gathering.dto.GatheringRequest;
 import back.api.gathering.dto.GatheringResponse;
+import back.common.config.auth.LoginUser;
+import back.domain.gathering.service.GatheringService;
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -12,7 +16,10 @@ import java.util.HashMap;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 public class GatheringController {
+
+    private final GatheringService gatheringService;
 
     @Operation(summary = "모임 생성")
     @PostMapping("/gatherings")
@@ -92,6 +99,40 @@ public class GatheringController {
     @Operation(summary = "논의 필요")
     @GetMapping("/gathering/{id}/review")
     public void getReview() {
+
+    }
+
+    //==여기부터 실제 동작 코드==//
+
+    /***
+     * 내가 신청한 모임 목록과  내가 주최자인 모임 목록 함께 나오는 탭
+     */
+
+//    @Operation(summary = "내가 신청한 모임 목록의 엔드포인트")
+//    @GetMapping("/user/gathering")
+//    public void getMyAppliedGatherings(
+//        @AuthenticationPrincipal LoginUser loginUser
+//        ) {
+//        gatheringService.getApplicants(loginUser.getUser().getId());
+//    }
+
+    @Operation(summary = "모임 참여 신청")
+    @PostMapping("/gatherings/{id}/join")
+    public void join(
+//        @AuthenticationPrincipal LoginUser loginUser,
+        @PathVariable("id") Long gatheringId
+    ) {
+        LoginUser loginUser = null;
+        //유저의 정보를 받아 가입을 신청합니다
+        gatheringService.join(gatheringId, loginUser);
+    }
+
+    @Operation(summary = "모임 참여 취소")
+    @PutMapping("/gatherings/{id}/cancel")
+    public void cancel(
+        @AuthenticationPrincipal LoginUser loginUser,
+        @PathVariable("id") Long id
+    ) {
 
     }
 }

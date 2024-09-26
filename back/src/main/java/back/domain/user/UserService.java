@@ -112,7 +112,7 @@ public class UserService {
         // "STUDY": [GatheringDto1, GatheringDto3],
         Map<String, List<GatheringDto.Read>> gatherings = userGatherings.stream()
                 .collect(Collectors.groupingBy(
-                        ug -> ug.getGathering().getGatheringType(),
+                        ug -> String.valueOf(ug.getGathering().getGatheringType()),
                         Collectors.mapping(ug -> {
                             Gathering gathering = ug.getGathering();
                             List<TechStack> techStacks = techStackMap.getOrDefault(gathering.getId(), Collections.emptyList());
