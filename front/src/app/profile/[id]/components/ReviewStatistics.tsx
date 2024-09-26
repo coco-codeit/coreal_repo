@@ -22,19 +22,19 @@ interface DataInterface {
 
 const Badge = ({ className }: { className: string }) => (
   <div
-    className={`w-[100px] h-[100px] bg-[#D9D9D9] rounded-full ${className}`}
+    className={`w-24 h-24 sm:w-28 sm:h-28 bg-[#D9D9D9] rounded-full ${className}`}
   ></div>
 );
 
 export default function ReviewStatistics() {
   return (
     <Template>
-      <h3 className="text-lg font-bold mb-8">받은 평가</h3>
+      <h3 className="text-base md:text-lg font-bold mb-8">받은 평가</h3>
       <div className="flex flex-row justify-between">
         {data.map((item: DataInterface, i) => (
           <div key={`${item}-${i}`} className="text-center">
-            <Badge className="mb-4" />
-            <p className="text-sm font-semibold text-gray-13">
+            <Badge className="mb-2 md:mb-4" />
+            <p className="text-xs md:text-sm font-semibold text-gray-13">
               {badges[item.key].comment}
             </p>
           </div>
