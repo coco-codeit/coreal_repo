@@ -29,7 +29,7 @@ export function Select({
 
   useEffect(() => {
     onChange(select);
-  }, [select]);
+  }, [onChange, select]);
 
   return (
     <div className={className}>
