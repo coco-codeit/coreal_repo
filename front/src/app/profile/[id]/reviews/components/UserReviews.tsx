@@ -19,7 +19,7 @@ interface UserReviewInterface {
   comment_by_me: CommentInterface | null;
 }
 
-export default function ReviewsSection({
+export default function UserReviews({
   gatheringId,
 }: {
   gatheringId: number | string;
@@ -32,7 +32,7 @@ export default function ReviewsSection({
       setReviews(data);
     };
     getData();
-  }, []);
+  }, [gatheringId]);
 
   return (
     <div className="py-4 px-2">

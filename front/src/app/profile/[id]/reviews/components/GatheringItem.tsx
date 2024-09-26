@@ -4,8 +4,10 @@ import {
   DisclosureButton,
   DisclosurePanel,
 } from "@headlessui/react";
-import ReviewSection from "./ReviewSection";
+import UserReviews from "./UserReviews";
 import { GatheringItemInterface } from "@/types/common";
+import ReviewForm from "./ReviewForm";
+import useModal from "@/hooks/useModal";
 
 const DefaultUserImage = "/images/default_user.webp";
 
@@ -16,6 +18,8 @@ export default function GatheringItem({
   className: string;
   gathering: GatheringItemInterface;
 }) {
+  const { Modal, isOpen, setIsOpen } = useModal();
+  const handleClickReviewBtn = () => setIsOpen(!isOpen);
   return (
     <div className={className}>
       <Disclosure>
@@ -40,11 +44,21 @@ export default function GatheringItem({
                   open ? <>리뷰 닫기</> : <>리뷰 펼치기</>
                 }
               </DisclosureButton>
+
+              <button
+                className="py-1 px-2 border rounded-lg bg-gray-6"
+                onClick={handleClickReviewBtn}
+              >
+                리뷰 작성
+              </button>
+              <Modal className="bg-white rounded-lg py-6 px-10 min-w-[300px]">
+                <ReviewForm userId="사용자" setIsOpen={setIsOpen} />
+              </Modal>
             </div>
           </div>
         </div>
         <DisclosurePanel>
-          <ReviewSection gatheringId={1} />
+          <UserReviews gatheringId={1} />
         </DisclosurePanel>
       </Disclosure>
     </div>

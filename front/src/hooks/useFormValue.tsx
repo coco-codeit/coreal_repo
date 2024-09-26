@@ -57,24 +57,21 @@ export default function useFormValue<T>(
   initialValue: T,
   option?: UseFormValueOption,
 ): [T, React.Dispatch<SetStateAction<T>>, boolean, string] {
-  const [mount, setMount] = useState<boolean>(false);
+  const [hasChanged, setHasChanged] = useState<boolean>(false);
   const [value, setValue] = useState<T>(initialValue);
   const [isError, setIsError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
-  const ruleset =
-    option && option.ruleset
-      ? { ...defaultruleset, ...option.ruleset }
-      : defaultruleset;
 
   useEffect(() => {
-    setMount(true);
-  }, []);
+    if (!hasChanged && value !== initialValue) return setHasChanged(true);
 
-  useEffect(() => {
-    if (mount && option?.type && ruleset.hasOwnProperty(option.type)) {
+    const { type, ruleset } = option || {};
+    const combinedRuleset = { ...defaultruleset, ...ruleset };
+
+    if (hasChanged && type && combinedRuleset[type]) {
       setIsError(false);
       setErrorMessage("");
-      for (const { rule, msg } of ruleset[option.type].rules) {
+      for (const { rule, msg } of combinedRuleset[type].rules) {
         if (!rule.test(`${value}`)) {
           setIsError(true);
           setErrorMessage(msg);
@@ -82,7 +79,7 @@ export default function useFormValue<T>(
         }
       }
     }
-  }, [mount, value, ruleset, option?.type]);
+  }, [hasChanged, value, option, initialValue]);
 
   return [value, setValue, isError, errorMessage];
 }
