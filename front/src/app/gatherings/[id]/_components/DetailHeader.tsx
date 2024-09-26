@@ -1,5 +1,4 @@
-import { CiHeart } from "react-icons/ci";
-import { CiShare2 } from "react-icons/ci";
+import { CiHeart, CiShare2 } from "react-icons/ci";
 
 export default function DetailHeader() {
   const buttons = {
@@ -17,16 +16,12 @@ export default function DetailHeader() {
             [전라북도] 어플리케이션 개발
           </h1>
           <div className="flex items-center text-[20px] text-[#9a9a9a] gap-3">
-            {/* TODO : 글쓴이로 변경 */}
             <span>dkdkdkdkdkd</span>
             <Divider />
-            {/* TODO : 글쓴시간 으로 변경 */}
             <span>2024.09.08 20:28</span>
             <Divider />
-            {/* TODO : 버튼 동작시 어떻게 작동할지 논의  모달창? */}
             <button>{buttons.edit}</button>
             <Divider />
-            {/* TODO : 버튼 동작시 삭제 요청 */}
             <button>{buttons.delete}</button>
           </div>
         </div>
