@@ -44,25 +44,24 @@ public class StudyController {
     public CustomApiResponse<CreateStudyResponse> saveStudy(
         @RequestBody @Valid CreateStudyRequest request
 //         @AuthenticationPrincipal LoginUser loginUser
-    ){
+    ) {
 //        @RequestPart("image") MultipartFile image
 //
 //        if(loginUser!=null){
 //
 //        }
 
-        Study savedStudy = studyService.write(request,1L);
+        Study savedStudy = studyService.write(request, 1L);
         return CustomApiResponse.ok(CreateStudyResponse.from(savedStudy));
     }
 
     @Operation(summary = "스터디 리스트 조회")
     @GetMapping("/studies")
-    public CustomApiResponse<List<StudyListResponse>> GetStudyListResponse(@RequestParam(defaultValue = "0") int page) {
+    public CustomApiResponse<List<StudyListResponse>> GetStudyListResponse(
+        @RequestParam(defaultValue = "0") int page) {
 
         return CustomApiResponse.ok(studyService.getList(page));
     }
-
-
 
 
     @Operation(summary = "스터디 조회")
@@ -80,7 +79,7 @@ public class StudyController {
         @PathVariable("id") Long id,
         @AuthenticationPrincipal LoginUser loginUser,
         @RequestBody @Valid UpdateStudyRequest request
-    ){
+    ) {
         //userId
         return studyService.edit(id, request);
     }
@@ -90,7 +89,7 @@ public class StudyController {
     @DeleteMapping("/gatherings/{id}/manage/delete")
     public void deleteStudy(
         @AuthenticationPrincipal LoginUser loginUser,
-        @PathVariable("id") Long id){
+        @PathVariable("id") Long id) {
         studyService.delete(id, loginUser);
     }
 

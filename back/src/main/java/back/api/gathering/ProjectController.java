@@ -30,7 +30,7 @@ public class ProjectController {
     public CustomApiResponse<CreateProjectResponse> saveStudy(
         @RequestBody @Valid CreateProjectRequest request
 //         @AuthenticationPrincipal LoginUser loginUser
-    ){
+    ) {
 //        @RequestPart("image") MultipartFile image
 //
 //        if(loginUser!=null){
@@ -40,9 +40,11 @@ public class ProjectController {
         Project savedStudy = projectService.write(request, 1L);
         return CustomApiResponse.ok(CreateProjectResponse.from(savedStudy));
     }
+
     @Operation(summary = "포르젝트 리스트 조회")
     @GetMapping("/projects")
-    public CustomApiResponse<List<ProjectListResponse>> GetStudyListResponse(@RequestParam(defaultValue = "0") int page) {
+    public CustomApiResponse<List<ProjectListResponse>> GetStudyListResponse(
+        @RequestParam(defaultValue = "0") int page) {
         return CustomApiResponse.ok(projectService.getList(page));
     }
 
