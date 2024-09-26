@@ -1,4 +1,4 @@
-name: Deploy to EC2
+name: EC2에 배포하기
 
 on:
   pull_request:
@@ -12,32 +12,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Use Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '20'
-
-      - name: Cache dependencies
-        uses: actions/cache@v2
-        with:
-          path: ~/.yarn
-          key: ${{ runner.OS }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.OS }}-yarn-
-
-      - name: Install dependencies
-        run: yarn install
-        working-directory: ./front
-
-      - name: Build project
-        run: yarn build
-        working-directory: ./front
-       
-      - name: Check build output
-        run: ls -la .next
-        working-directory: ./front
-
-      - name: Deploy to EC2
+      - name: SSH 연결 단계
         env:
           EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
           EC2_HOST: ${{ secrets.EC2_HOST }}
@@ -45,10 +20,21 @@ jobs:
         run: |
           echo "$EC2_SSH_KEY" > ec2_key.pem
           chmod 600 ec2_key.pem
-          scp -i ec2_key.pem -o StrictHostKeyChecking=no -r ./front/.next ./front/public ./front/package.json ./front/yarn.lock $EC2_USER@$EC2_HOST:~/coreal_repo/front/
+
+      - name: 빌드후 배포 단계
+        env:
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_USER: ${{ secrets.EC2_USER }}
+        run: |
           ssh -i ec2_key.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST '
             set -x
-            cd ~/coreal_repo/front
+            cd ~/coreal_repo
+            git pull origin develop
+            cd front
+            echo "Installing dependencies"
+            yarn install
+            echo "Building project"
+            yarn build
             echo "PM2 프로세스 상태 확인"
             pm2 list
             if pm2 list | grep -q "coreal_frontend"; then
@@ -56,9 +42,17 @@ jobs:
               pm2 stop coreal_frontend
               pm2 delete coreal_frontend
             fi
-            echo "의존성 설치"
-            yarn install
             echo "새 프로세스 시작"
-            pm2 start yarn --name "coreal_frontend" -- start -- -port 8080
+            pm2 start yarn --name "coreal_frontend" -- start --port 8080
             echo "프론트엔드 배포 완료."
+          '
+
+      - name: 배포상태 확인
+        env:
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_USER: ${{ secrets.EC2_USER }}
+        run: |
+          ssh -i ec2_key.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST '
+            pm2 list
+            echo "배포성공."
           '
