@@ -33,7 +33,7 @@ export default function Page() {
 
   return (
     <div className="flex justify-center bg-white min-h-screen mb-20">
-      <div className="w-full max-w-[1200px] px-4">
+      <div className="w-full max-w-[1200px] px-4 ml-[49px]">
         <div className="flex justify-between items-start mb-8">
           <div className="flex flex-col w-[753px]">
             <DetailHeader />
