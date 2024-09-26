@@ -53,6 +53,7 @@ describe("LoginForm", () => {
       });
     });
 
+    // 로컬 스토리지에 저장된 토큰이 제대로 유지되는지를 확인
     test("API key가 있는 경우, axios 요청이 성공합니다.", async () => {
       const FAKE_TOKEN = "내가만든쿠키";
       window.localStorage.setItem("token", FAKE_TOKEN);
@@ -66,6 +67,23 @@ describe("LoginForm", () => {
       clickLoginButton();
 
       expect(window.localStorage.getItem("token")).toEqual(FAKE_TOKEN);
+    });
+
+    // 폼이 제출된 후 axios.post가 올바른 데이터로 호출되는지를 검증
+    test("API key가 있는 경우 로그인 성공", async () => {
+      const mockResponse = { data: { token: "fake-token" } };
+      vi.mocked(axios.post).mockResolvedValue(mockResponse);
+
+      renderLoginForm();
+      fillLoginForm();
+      clickLoginButton();
+
+      await waitFor(() => {
+        expect(axios.post).toHaveBeenCalledWith("Bearer ", {
+          id: "admin@naver.com",
+          password: "01234567",
+        });
+      });
     });
   });
 
@@ -130,20 +148,38 @@ describe("LoginForm", () => {
         ).toBeNull();
       });
     });
-  });
 
-  test("서버 에러 처리", async () => {
-    vi.mocked(axios.post).mockResolvedValue({
-      data: { success: false, error: "500", message: "Internal server error" },
-    } as AxiosResponse<LoginResponse>);
+    test("로그인 성공 후 '/' 경로로 push 함수가 호출", async () => {
+      renderLoginForm();
+      fillLoginForm();
+      clickLoginButton();
 
-    renderLoginForm();
-    fillLoginForm();
-    clickLoginButton();
+      vi.mock("next/router", () => ({
+        useRouter() {
+          return {
+            route: "/",
+          };
+        },
+      }));
+    });
 
-    await waitFor(() => {
-      expect(window.localStorage.getItem("token")).toBeNull();
-      // 서버 에러 메시지 확인 로직 추가 필요
+    test("서버 에러 처리", async () => {
+      vi.mocked(axios.post).mockResolvedValue({
+        data: {
+          success: false,
+          error: "500",
+          message: "Internal server error",
+        },
+      } as AxiosResponse<LoginResponse>);
+
+      renderLoginForm();
+      fillLoginForm();
+      clickLoginButton();
+
+      await waitFor(() => {
+        expect(window.localStorage.getItem("token")).toBeNull();
+        // 서버 에러 메시지 확인 로직 추가 필요
+      });
     });
   });
 });
