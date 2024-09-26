@@ -11,7 +11,7 @@ function DetailProjectCard({
 }: DetailProjectCard) {
   return (
     <aside className="flex flex-col text-2xl font-bold rounded-lg w-[382px] h-[278px]">
-      <div className="flex flex-col px-[27px] py-[36px] w-full h-full bg-white rounded-lg border border-solid shadow-sm border-black border-opacity-10">
+      <div className="flex flex-col px-[27px] py-[36px] w-full h-full bg-white rounded-lg border border-solid shadow-lg border-black border-opacity-10">
         <h2 className="self-start font-bold text-zinc-700 ">{projectName}</h2>
         <hr className="shrink-0 my-[31px] h-px border border-solid border-black border-opacity-10" />
         <p className="self-start text-base leading-tight text-neutral-400 overflow-hidden font-normal">
