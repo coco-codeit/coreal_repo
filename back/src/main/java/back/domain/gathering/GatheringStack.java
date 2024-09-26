@@ -31,8 +31,12 @@ public class GatheringStack {
         this.name = name;
         this.gathering = gathering;
     }
+    public void setGathering(Gathering gathering) {
+        this.gathering = gathering;
+    }
     public void changeGathering(Gathering gathering) {
         this.gathering = gathering;
         gathering.getStackList().add(this);
     }
+
 }

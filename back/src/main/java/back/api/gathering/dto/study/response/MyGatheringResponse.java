@@ -39,7 +39,6 @@ public class MyGatheringResponse {
             .skills(study.getStackList().stream().map(stack -> stack.getName()).toList())
             .participant(study.getCurrentCapacity())
             .capacity(study.getTotalCapacity())
-            .dateTime(study.getCreatedDate())
             .registrationEnd(study.getEndDate())//모임 마감일로 변경
             .startDateTime(study.getStartDate())
             .canceledAt(study.getEndDate()) //모임 취소일로 변경

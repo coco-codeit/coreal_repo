@@ -3,6 +3,7 @@ package back.domain.gathering;
 import back.api.gathering.dto.study.request.CreateStudyRequest;
 import back.domain.gathering.status.GatheringStatus;
 import back.domain.gathering.status.GatheringType;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -10,37 +11,46 @@ import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Entity
+@SuperBuilder
 @NoArgsConstructor
+@DiscriminatorValue("STUDY")
 public class Study extends Gathering {
 
-    @Builder(builderMethodName = "studyBuilder")
-    private Study(String name, LocalDateTime startDate, LocalDateTime endDate,
-        int totalCapacity, int currentCapacity, String location, String description,
-        GatheringType gatheringType, List<String> techStacks, Long masterId) {
-        super(name, startDate, endDate, totalCapacity, currentCapacity, location, description,
-            GatheringStatus.OPEN, gatheringType, new ArrayList<>(), masterId);
-        setTechStacks(techStacks);
-    }
 
-    public static Study from(CreateStudyRequest request) {
-        return studyBuilder()
-            .name(request.getGatheringName())
+    public static Study from(CreateStudyRequest request, Long masterId) {
+        Study study = Study.builder()
+            .gatheringName(request.getTitle())
+            .image(request.getImage())
+            .gatheringType(request.getConnection())
+            .gatheringStatus(GatheringStatus.OPEN)
+            .day(request.getDay())
+            .time(request.getTime())
             .startDate(request.getStartDate())
             .endDate(request.getEndDate())
-            .totalCapacity(request.getTotalCapacity())
-            .currentCapacity(1)
-            .location(request.getLocation())
             .description(request.getDescription())
-            .gatheringType(request.getGatheringType())
-            .techStacks(request.getStackList())
-            .masterId(request.getMasterId())
+            .totalCapacity(request.getTotalCapacity())
+            .stackList(new ArrayList<>())
+            .currentCapacity(1)
+            .masterId(masterId)
             .build();
+
+        // Add tech stacks
+        for (String stackName : request.getTechStacks()) {
+            study.addTechStack(stackName);
+        }
+
+        return study;
+    }
+    public void addTechStack(String stackName) {
+        GatheringStack stack = new GatheringStack(stackName, this);
+        this.getStackList().add(stack);
     }
 
-    private void setTechStacks(List<String> techStackNames) {
+    public void setTechStacks(List<String> techStackNames) {
         if (techStackNames != null) {
             for (String stackName : techStackNames) {
                 GatheringStack techStack = new GatheringStack(stackName, this);

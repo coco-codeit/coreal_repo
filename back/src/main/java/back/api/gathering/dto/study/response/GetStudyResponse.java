@@ -13,7 +13,10 @@ import lombok.Getter;
 @Getter
 @Builder
 public class GetStudyResponse {
-    private Long gatheringId;
+    private Long id;
+    @Builder.Default
+    private String image = "이미지이름";
+    private String content;
     private LocalDateTime createdAt;
     private String category; //Project, Study
     private String gatheringName; //모임명
@@ -21,7 +24,6 @@ public class GetStudyResponse {
     private LocalDateTime startDate; //시작일
     private LocalDateTime endDate; //종료일
     private String location; //위치
-    private String description; //설명
 //    private String image;
     private List<String> stackList;
     private int totalCapacity; //인원수
@@ -35,15 +37,13 @@ public class GetStudyResponse {
 
     public static GetStudyResponse from(Study study) {
         return GetStudyResponse.builder()
-            .gatheringId(study.getId())
-            .createdAt(study.getCreatedDate())
+            .id(study.getId())
             .category("Study")
             .gatheringName(study.getGatheringName())
             .progress(study.getGatheringStatus())
             .startDate(study.getStartDate())
             .endDate(study.getEndDate())
-            .location(study.getLocation())
-            .description(study.getDescription())
+            .content(study.getDescription())
             .stackList(study.getStackList().stream().map(GatheringStack::getName).toList())
             .totalCapacity(study.getTotalCapacity())
             .currentCapacity(study.getCurrentCapacity())
