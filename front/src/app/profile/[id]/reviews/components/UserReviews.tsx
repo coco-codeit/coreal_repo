@@ -32,7 +32,7 @@ export default function UserReviews({
       setReviews(data);
     };
     getData();
-  }, []);
+  }, [gatheringId]);
 
   return (
     <div className="py-4 px-2">
