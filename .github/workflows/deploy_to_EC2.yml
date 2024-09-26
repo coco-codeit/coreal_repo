@@ -26,10 +26,12 @@ jobs:
             ${{ runner.OS }}-yarn-
 
       - name: Install dependencies
-        run: yarn ci
+        run: yarn install
+        working-directory: ./front
 
       - name: Build project
         run: yarn build
+        working-directory: ./front
 
       - name: Deploy to EC2
         env:
@@ -39,7 +41,7 @@ jobs:
         run: |
           echo "$EC2_SSH_KEY" > ec2_key.pem
           chmod 600 ec2_key.pem
-          scp -i ec2_key.pem -o StrictHostKeyChecking=no -r build/* $EC2_USER@$EC2_HOST:~/coreal_repo/front/build/
+          scp -i ec2_key.pem -o StrictHostKeyChecking=no -r front/build/* $EC2_USER@$EC2_HOST:~/coreal_repo/front/build/
           ssh -i ec2_key.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST '
             set -x
             cd ~/coreal_repo/front
