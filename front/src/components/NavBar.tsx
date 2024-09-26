@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
+const DefaultUserImage = "/images/navBar/profile.webp";
 
 export default function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -17,8 +18,8 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    token && setIsLoggedIn(true);
+    // const token = localStorage.getItem("token");
+    // token && setIsLoggedIn(true);
   }, []);
 
   const isCurrentRoute = (route: string) => pathname === route;
@@ -38,7 +39,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="container max-w-[1200px] my-5 px-6 mx-auto font-sans">
+    <nav className="container max-w-full my-5 px-6 mx-auto font-sans">
       <div className="flex justify-between h-20">
         <section className="flex items-center">
           <div className="flex mr-2 sm:mr-6">
@@ -51,20 +52,20 @@ export default function Navbar() {
                 width={38}
                 height={38}
                 alt="Site Logo"
-                src="/images/logo.svg"
+                src="/images/navBar/logo.svg"
               />
               <Image
                 className="sm:flex hidden items-center ml-3"
                 width={125}
                 height={32}
                 alt="Site Logo Text"
-                src="/images/logo-text.svg"
+                src="/images/navBar/logo-text.svg"
               />
             </Link>
           </div>
 
           <div className="flex text-subhead-3 font-bold relative">
-            <div className="flex flex-col items-center w-[98px]">
+            <div className="flex flex-col items-center w-20 sm:w-[98px]">
               <Link className="my-1" href="/gatherings">
                 모임찾기
               </Link>
@@ -77,7 +78,7 @@ export default function Navbar() {
                 />
               )}
             </div>
-            <div className="flex flex-col items-center w-[98px]">
+            <div className="flex flex-col items-center w-20 sm:w-[98px]">
               <Link className="my-1" href="/likes">
                 찜한모임
               </Link>
@@ -111,7 +112,7 @@ export default function Navbar() {
                   width={32}
                   height={32}
                   alt="user profile"
-                  src="/images/profile.png"
+                  src={DefaultUserImage}
                 />
                 <div className="ml-3">유저 님</div>
               </button>
