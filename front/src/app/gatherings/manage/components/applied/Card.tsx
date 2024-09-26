@@ -61,18 +61,15 @@ function Card({ title, skills, content, imageUrl, onCancel }: CardProps) {
           <div className="flex flex-row text-caption font-body ">
             {/* 스킬 - 모임명의 아래, 모임 설명의 왼쪽 */}
             <div className="hidden lg:flex flex-row flex-wrap gap-2 text-subhead-1  items-center">
-              {skills && (
-                <>
-                  {skills.map((skill, index) => (
-                    <span
-                      key={index}
-                      className="flex justify-center items-center px-2 py-[2px] h-5 rounded-2xl bg-gray-6"
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                </>
-              )}
+              {skills &&
+                skills.map((skill, index) => (
+                  <span
+                    key={index}
+                    className="flex justify-center items-center px-2 py-[2px] h-5 rounded-2xl bg-gray-6"
+                  >
+                    {skill}
+                  </span>
+                ))}
             </div>
             {content && (
               <p className="lg:ml-2 lg:text-body-2 text-body-1">{content}</p>
