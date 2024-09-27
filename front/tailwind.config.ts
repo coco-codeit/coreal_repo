@@ -104,6 +104,9 @@ const config: Config = {
           "ios-400": "#FF334B",
         },
       },
+      boxShadow: {
+        custom: '0px 1.46px 11.68px 2.92px #0000000A',
+      },
     },
   },
   plugins: [],

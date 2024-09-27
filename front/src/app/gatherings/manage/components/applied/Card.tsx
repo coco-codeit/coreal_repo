@@ -1,3 +1,8 @@
+/**
+ * 스킬 뱃지 레이아웃 작업 관련:
+ * 모바일 및 태블릿 크기에서 스킬 뱃지를 제목 위에 위치
+ * 데스크탑 크기에서 스킬뱃지를 모임명의 아래, 모임명 설명의 왼쪽에 위치
+ */
 import Image from "next/image";
 
 interface CardProps {
@@ -13,93 +18,74 @@ interface CardProps {
   recruitment?: { field: string; participant: number; capacity: number }[];
   type: "study" | "project";
 }
-
-function Card({
-  title,
-  connection,
-  skills,
-  content,
-  startDateTime,
-  participant,
-  capacity,
-  imageUrl,
-  onCancel,
-  recruitment,
-  type,
-}: CardProps) {
-  const defaultImage = "/images/profile.png"; // 임시 이미지
+function Card({ title, skills, content, imageUrl, onCancel }: CardProps) {
+  const defaultImage = "/images/arrow-up.svg"; // 임시 이미지
 
   return (
-    <div className="flex flex-row p-6 items-start gap-6 rounded-lg bg-white border border-[#DDDCE3] mb-5">
+    <div className="text-display-1 lg:items-center md:items-start text-gray-15 relative w-full md:p-6 p-4 flex flex-row gap-4 rounded-lg bg-white border border-[#DDDCE3] mb-5">
       {/* 이미지 */}
-      <div className="bg-slate-600 w-[320px] h-[172px] rounded-lg overflow-hidden relative">
+      <div className="bg-slate-600 flex-shrink-0 w-[80px] h-[80px] md:w-[130px] md:h-[130px] lg:w-[199px] lg:h-[130px]  rounded-2xl overflow-hidden ">
         <Image
           src={imageUrl && imageUrl !== "string" ? imageUrl : defaultImage}
-          alt="image"
-          fill
-          style={{ objectFit: "cover" }}
+          layout="responsive"
+          alt="main_image"
+          width={199}
+          height={130}
+          objectFit="cover"
         />
       </div>
 
-      <div className="flex flex-col flex-1">
-        <div
-          className={`px-4 py-1 mb-2 rounded-full self-start ${
-            type === "study" ? "bg-green-200" : "bg-blue-200"
-          }`}
-        >
-          {type === "study" ? "스터디" : "프로젝트"}
-        </div>
-
-        <div className="flex flex-row gap-2 mb-2 text-2xl">
-          <p className="font-medium">{title}</p>
-          <span>|</span>
-          <span>{connection === "online" ? "온라인" : "오프라인"}</span>
-        </div>
-
-        {skills && (
-          <div className="flex gap-2 mb-2">
-            {skills.map((skill, index) => (
-              <span
-                key={index}
-                className="px-4 py-1 rounded-full bg-[#FFEDD5] text-[#EA580C]"
-              >
-                {skill}
-              </span>
-            ))}
+      <div className="flex items-center lg:flex-row flex-col  w-full text-caption font-body">
+        {/* 스킬 - 제목 위 */}
+        <div className="flex flex-col flex-1 w-full ">
+          <div className="lg:hidden flex flex-col gap-2 mb-2">
+            {skills && (
+              <div className="flex flex-row flex-wrap gap-2 text-subhead-1  items-center">
+                {skills.map((skill, index) => (
+                  <span
+                    key={index}
+                    className="flex justify-center items-center px-2 py-[2px] h-5 rounded-2xl bg-gray-6"
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
-        )}
 
-        {content && <p>{content}</p>}
+          <h3 className="font-title flex flex-row gap-2 mb-2 md:text-headline text-subhead-3">
+            {/* <p>{title}</p> */}
+            {title}
+          </h3>
 
-        <div className="flex flex-row gap-4 mb-2">
-          <p className="flex gap-2">
-            {`${new Date(startDateTime).getMonth() + 1}월 ${new Date(startDateTime).getDate()}일`}
-            <span>·</span>
-            {new Date(startDateTime).toLocaleTimeString("ko-KR", {
-              hour: "2-digit",
-              minute: "2-digit",
-              hour12: false,
-            })}
-          </p>
-          <span>{`${participant}/${capacity}`}</span>
+          <div className="flex flex-row text-caption font-body ">
+            {/* 스킬 - 모임명의 아래, 모임 설명의 왼쪽 */}
+            <div className="hidden lg:flex flex-row flex-wrap gap-2 text-subhead-1  items-center">
+              {skills &&
+                skills.map((skill, index) => (
+                  <span
+                    key={index}
+                    className="flex justify-center items-center px-2 py-[2px] h-5 rounded-2xl bg-gray-6"
+                  >
+                    {skill}
+                  </span>
+                ))}
+            </div>
+            {content && (
+              <p className="lg:ml-2 lg:text-body-2 text-body-1">{content}</p>
+            )}
+          </div>
         </div>
 
-        {recruitment && (
-          <div className="flex flex-row gap-2 mb-3">
-            {recruitment.map((role, index) => (
-              <span key={index}>
-                {role.field}: {role.participant}/{role.capacity}
-              </span>
-            ))}
-          </div>
-        )}
-
-        <button
-          className="w-[120px] p-2 flex justify-center items-center rounded-xl border border-[#EA580C] bg-white text-[#EA580C]"
-          onClick={onCancel}
-        >
-          취소하기
-        </button>
+        <div className="mt-[22px] w-full lg:w-auto flex lg:flex-col flex-row items-center lg:items-center lg:gap-0 gap-2 lg:text-body-2 text-body-1 font-body justify-end text-gray-10 ">
+          <span className="lg:mb-3 mb-0">승인 대기 중</span>
+          <button
+            className="h-[32px] w-[76px] md:w-[102px] lg:h-[48px] text-center lg:rounded-xl rounded-lg border border-gray-10 "
+            onClick={onCancel}
+          >
+            신청취소
+          </button>
+        </div>
       </div>
     </div>
   );
