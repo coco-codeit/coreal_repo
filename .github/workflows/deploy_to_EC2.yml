@@ -31,6 +31,9 @@ jobs:
       - name: Next.js 앱 빌드
         run: yarn build
 
+      - name: 빌드 결과 압축
+        run: tar -czf next-build.tar.gz .next package.json yarn.lock
+
       - name: SSH 키 및 known_hosts 설정
         env:
           EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
@@ -48,29 +51,37 @@ jobs:
         run: |
           ssh -i ~/.ssh/ec2_key.pem -o StrictHostKeyChecking=no -vvv $EC2_USER@$EC2_HOST 'echo "SSH 연결 성공"'
 
-      - name: EC2에 배포
+      - name: EC2에 압축 파일 전송
         env:
           EC2_HOST: ${{ secrets.EC2_HOST }}
           EC2_USER: ${{ secrets.EC2_USER }}
         run: |
-          scp -i ~/.ssh/ec2_key.pem -o StrictHostKeyChecking=no -r .next package.json yarn.lock $EC2_USER@$EC2_HOST:~/coreal_repo/front
+          scp -i ~/.ssh/ec2_key.pem -o StrictHostKeyChecking=no \
+            next-build.tar.gz $EC2_USER@$EC2_HOST:~/coreal_repo/front/
 
+      - name: EC2에서 압축 해제 및 배포
+        env:
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_USER: ${{ secrets.EC2_USER }}
+        run: |
           ssh -i ~/.ssh/ec2_key.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST '
             set -x
             cd ~/coreal_repo/front
+            tar -xzf next-build.tar.gz
+            rm next-build.tar.gz
             yarn install --production
-            
+
             echo "PM2 프로세스 상태 확인"
             pm2 list
-            
+
             if pm2 list | grep -q "coreal_frontend"; then
               echo "기존 프로세스 중지 및 삭제"
               pm2 stop coreal_frontend
               pm2 delete coreal_frontend
             fi
-            
+
             echo "새 프로세스 시작"
             pm2 start yarn --name "coreal_frontend" -- start --port 8080
-            
+
             echo "프론트엔드 배포 완료"
           '
