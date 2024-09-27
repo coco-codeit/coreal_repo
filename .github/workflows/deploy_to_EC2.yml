@@ -1,9 +1,14 @@
-name: 테스트용 EC2 빌드 및 배포
+name: EC2 배포
+run-name: EC2 배포를 합니다. 🚀
+on: [pull_request]
 
-on:
-  pull_request:
-    branches:
-      - develop
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  actions: write #  to cancel/stop running workflows (styfle/cancel-workflow-action)
+  contents: read #  to fetch code (actions/checkout)
 
 jobs:
   build-and-deploy:
@@ -11,36 +16,46 @@ jobs:
     defaults:
       run:
         working-directory: ./front
-
     steps:
-      - name: Checkout code
+      - name: 코드 체크아웃
         uses: actions/checkout@v2
 
-      - name: 노드 셋업
+      - name: Node.js 설정
         uses: actions/setup-node@v2
         with:
-          node-version: '20'
+          node-version: '18'
 
-      - name: Install dependencies
+      - name: 의존성 설치
         run: yarn install
 
-      - name: Build Next.js app
+      - name: Next.js 앱 빌드
         run: yarn build
 
-      - name: EC2에 배포
+      - name: SSH 키 및 known_hosts 설정
         env:
           EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
           EC2_HOST: ${{ secrets.EC2_HOST }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$EC2_SSH_KEY" > ~/.ssh/ec2_key.pem
+          chmod 600 ~/.ssh/ec2_key.pem
+          ssh-keyscan -H $EC2_HOST >> ~/.ssh/known_hosts
+
+      - name: SSH 연결 테스트
+        env:
+          EC2_HOST: ${{ secrets.EC2_HOST }}
           EC2_USER: ${{ secrets.EC2_USER }}
         run: |
-          echo "$EC2_SSH_KEY" > ec2_key.pem
-          chmod 600 ec2_key.pem
+          ssh -i ~/.ssh/ec2_key.pem -o StrictHostKeyChecking=no -vvv $EC2_USER@$EC2_HOST 'echo "SSH 연결 성공"'
 
-          # 필요한 파일들을 EC2로 전송
-          scp -i ec2_key.pem -r .next package.json yarn.lock $EC2_USER@$EC2_HOST:~/coreal_repo/front
+      - name: EC2에 배포
+        env:
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_USER: ${{ secrets.EC2_USER }}
+        run: |
+          scp -i ~/.ssh/ec2_key.pem -o StrictHostKeyChecking=no -r .next package.json yarn.lock $EC2_USER@$EC2_HOST:~/coreal_repo/front
 
-          # EC2에 접속하여 필요한 작업 수행
-          ssh -i ec2_key.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST '
+          ssh -i ~/.ssh/ec2_key.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST '
             set -x
             cd ~/coreal_repo/front
             yarn install --production
@@ -57,5 +72,5 @@ jobs:
             echo "새 프로세스 시작"
             pm2 start yarn --name "coreal_frontend" -- start --port 8080
             
-            echo "프론트엔드 배포 완료."
+            echo "프론트엔드 배포 완료"
           '
