@@ -1,4 +1,4 @@
-name: EC2에 배포하기
+name: 테스트용 EC2 빌드 및 배포
 
 on:
   pull_request:
@@ -6,13 +6,24 @@ on:
       - develop
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: SSH 연결 단계
+      - name: 노드 셋업
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Build Next.js app
+        run: yarn build
+
+      - name: EC2에 배포
         env:
           EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
           EC2_HOST: ${{ secrets.EC2_HOST }}
@@ -21,40 +32,26 @@ jobs:
           echo "$EC2_SSH_KEY" > ec2_key.pem
           chmod 600 ec2_key.pem
 
-      - name: 빌드후 배포 단계
-        env:
-          EC2_HOST: ${{ secrets.EC2_HOST }}
-          EC2_USER: ${{ secrets.EC2_USER }}
-        run: |
+          # 필요한 파일들을 EC2로 전송
+          scp -i ec2_key.pem -r .next package.json yarn.lock $EC2_USER@$EC2_HOST:~/coreal_repo/front
+
+          # EC2에 접속하여 필요한 작업 수행
           ssh -i ec2_key.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST '
             set -x
-            cd ~/coreal_repo
-            git fetch
-            git pull origin main
-            cd front
-            echo "Installing dependencies"
-            yarn install --ignore-scripts
             cd ~/coreal_repo/front
-            echo "Building project"
-            yarn build
+            yarn install --production
+            
             echo "PM2 프로세스 상태 확인"
             pm2 list
+            
             if pm2 list | grep -q "coreal_frontend"; then
               echo "기존 프로세스 중지 및 삭제"
               pm2 stop coreal_frontend
               pm2 delete coreal_frontend
             fi
+            
             echo "새 프로세스 시작"
             pm2 start yarn --name "coreal_frontend" -- start --port 8080
+            
             echo "프론트엔드 배포 완료."
-          '
-
-      - name: 배포상태 확인
-        env:
-          EC2_HOST: ${{ secrets.EC2_HOST }}
-          EC2_USER: ${{ secrets.EC2_USER }}
-        run: |
-          ssh -i ec2_key.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST '
-            pm2 list
-            echo "배포성공."
           '
