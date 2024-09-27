@@ -1,10 +1,12 @@
 "use client";
 
 import Button from "@/app/gatherings/components/Button";
-import Category from "@/app/gatherings/create/components/Category";
+import GatheringType from "@/app/gatherings/create/components/GatheringType";
 import Connection from "@/app/gatherings/create/components/Connection";
-import ImageUploader from "./ImageUploader";
+import ImageUploader from "@/app/gatherings/create/components/ImageUploader";
 import Dropdown from "@/app/gatherings/create/components/Dropdown";
+import Calendar from "@/app/gatherings/create/components/Calendar";
+import TechStack from "@/app/gatherings/create/components/TechStack";
 import {
   daysOptions,
   timeOptions,
@@ -15,7 +17,7 @@ import useFormStore from "@/store/gatherings/useFormStore";
 
 function GatheringForm() {
   const {
-    category,
+    type,
     title,
     description,
     day,
@@ -54,8 +56,8 @@ function GatheringForm() {
   return (
     <div className="flex flex-col">
       <p className="font-title text-headline py-2">모임 만들기</p>
-      <Category />
-      <div className="flex flex-col gap-14 py-10 px-8">
+      <GatheringType />
+      <div className="flex flex-col gap-16 py-10 px-8">
         <div className="flex flex-col gap-2">
           <label>모임이름</label>
           <input
@@ -68,6 +70,7 @@ function GatheringForm() {
         </div>
         <Connection />
         <ImageUploader />
+        <Calendar />
         <div className="flex flex-col gap-2">
           <label>요일</label>
           <div className="flex flex-wrap gap-2">
@@ -83,7 +86,7 @@ function GatheringForm() {
         </div>
 
         <div
-          className={`flex ${category === "project" ? "flex-row-reverse" : "flex-row"} gap-4`}
+          className={`flex ${type === "project" ? "flex-row-reverse" : "flex-row"} gap-4`}
         >
           <div className="flex flex-col gap-2 w-1/2">
             <label>모집인원</label>
@@ -93,7 +96,7 @@ function GatheringForm() {
               onSelect={handleParticipant}
             />
           </div>
-          {category === "project" ? (
+          {type === "project" ? (
             <div className="flex flex-col gap-2 w-1/2">
               <label>모집분야</label>
               <Dropdown
@@ -104,7 +107,7 @@ function GatheringForm() {
             </div>
           ) : null}
         </div>
-
+        <TechStack />
         <div className="flex flex-col gap-2">
           <label>모임설명</label>
           <textarea
@@ -114,7 +117,6 @@ function GatheringForm() {
             className="resize-none h-36 w-full border border-purple-2 hover:border-purple-3 focus:outline-none focus:ring-1 focus:ring-purple-3 active:ring-purple-3 rounded-2xl p-5"
           />
         </div>
-
         <div className="flex justify-end">
           <Button variant="primary">만들기</Button>
         </div>

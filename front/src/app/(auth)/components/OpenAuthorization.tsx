@@ -15,7 +15,7 @@ export default function OpenAuthorization() {
         {SOCIAL_LOGIN_OPTIONS.map(({ url, icon, alt }) => (
           <li key={alt}>
             <Link href={url} aria-label={alt}>
-              <div className="relative w-[36px] sm:w-[54px] h-[36px] sm:h-[54px] cursor-pointer">
+              <div className="relative w-9 sm:w-[54px] h-9 sm:h-[54px] cursor-pointer">
                 <Image src={icon} alt={alt} fill />
               </div>
             </Link>

@@ -1,7 +1,9 @@
 "use client";
 
+import { useAuthStore } from "@/store/Auth/authStore";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -11,11 +13,13 @@ type FormData = z.infer<typeof schema>;
 const API_URL = "Bearer ";
 
 export default function LoginForm() {
+  const { login } = useAuthStore();
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    setError,
     clearErrors,
     reset,
   } = useForm<FormData>({
@@ -24,34 +28,47 @@ export default function LoginForm() {
 
   const onSubmit = async (data: FormData) => {
     clearErrors();
-    //console.log("onSubmit");
-    //console.log(JSON.stringify(data));
+    console.log("onSubmit");
+    console.log(JSON.stringify(data));
     // TODO: reset()은 완성 후 try문 if에만 남겨두기
     reset();
 
     // TODO: 백엔드 보류 이슈
 
     try {
-      const response = await axios.post(API_URL, data);
-      //console.log(response);
+      // 실제 백엔드 API 호출
+      await axios.post(API_URL, data);
 
-      if (response.data.success) {
-        reset();
-        console.log("로 그 인 성 공 🎉", response.data);
-        // TODO: 로그인 후 성공 페이지로 이동
-      } else {
-        if (response.data.error === "401") {
-          setError("id", {
-            type: "manual",
-            message: "존재하지 않는 아이디입니다.",
-          });
-        } else if (response.data.error === "402") {
-          setError("password", {
-            type: "manual",
-            message: "비밀번호가 아이디와 일치하지 않습니다.",
-          });
-        }
-      }
+      // 백엔드 API 대신 임시로 로컬에서 처리
+      const response = { data: { success: true, user: { id: data.id } } };
+
+      console.log(response);
+
+      reset();
+      console.log("로 그 인 성 공 🎉", response.data);
+      // Zustand store에 로그인 정보 저장
+      login(response.data.user);
+
+      // 로그인 후 메인 페이지로 이동
+      router.push("/");
+
+      // if (response.data.success) {
+      //   reset();
+
+      //   // TODO: 로그인 후 성공 페이지로 이동
+      // } else {
+      //   if (response.data.error === "401") {
+      //     setError("id", {
+      //       type: "manual",
+      //       message: "존재하지 않는 아이디입니다.",
+      //     });
+      //   } else if (response.data.error === "402") {
+      //     setError("password", {
+      //       type: "manual",
+      //       message: "비밀번호가 아이디와 일치하지 않습니다.",
+      //     });
+      //   }
+      // }
     } catch (error) {
       console.error("서버 오류🚨", error);
     }
