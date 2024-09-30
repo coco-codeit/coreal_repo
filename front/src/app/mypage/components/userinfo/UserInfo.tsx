@@ -1,6 +1,6 @@
 import Image from "next/image";
 import ModifyProfile from "./ModifyProfile";
-export default function MyProfile() {
+export default function UserInfo() {
   return (
     <div>
       <h1>내 프로필</h1>
