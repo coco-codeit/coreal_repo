@@ -1,5 +1,5 @@
-import ManageTab from "./components/(manage-tab)/ManageTab";
-import MyProfile from "./components/(my-profile)/MyProfile";
+import ManageTab from "./components/manage-tab/ManageTab";
+import MyProfile from "./components/my-profile/MyProfile";
 
 export default function MyPage() {
   return (
