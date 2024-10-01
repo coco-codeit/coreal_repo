@@ -12,8 +12,16 @@ export default function GatheringInfo() {
       <h2>달램핏 오피스 스트레칭</h2>
       <span className="text-[14px]">을지로 3가 서울시 중구 청계천로 100</span>
       <div className="flex mt-3">
-        <DateTag dateText="8월 7일" textColor="white" />
-        <DateTag dateText="17:30" textColor="#EA580C" />
+        <DateTag
+          type="day"
+          dateText="2024-10-19T01:21:47.762Z"
+          textColor="white"
+        />
+        <DateTag
+          type="time"
+          dateText="2024-10-19T01:21:47.762Z"
+          textColor="orange"
+        />
       </div>
     </div>
   );
