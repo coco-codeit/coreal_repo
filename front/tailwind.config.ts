@@ -105,7 +105,7 @@ const config: Config = {
         },
       },
       boxShadow: {
-        custom: '0px 1.46px 11.68px 2.92px #0000000A',
+        custom: "0px 1.46px 11.68px 2.92px #0000000A",
       },
     },
   },

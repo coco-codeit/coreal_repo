@@ -1,6 +1,15 @@
 import { withSentryConfig } from "@sentry/nextjs";
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  images: {
+    // 이미지 도메인 추가
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "sprint-fe-project.s3.ap-northeast-2.amazonaws.com",
+      },
+    ],
+  },
   async redirects() {
     return [
       {
