@@ -1,9 +1,10 @@
 "use client";
 
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
-import MyReviews from "./MyReviews";
-import MyGatherings from "./MyGatherings";
-import MyGatheringsIMade from "./MyGatheringsIMade";
+import MyReviews from "./reviews/MyReviews";
+import JoinedGatherings from "./joined/JoinedGatherings";
+import CreatedGatherings from "./created/CreatedGatherings";
+
 export default function ManageTab() {
   return (
     <div>
@@ -16,13 +17,13 @@ export default function ManageTab() {
         </TabList>
         <TabPanels>
           <TabPanel>
-            <MyGatherings />
+            <JoinedGatherings />
           </TabPanel>
           <TabPanel>
             <MyReviews />
           </TabPanel>
           <TabPanel>
-            <MyGatheringsIMade />
+            <CreatedGatherings />
           </TabPanel>
         </TabPanels>
       </TabGroup>
