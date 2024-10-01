@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Header from "@/app/gatherings/components/Header";
-import GatheringTabs from "@/app/gatherings/components/GatheringsTabs";
-import Card from "@/app/gatherings/components/Card";
+import Header from "@/app/gatherings/list/components/Header";
+import GatheringTabs from "@/app/gatherings/list/components/GatheringsTabs";
+import Card from "@/app/gatherings/list/components/Card";
 import { useGatheringStore } from "@/app/hooks/gatherings/useGatheringStore";
 import { fetchGatherings } from "@/apis/gatherings";
 
