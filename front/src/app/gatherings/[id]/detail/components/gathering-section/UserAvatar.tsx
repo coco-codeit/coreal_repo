@@ -1,3 +1,4 @@
+import ConfirmBadge from "@/app/gatherings/components/ConfirmBadge";
 import React from "react";
 
 export default function UserAvatar() {
@@ -15,7 +16,7 @@ export default function UserAvatar() {
           </div>
         </div>
       </div>
-      <div>개설확정</div>
+      <ConfirmBadge />
     </div>
   );
 }

@@ -1,9 +1,8 @@
-import DateTag from "@/app/gatherings/components/DateTag";
+import React from "react";
+import Image from "next/image";
+import UserAvatar from "./UserAvatar";
 import ProgressBar from "@/app/gatherings/components/ProgressBar";
 import DeadLineTag from "@/app/gatherings/components/DeadLineTag";
-import Image from "next/image";
-import React from "react";
-import UserAvatar from "./UserAvatar";
 import GatheringInfo from "./GatheringInfo";
 
 export default function GatehringSection() {
@@ -21,10 +20,7 @@ export default function GatehringSection() {
 
       <div className="w-1/2 py-6 rounded-[24px] border-2 border-gray-200">
         <GatheringInfo />
-        <div className="flex mx-[22px]">
-          <DateTag dateText="8월 7일" textColor="white" />
-          <DateTag dateText="17:30" textColor="#EA580C" />
-        </div>
+
         <hr className="border-dashed border-gray-400 mt-[43px]" />
         <div className="p-6">
           <UserAvatar />
