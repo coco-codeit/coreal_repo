@@ -15,7 +15,7 @@ export default function GatehringSection() {
           alt="Gather Detail Img"
           fill
         />
-        <DeadLineTag endTime="2024-07-25T09:06:16.184Z" />
+        <DeadLineTag endTime="2024-10-01T09:06:16.184Z" type="lg" />
       </div>
 
       <div className="w-full md:w-1/2 h-[270px] py-6 rounded-[24px] border-2 border-gray-200">
