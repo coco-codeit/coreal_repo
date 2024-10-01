@@ -14,7 +14,7 @@ export const getUserProfile = async () => {
       headers,
     }).then((res) => res.json());
   } catch {
-    throw Error("유저 데이터를 가져오는데 실패했어요.");
+    // throw Error("유저 데이터를 가져오는데 실패했어요.");
   }
 };
 
@@ -30,7 +30,7 @@ export const updateUserProfile = async (payload: {
       body: JSON.stringify(payload),
     }).then((res) => res.json());
   } catch {
-    throw Error("유저 데이터를 가져오는데 실패했어요.");
+    // throw Error("유저 데이터를 가져오는데 실패했어요.");
   }
 };
 
@@ -52,7 +52,7 @@ export const getGatheringsJoined = async (option?: {
       },
     ).then((res) => res.json());
   } catch {
-    throw Error("나의 모임 리스트를 가져오는데 실패했어요.");
+    // throw Error("나의 모임 리스트를 가져오는데 실패했어요.");
   }
 };
 
@@ -67,7 +67,7 @@ export const getGatherings = async (option?: { createdBy: number }) => {
       },
     ).then((res) => res.json());
   } catch {
-    throw Error("나의 모임 리스트를 가져오는데 실패했어요.");
+    // throw Error("나의 모임 리스트를 가져오는데 실패했어요.");
   }
 };
 
@@ -83,7 +83,7 @@ export const submitReview = async (payload: {
       body: JSON.stringify(payload),
     }).then((res) => res.json());
   } catch {
-    throw Error("리뷰 작성에 실패했어요.");
+    // throw Error("리뷰 작성에 실패했어요.");
   }
 };
 
@@ -108,7 +108,7 @@ export const getReviews = async (option?: {
       },
     ).then((res) => res.json());
   } catch {
-    throw Error("리뷰 작성에 실패했어요.");
+    // throw Error("리뷰 작성에 실패했어요.");
   }
 };
 
@@ -119,6 +119,6 @@ export const cancleGathering = async (gatheringId: number) => {
       { headers, method: "DELETE" },
     ).then((res) => res.json());
   } catch {
-    throw Error("모임 참여 취소에 실패했어요.");
+    // throw Error("모임 참여 취소에 실패했어요.");
   }
 };
