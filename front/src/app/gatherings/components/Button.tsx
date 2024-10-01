@@ -2,8 +2,6 @@ interface ButtonProps {
   variant?: "primary" | "secondary" | "dark" | "light";
   type?: "create" | "tab";
   onClick?: () => void;
-  label?: string;
-  icon?: React.ReactNode;
   isActive?: boolean;
   children?: React.ReactNode;
 }
@@ -12,11 +10,9 @@ function Button({
   variant = "primary",
   type = "create",
   onClick = () => {},
-  label,
-  icon,
   children,
 }: ButtonProps) {
-  // 버튼 색상 및 스타일 설정
+  // 버튼 색상 및 스타일 임의 설정
   const variantClasses = {
     primary: "bg-purple-3 text-white hover:bg-purple-5",
     secondary: "bg-gray-200 text-purple-6 hover:bg-purple-1",
@@ -34,8 +30,7 @@ function Button({
       onClick={onClick}
       className={`flex items-center space-x-2 rounded-xl ${variantClasses[variant]} ${typeClasses[type]}`}
     >
-      {icon && <span>{icon}</span>} {/* icon이 있으면 렌더링 */}
-      {children || label} {/* children이 있으면 children, 없으면 label */}
+      {children}
     </button>
   );
 }
