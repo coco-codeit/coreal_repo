@@ -1,69 +1,115 @@
 {
-  "gathering": [
+  "reviews": [
     {
+      "teamId": 0,
       "id": 0,
-      "type": "study",
-      "gatheringName": "스터디1",
-      "gatheringOwner": "나다",
-      "startDate": "2024-09-23T04:24:52.655Z",
-      "endDate": "2024-09-23T04:24:52.655Z",
-      "month": "",
-      "time": "",
-      "stacks": ["java", "javaScript"],
-      "image": "/",
-      "progress": "",
-      "totalCapacity": 0,
-      "currentCapacity": 0
-    },
-    {
-      "id": 0,
-      "type": "project",
-      "gatheringName": "프로젝트1",
-      "gatheringOwner": "나다",
-      "startDate": "2024-09-23T04:24:52.655Z",
-      "endDate": "2024-09-23T04:24:52.655Z",
-      "month": "",
-      "time": "",
-      "stacks": ["NodeJS", "TypeScript"],
-      "image": "/",
-      "progress": "",
-      "totalCapacity": 0,
-      "currentCapacity": 0
+      "score": 0,
+      "comment": "코멘트",
+      "createdAt": "2024-10-01T05:29:25.573Z",
+      "Gathering": {
+        "teamId": 0,
+        "id": 0,
+        "type": "타입",
+        "name": "팀이름",
+        "dateTime": "2024-10-01T05:29:25.573Z",
+        "location": "서울특별시",
+        "image": ""
+      },
+      "User": {
+        "teamId": 0,
+        "id": 0,
+        "name": "유저이름",
+        "image": ""
+      }
     }
   ],
-  "gathers": { "data": "hello" },
+  "user": {
+    "teamId": 0,
+    "id": 0,
+    "email": "test123@test.com",
+    "name": "닉네임",
+    "companyName": "string",
+    "image": "string",
+    "createdAt": "2024-10-01T02:07:14.816Z",
+    "updatedAt": "2024-10-01T02:07:14.816Z"
+  },
+  "gatherings": [
+    {
+      "teamId": 0,
+      "id": 0,
+      "type": "DALLAEMFIT",
+      "name": "달램핏 오피스 스트레칭",
+      "dateTime": "2024-10-01T06:26:04.167Z",
+      "registrationEnd": "2024-09-30T06:26:04.167Z",
+      "location": "을지로 3가",
+      "participantCount": 3,
+      "capacity": 10,
+      "image": "",
+      "createdBy": 0,
+      "canceledAt": "2024-09-30T06:26:04.167Z",
+      "joinedAt": "2024-09-30T06:26:04.167Z",
+      "isCompleted": true,
+      "isReviewed": true
+    },
+    {
+      "teamId": 0,
+      "id": 1,
+      "type": "DALLAEMFIT",
+      "name": "달램핏 오피스 스트레칭",
+      "dateTime": "2024-09-30T06:26:04.167Z",
+      "registrationEnd": "2024-09-30T06:26:04.167Z",
+      "location": "을지로 3가",
+      "participantCount": 3,
+      "capacity": 10,
+      "image": "",
+      "createdBy": 0,
+      "canceledAt": "2024-09-30T06:26:04.167Z",
+      "joinedAt": "2024-09-30T06:26:04.167Z",
+      "isCompleted": true,
+      "isReviewed": true
+    }
+  ],
+  "gathers": {
+    "data": "hello"
+  },
   "profile": {},
   "gatheringsManage": [
     {
-      "study": [ 
+      "study": [
         {
           "id": "23",
-          "image": "string", 
+          "image": "string",
           "title": "React 심화 스터디 구함",
-          "content": "React 심화 스터디원 구함!!!!!", 
-          "oranizer": "아리", 
-          "dateTime" : "2024-09-10T07:48:14.342Z",
-          "registrationEnd" : "2024-09-10T07:48:14.342Z",
+          "content": "React 심화 스터디원 구함!!!!!",
+          "oranizer": "아리",
+          "dateTime": "2024-09-10T07:48:14.342Z",
+          "registrationEnd": "2024-09-10T07:48:14.342Z",
           "startDateTime": "2024-09-10T09:00:00.000Z",
           "canceledAt": "2024-09-10T07:48:14.342Z",
           "connection": "offline",
-          "skills": ["React"], 
-          "participant": 3, 
+          "skills": [
+            "React"
+          ],
+          "participant": 3,
           "capacity": 15
         },
         {
           "id": "13",
-          "image": "string", 
+          "image": "string",
           "title": "Next.js 스터디 모집해용",
           "content": "Next.js 마스터 되고 싶은 분들 모집해용",
-          "oranizer": "동동", 
-          "dateTime" : "2024-09-10T07:48:14.342Z",
-          "registrationEnd" : "2024-09-10T07:48:14.342Z",
+          "oranizer": "동동",
+          "dateTime": "2024-09-10T07:48:14.342Z",
+          "registrationEnd": "2024-09-10T07:48:14.342Z",
           "startDateTime": "2024-09-10T09:00:00.000Z",
           "canceledAt": null,
           "connection": "online",
-          "skills": ["Next.js", "React", "TypeScript"], 
-          "participant": 10, 
+          "skills": [
+            "Next.js",
+            "React",
+            "TypeScript"
+          ],
+          "participant": 10,
           "capacity": 15
         }
       ]
@@ -71,63 +117,71 @@
     {
       "project": [
         {
-          "id": "20", 
-          "image": "string", 
+          "id": "20",
+          "image": "string",
           "title": "Next.js로 프로젝트 만드실 분",
-          "content": "Next.js로 개발자 모임 어플 만들 분들 구함", 
+          "content": "Next.js로 개발자 모임 어플 만들 분들 구함",
           "oranizer": "선남",
-          "dateTime" : "2024-09-10T07:48:14.342Z",
-          "registrationEnd" : "2024-09-10T07:48:14.342Z",
+          "dateTime": "2024-09-10T07:48:14.342Z",
+          "registrationEnd": "2024-09-10T07:48:14.342Z",
           "startDateTime": "2024-09-10T09:00:00.000Z",
           "canceledAt": null,
           "connection": "online",
-          "skills": ["Next.js", "React", "TypeScript", "Node.js"], 
-          "participant": 10, 
+          "skills": [
+            "Next.js",
+            "React",
+            "TypeScript",
+            "Node.js"
+          ],
+          "participant": 10,
           "capacity": 15,
-          "recruitment" : [
-				    {
-			        "field": "frontend",
-			        "participant": 1,
-			        "capacity": 4
-			      },
-			      {
-			        "field": "backend",
-			        "participant": 2,
-			        "capacity": 3
-			      }
-			    ] 
+          "recruitment": [
+            {
+              "field": "frontend",
+              "participant": 1,
+              "capacity": 4
+            },
+            {
+              "field": "backend",
+              "participant": 2,
+              "capacity": 3
+            }
+          ]
         },
         {
           "id": "17",
-          "image": "string", 
+          "image": "string",
           "title": "개발자 모임 서비스 만들어요!",
-          "content": "같이 만들 분 !!!!!", 
-          "oranizer": "선남", 
-          "dateTime" : "2024-09-10T07:48:14.342Z",
-          "registrationEnd" : "2024-09-10T07:48:14.342Z",
+          "content": "같이 만들 분 !!!!!",
+          "oranizer": "선남",
+          "dateTime": "2024-09-10T07:48:14.342Z",
+          "registrationEnd": "2024-09-10T07:48:14.342Z",
           "startDateTime": "2024-09-10T12:00:00.000Z",
           "canceledAt": null,
           "connection": "online",
-          "skills": ["Next.js", "TypeScript"], 
-          "participant": 10, 
+          "skills": [
+            "Next.js",
+            "TypeScript"
+          ],
+          "participant": 10,
           "capacity": 15,
-          "recruitment" : [
-				    {
-			        "field": "frontend",
-			        "participant": 1,
-			        "capacity": 4
-			      },
-			      {
-			        "field": "backend",
-			        "participant": 2,
-			        "capacity": 3
-			      },
+          "recruitment": [
             {
-			        "field": "design",
-			        "participant": 0,
-			        "capacity": 1
-			      }
-			    ] 
+              "field": "frontend",
+              "participant": 1,
+              "capacity": 4
+            },
+            {
+              "field": "backend",
+              "participant": 2,
+              "capacity": 3
+            },
+            {
+              "field": "design",
+              "participant": 0,
+              "capacity": 1
+            }
+          ]
         }
       ]
     },
@@ -141,15 +195,21 @@
               "userNickname": "동동",
               "userProfileImage": "",
               "userTemp": 0,
-              "userSkills": ["TypeScript", "Express"],
+              "userSkills": [
+                "TypeScript",
+                "Express"
+              ],
               "position": "frontend"
             },
             {
               "userId": 3,
               "userNickname": "한돌",
               "userProfile": "",
-              "userTemp": 37.0,
-              "userSkills": ["Node.js", "MongoDB"],
+              "userTemp": 37,
+              "userSkills": [
+                "Node.js",
+                "MongoDB"
+              ],
               "position": "backend"
             }
           ]
@@ -161,16 +221,22 @@
               "userId": 3,
               "userNickname": "한돌",
               "userProfile": "",
-              "userTemp": 37.0,
-              "userSkills": ["Node.js", "MongoDB"],
+              "userTemp": 37,
+              "userSkills": [
+                "Node.js",
+                "MongoDB"
+              ],
               "position": "backend"
             },
             {
               "userId": 2,
               "userNickname": "아리",
               "userProfile": "",
-              "userTemp": 37.0,
-              "userSkills": ["React", "Next.js"],
+              "userTemp": 37,
+              "userSkills": [
+                "React",
+                "Next.js"
+              ],
               "position": "frontend"
             }
           ]
@@ -183,23 +249,32 @@
               "userNickname": "동동",
               "userProfileImage": "",
               "userTemp": 0,
-              "userSkills": ["TypeScript", "Express"],
+              "userSkills": [
+                "TypeScript",
+                "Express"
+              ],
               "position": "frontend"
             },
             {
               "userId": 2,
               "userNickname": "아리",
               "userProfile": "",
-              "userTemp": 37.0,
-              "userSkills": ["React", "Next.js"],
+              "userTemp": 37,
+              "userSkills": [
+                "React",
+                "Next.js"
+              ],
               "position": "Frontend"
             },
             {
               "userId": 3,
               "userNickname": "한돌",
               "userProfile": "",
-              "userTemp": 37.0,
-              "userSkills": ["Node.js", "MongoDB"],
+              "userTemp": 37,
+              "userSkills": [
+                "Node.js",
+                "MongoDB"
+              ],
               "position": "backend"
             }
           ]
