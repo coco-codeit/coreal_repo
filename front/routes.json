@@ -1,1 +1,7 @@
-{}
+{
+  "/1/gatherings/joined": "/gatherings",
+  "/1/gatherings?createdBy=:num": "/gatherings?createdBy=:num",
+  "/1/reviews": "/reviews",
+  "/1/gatherings/joined?completed=:completed&reviewed=:reviewed": "/gatherings?completed=:completed&reviewed=:reviewed",
+  "/1/auths/user": "/user"
+}
