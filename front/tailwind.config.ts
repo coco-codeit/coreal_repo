@@ -18,6 +18,10 @@ const config: Config = {
         body: ["var(--font-spoqa-han-sans-neo-regular)", "sans-serif"], // Regular 폰트
       },
 
+      height: {
+        "screen-minus-nav": "calc(100vh - 60px)",
+      },
+
       fontSize: {
         // Title
         "display-5": ["40px", commonStyles("52px")],
@@ -103,6 +107,9 @@ const config: Config = {
         red: {
           "ios-400": "#FF334B",
         },
+      },
+      boxShadow: {
+        custom: "0px 1.46px 11.68px 2.92px #0000000A",
       },
     },
   },
