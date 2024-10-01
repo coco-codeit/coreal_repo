@@ -1,4 +1,4 @@
-import Gatherings from "@/app/gatherings/components/Gatherings";
+import Gatherings from "@/app/gatherings/list/components/Gatherings";
 
 function Home() {
   return (
