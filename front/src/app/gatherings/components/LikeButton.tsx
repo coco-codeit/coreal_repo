@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { PiHeart, PiHeartFill } from "react-icons/pi";
 
