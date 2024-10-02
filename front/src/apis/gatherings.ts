@@ -1,4 +1,4 @@
-import { GatheringType } from "@/app/types/gatherings";
+import { GatheringType } from "@/types/gatherings";
 import axios from "axios";
 
 const base_url = "https://fe-adv-project-together-dallaem.vercel.app/1";
