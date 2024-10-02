@@ -1,34 +1,46 @@
 interface ButtonProps {
-  variant?: "primary" | "secondary" | "dark" | "light";
-  type?: "create" | "tab";
+  variant?: "primary" | "secondary" | "tertiary" | "neutral";
+  rounded?: "sm" | "md" | "lg" | "xl" | "full";
+  size?: "small" | "medium" | "large";
   onClick?: () => void;
-  isActive?: boolean;
-  children?: React.ReactNode;
+  children: React.ReactNode;
 }
 
 function Button({
   variant = "primary",
-  type = "create",
-  onClick = () => {},
+  rounded = "xl",
+  size = "medium",
+  onClick,
   children,
 }: ButtonProps) {
   // 버튼 색상 및 스타일 임의 설정
   const variantClasses = {
     primary: "bg-purple-3 text-white hover:bg-purple-5",
     secondary: "bg-gray-200 text-purple-6 hover:bg-purple-1",
-    dark: "bg-gray-900 text-white",
-    light: "bg-gray-200 text-gray-900",
+    tertiary: "bg-purple-2 text-purple-5 hover:bg-purple-3",
+    neutral: "bg-white text-black hover:bg-purple-2",
   };
 
-  const typeClasses = {
-    create: "px-[18px] py-[10px] body-1 md:px-[21px] md:py-[10px] md:body-2",
-    tab: "px-3 py-2 text-body-1 md:px-4 md:py-[10px] md:text-body-1",
+  const roundedClasses = {
+    sm: "rounded-sm",
+    md: "rounded-md",
+    lg: "rounded-lg",
+    xl: "rounded-xl",
+    full: "rounded-full",
+  };
+
+  const sizeClasses = {
+    small: "py-1.5 px-3 text-sm",
+    medium: "py-2.5 px-4 text-body-1",
+    large: "py-3.5 px-6 text-lg",
   };
 
   return (
     <button
       onClick={onClick}
-      className={`flex items-center space-x-2 rounded-xl ${variantClasses[variant]} ${typeClasses[type]}`}
+      className={`${roundedClasses[rounded]} ${sizeClasses[size]}
+        sm:py-3 sm:px-6 sm:text-body-2
+        ${variantClasses[variant]} `}
     >
       {children}
     </button>
