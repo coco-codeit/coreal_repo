@@ -4,6 +4,7 @@ import { useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import { Menu } from "@headlessui/react";
 
 export default function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -65,18 +66,42 @@ export default function Navbar() {
         <section>
           {!isLoggedIn ? (
             <>
-              <Link href="/#" onClick={toggleLogin} className={isActive("/#")}>
+              <Link href="/#" onClick={toggleLogin}>
                 로그인
               </Link>
             </>
           ) : (
             <div className="relative">
-                <Image
-                  width={40}
-                  height={40}
-                  alt="profile"
-                  src="/images/profile.svg"
-                />
+              <div>
+                <Menu as="div">
+                  <Menu.Button className="flex items-center">
+                    <Image
+                      width={40}
+                      height={40}
+                      alt="profile"
+                      src="/images/profile.svg"
+                    />
+                  </Menu.Button>
+                  <Menu.Items className="absolute lg:left-0 right-0 lg:mt-2 mt-[6px] lg:min-w-[142px] min-h-[80px] min-w-[110px] p-1 rounded-2xl flex flex-col items-start justify-start bg-white border border-gray-4 shadow-custom text-[#1F2937]">
+                    <Link href="/mypage">
+                      <Menu.Item
+                        as="button"
+                        className="lg:px-4 px-3 py-[10px] w-full text-start"
+                      >
+                        마이페이지
+                      </Menu.Item>
+                    </Link>
+                    <Link href="/#">
+                      <Menu.Item
+                        as="button"
+                        className="lg:px-4 px-3 py-[10px] w-full text-start"
+                      >
+                        로그아웃
+                      </Menu.Item>
+                    </Link>
+                  </Menu.Items>
+                </Menu>
+              </div>
             </div>
           )}
         </section>
