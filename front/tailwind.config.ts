@@ -18,6 +18,10 @@ const config: Config = {
         body: ["var(--font-spoqa-han-sans-neo-regular)", "sans-serif"], // Regular 폰트
       },
 
+      height: {
+        "screen-minus-nav": "calc(100vh - 60px)",
+      },
+
       fontSize: {
         // Title
         "display-5": ["40px", commonStyles("52px")],
