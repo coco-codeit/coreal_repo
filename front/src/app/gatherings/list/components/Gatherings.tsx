@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Header from "@/app/gatherings/list/components/Header";
 import GatheringTabs from "@/app/gatherings/list/components/GatheringsTabs";
 import Card from "@/app/gatherings/list/components/Card";
-import { useGatheringStore } from "@/app/hooks/gatherings/useGatheringStore";
+import { useGatheringStore } from "@/hooks/gatherings/useGatheringStore";
 import { fetchGatherings } from "@/apis/gatherings";
 
 // TODO: gatherings api fetch use-query로 변경
