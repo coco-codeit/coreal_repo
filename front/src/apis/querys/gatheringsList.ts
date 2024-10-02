@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getList } from "./apis";
+import { getList } from "../gatherings";
 
 export const useGetList = () => {
   return useQuery({

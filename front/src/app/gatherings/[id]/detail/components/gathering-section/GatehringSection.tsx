@@ -5,11 +5,8 @@ import UserAvatar from "./UserAvatar";
 import ProgressBar from "@/app/gatherings/components/ProgressBar";
 import DeadLineTag from "@/app/gatherings/components/DeadLineTag";
 import GatheringInfo from "./GatheringInfo";
-import { useGetList } from "@/apis/query";
 
 export default function GatehringSection() {
-  const { data } = useGetList();
-  console.log(data);
   return (
     <section className="flex items-center justify-center md:flex-row flex-col gap-6">
       <div className="relative w-full md:w-1/2 h-[270px]">
