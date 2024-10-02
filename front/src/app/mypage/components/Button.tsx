@@ -15,7 +15,7 @@ export default function Button({
     <button
       onClick={onClick}
       id={id}
-      className={`py-2 px-4 rounded-lg border ${className}`}
+      className={`h-10 px-4 rounded-xl ${className}`}
       {...props}
     >
       {children}

@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
+import { getReviews } from "@/apis/profile";
 import GatheringInfo from "../../GatheringInfo";
 import GatheringImage from "../../GatheringImage";
-import { getReviews } from "@/apis/profile";
+import ListWrapper from "../../ListWrapper";
 
 interface ReturnReviewsInterface {
   teamId: number;
@@ -40,9 +41,9 @@ export default function ReviewsWritten() {
   return (
     <>
       {data.map((item: ReturnReviewsInterface, index: number) => (
-        <div key={`${item}-${index}`} className="flex flex-row gap-2">
+        <ListWrapper key={`${item}-${index}`}>
           <GatheringImage src={item?.Gathering?.image} />
-          <div className="flex flex-col items-start">
+          <div className="flex flex-col justify-between items-start gap-4">
             <GatheringInfo
               info={{
                 name: item?.Gathering?.name,
@@ -54,7 +55,7 @@ export default function ReviewsWritten() {
               }}
             />
           </div>
-        </div>
+        </ListWrapper>
       ))}
       {data.length === 0 && <div>아직 작성한 리뷰가 없어요</div>}
     </>
