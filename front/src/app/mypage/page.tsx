@@ -7,10 +7,10 @@ export default async function MyPage() {
   const userInfo: UserProfileInterface = await getUserProfile();
 
   return (
-    <div>
-      <h1>마이 페이지</h1>
+    <>
+      <h1 className="text-lg sm:text-2xl font-semibold">마이 페이지</h1>
       <UserInfo userInfo={userInfo} />
       <ManageTab />
-    </div>
+    </>
   );
 }
