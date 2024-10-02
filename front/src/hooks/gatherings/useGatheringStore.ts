@@ -1,4 +1,4 @@
-import { GatheringType } from "@/app/types/gatherings";
+import { GatheringType } from "@/types/gatherings";
 import { create } from "zustand";
 
 interface GatheringState {
