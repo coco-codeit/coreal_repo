@@ -8,9 +8,11 @@ export default async function MyPage() {
 
   return (
     <>
-      <h1 className="text-lg sm:text-2xl font-semibold">마이 페이지</h1>
-      <UserInfo userInfo={userInfo} />
-      <ManageTab />
+      <h1 className="text-lg md:text-2xl font-semibold mb-3 md:mb-5">
+        마이 페이지
+      </h1>
+      <UserInfo userInfo={userInfo} className="mb-3 lg:mb-5" />
+      <ManageTab className="" />
     </>
   );
 }

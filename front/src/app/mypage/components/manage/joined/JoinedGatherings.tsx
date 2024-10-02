@@ -6,10 +6,12 @@ import GatheringInfo from "../../GatheringInfo";
 import GatheringImage from "../../GatheringImage";
 import { cancleGathering, getGatheringsJoined } from "@/apis/profile";
 import { ExtendedGatheringInterface } from "@/types/common";
-import ReviweModal from "../../ReviewModal";
+import ListWrapper from "../../ListWrapper";
+import { FaCheck } from "react-icons/fa6";
+import ReviewModalBtn from "../../ReviewModalBtn";
 
 export default function JoinedGatherings() {
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const now = new Date();
   const [joinedList, setJoinedList] = useState<ExtendedGatheringInterface[]>();
 
   useEffect(() => {
@@ -18,7 +20,7 @@ export default function JoinedGatherings() {
 
   const handleCancleGathering = async (gatheringId: number) => {
     const res = await cancleGathering(gatheringId);
-    if (res.status === 200) console.log("예약 취소 완료");
+    res.status === 200 && console.log("예약 취소 완료");
   };
 
   if (!joinedList || !Array.isArray(joinedList)) return <></>;
@@ -26,13 +28,13 @@ export default function JoinedGatherings() {
   return (
     <>
       {joinedList.map((item, index) => (
-        <div key={`${item}-${index}`} className="flex flex-row gap-2">
+        <ListWrapper key={`${item}-${index}`}>
           <GatheringImage src={item.image} />
-          <div className="flex flex-col items-start">
-            <div className="flex flex-row gap-2">
-              <GatheringStatus isCompleted={item.isCompleted} />
-              <GatheringConfirm participantCount={item.participantCount} />
-            </div>
+          <div className="flex flex-col justify-between items-start gap-4">
+            <GatheringStates
+              isCompleted={item.isCompleted}
+              participantCount={item.participantCount}
+            />
             <GatheringInfo
               info={{
                 name: item.name,
@@ -42,42 +44,60 @@ export default function JoinedGatherings() {
                 capacity: item.capacity,
               }}
             />
-            {new Date(item.dateTime) < new Date() ? (
-              <>
-                <Button onClick={() => setIsModalOpen(true)}>
-                  리뷰 작성하기
-                </Button>
-                <ReviweModal
-                  gatheringId={String(item.teamId)}
-                  open={isModalOpen}
-                  setOpen={setIsModalOpen}
-                />
-              </>
+            {new Date(item.dateTime) < now ? (
+              <ReviewModalBtn teamId={item.teamId} />
             ) : (
-              <Button onClick={() => handleCancleGathering(item.id)}>
+              <Button
+                className="border-2 bg-white border-orange-600 hover:border-red-500 hover:bg-red-500 text-orange-600 hover:text-white"
+                onClick={() => handleCancleGathering(item.id)}
+              >
                 예약 취소하기
               </Button>
             )}
           </div>
-        </div>
+        </ListWrapper>
       ))}
       {joinedList.length === 0 && <p>신청한 모임이 아직 없어요</p>}
     </>
   );
 }
 
+function GatheringStates({
+  participantCount,
+  isCompleted,
+}: {
+  participantCount: number;
+  isCompleted: boolean;
+}) {
+  return (
+    <div className="flex flex-row gap-2">
+      <GatheringStatus isCompleted={isCompleted} />
+      <GatheringConfirm participantCount={participantCount} />
+    </div>
+  );
+}
+
 function GatheringStatus({ isCompleted }: { isCompleted: boolean }) {
   return isCompleted ? (
-    <span className="px-2 py-1 rounded-full border">이용 완료</span>
+    <span className="py-1 px-3 leading-6 rounded-full border font-medium text-sm bg-gray-200 text-gray-500">
+      이용 완료
+    </span>
   ) : (
-    <span className="px-2 py-1 rounded-full border">이용 예정</span>
+    <span className="py-1 px-3 leading-6 rounded-full border font-medium text-sm bg-orange-100 text-orange-600">
+      이용 예정
+    </span>
   );
 }
 
 function GatheringConfirm({ participantCount }: { participantCount: number }) {
   return participantCount >= 5 ? (
-    <span className="px-2 py-1 rounded-full border">개설확정</span>
+    <span className="py-1 px-3 leading-6 rounded-full border font-medium text-sm bg-white border-orange-100 text-orange-600">
+      <FaCheck className="inline-block mr-2 mb-1" />
+      개설확정
+    </span>
   ) : (
-    <span className="px-2 py-1 rounded-full border">개설대기</span>
+    <span className="py-1 px-3 leading-6 rounded-full border font-medium text-sm bg-white border-gray-200 text-gray-500">
+      개설대기
+    </span>
   );
 }

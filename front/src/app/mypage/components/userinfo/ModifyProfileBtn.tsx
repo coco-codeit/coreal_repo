@@ -10,7 +10,7 @@ export default function ModifyProfileBtn() {
     <>
       <button
         onClick={() => setIsOpen(true)}
-        className="w-8 h-8 rounded-full bg-gray-200 grid justify-center items-center"
+        className="w-8 h-8 rounded-full bg-gray-200 grid justify-center items-center hover:bg-white hover:drop-shadow-md active:bg-gray-300"
       >
         <RiPencilFill className="text-gray-400" />
       </button>

@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useRef, useState } from "react";
+import React, { Dispatch, SetStateAction, useRef, useState } from "react";
 import { submitReview } from "@/apis/profile";
 import {
   Dialog,
@@ -6,6 +6,7 @@ import {
   DialogPanel,
   DialogTitle,
 } from "@headlessui/react";
+import Button from "./Button";
 
 interface ReviewFormInterface {
   gatheringId: string;
@@ -55,24 +56,46 @@ export default function ReviweModal({
       <DialogBackdrop className="fixed inset-0 bg-black/30" />
       <DialogPanel className="z-50 max-w-lg space-y-4 bg-white rounded-xl p-12">
         <button onClick={closeModal}>close</button>
-        <DialogTitle className="font-bold">리뷰 쓰기</DialogTitle>
+        <DialogTitle className="text-lg font-bold">리뷰 쓰기</DialogTitle>
         <form onSubmit={handleSubmit}>
           <input type="hidden" value={gatheringId} name="gatheringId" />
-          <label>만족스러운 경험이었나요</label>
+          <Label>만족스러운 경험이었나요?</Label>
           <input type="number" name="score" onChange={handleScoreChange} />
-          <label htmlFor="comment">경험에 대해 남겨주세요.</label>
+          <Label htmlFor="comment">경험에 대해 남겨주세요.</Label>
           <textarea
             id="comment"
             name="comment"
             onChange={handleCommentChange}
             ref={initialFocusRef}
+            className="w-full h-[120px]"
           ></textarea>
-          <div className="flex gap-4">
-            <button onClick={closeModal}>취소</button>
-            <button type="submit">리뷰 등록</button>
+          <div className="grid grid-cols-2 gap-4">
+            <Button
+              onClick={closeModal}
+              className="border-2 border-orange-600 text-orange-600 bg-white"
+            >
+              취소
+            </Button>
+            <Button type="submit" className="bg-gray-400 text-white">
+              리뷰 등록
+            </Button>
           </div>
         </form>
       </DialogPanel>
     </Dialog>
+  );
+}
+
+function Label({
+  children,
+  htmlFor,
+}: {
+  children?: React.ReactNode;
+  htmlFor?: string;
+}) {
+  return (
+    <label htmlFor={htmlFor} className="block text-base font-semibold">
+      {children}
+    </label>
   );
 }

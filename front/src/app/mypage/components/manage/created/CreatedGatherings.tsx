@@ -5,6 +5,7 @@ import GatheringInfo from "../../GatheringInfo";
 import GatheringImage from "../../GatheringImage";
 import { getGatherings } from "@/apis/profile";
 import { ExtendedGatheringInterface } from "@/types/common";
+import ListWrapper from "../../ListWrapper";
 
 export default function CreatedGatherings() {
   const [data, setData] = useState<ExtendedGatheringInterface[]>();
@@ -20,9 +21,9 @@ export default function CreatedGatherings() {
   return (
     <>
       {data.map((item: ExtendedGatheringInterface, index: number) => (
-        <div key={`${item}-${index}`} className="flex flex-row gap-2">
+        <ListWrapper key={`${item}-${index}`}>
           <GatheringImage src={item.image} />
-          <div className="flex flex-col items-start">
+          <div className="flex flex-col justify-between items-start">
             <GatheringInfo
               info={{
                 name: item.name,
@@ -33,7 +34,7 @@ export default function CreatedGatherings() {
               }}
             />
           </div>
-        </div>
+        </ListWrapper>
       ))}
       {data.length === 0 && <div>아직 만든 모임이 없어요</div>}
     </>

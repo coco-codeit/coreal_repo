@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
-import Button from "../../Button";
-import ReviweModal from "../../ReviewModal";
-import GatheringInfo from "../../GatheringInfo";
-import GatheringImage from "../../GatheringImage";
 import { getGatheringsJoined } from "@/apis/profile";
 import { ExtendedGatheringInterface } from "@/types/common";
+import ListWrapper from "../../ListWrapper";
+import GatheringInfo from "../../GatheringInfo";
+import GatheringImage from "../../GatheringImage";
+import ReviewModalBtn from "../../ReviewModalBtn";
 
 export default function ReviewsWritable() {
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [data, setData] = useState<ExtendedGatheringInterface[]>();
 
   useEffect(() => {
@@ -24,9 +23,9 @@ export default function ReviewsWritable() {
   return (
     <>
       {data.map((item: ExtendedGatheringInterface, index: number) => (
-        <div key={`${item}-${index}`} className="flex flex-row gap-2">
+        <ListWrapper key={`${item}-${index}`}>
           <GatheringImage src={item.image} />
-          <div className="flex flex-col items-start">
+          <div className="flex flex-col justify-between items-start gap-4">
             <GatheringInfo
               info={{
                 name: item.name,
@@ -36,14 +35,9 @@ export default function ReviewsWritable() {
                 capacity: item.capacity,
               }}
             />
-            <Button onClick={() => setIsModalOpen(true)}>리뷰 작성하기</Button>
-            <ReviweModal
-              gatheringId={String(item.teamId)}
-              open={isModalOpen}
-              setOpen={setIsModalOpen}
-            />
+            <ReviewModalBtn teamId={item.teamId} />
           </div>
-        </div>
+        </ListWrapper>
       ))}
       {data.length === 0 && <div>아직 작성 가능한 리뷰가 없어요</div>}
     </>
