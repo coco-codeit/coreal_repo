@@ -1,9 +1,5 @@
 import type { Config } from "tailwindcss";
 
-function commonStyles(lineHeight: string) {
-  return { lineHeight, letterSpacing: "-0.6px" };
-}
-
 const config: Config = {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -12,36 +8,30 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      fontFamily: {
-        sans: ["var(--font-spoqa-han-sans-neo-regular)", "sans-serif"], // 기본 폰트 Regular 폰트로 설정
-        title: ["var(--font-spoqa-han-sans-neo-bold)", "sans-serif"], // Bold 폰트
-        body: ["var(--font-spoqa-han-sans-neo-regular)", "sans-serif"], // Regular 폰트
-      },
-
       height: {
         "screen-minus-nav": "calc(100vh - 60px)",
       },
 
-      fontSize: {
-        // Title
-        "display-5": ["40px", commonStyles("52px")],
-        "display-4": ["36px", commonStyles("46px")],
-        "display-3": ["32px", commonStyles("42px")],
-        "display-2": ["28px", commonStyles("38px")],
-        "display-1": ["24px", commonStyles("34px")],
-        headline: ["20px", commonStyles("28px")],
-        "subhead-3": ["16px", commonStyles("22px")],
-        "subhead-long-3": ["16px", commonStyles("28px")],
-        "subhead-2": ["14px", commonStyles("20px")],
-        "subhead-long-2": ["14px", commonStyles("24px")],
-        "subhead-1": ["12px", commonStyles("18px")],
+      fontFamily: {
+        pretendard: ["var(--font-pretendard)"],
+      },
 
-        // Body
-        "body-2": ["16px", commonStyles("24px")],
-        "body-long-2": ["16px", commonStyles("28px")],
-        "body-1": ["14px", commonStyles("20px")],
-        "body-long-1": ["14px", commonStyles("24px")],
-        caption: ["12px", commonStyles("18px")],
+      fontSize: {
+        xs: ["12px", "16px"],
+        sm: ["14px", "20px"],
+        base: ["16px", "24px"],
+        lg: ["18px", "28px"],
+        xl: ["20px", "28px"],
+        "2xl": ["24px", "32px"],
+        "3xl": ["30px", "36px"],
+      },
+
+      fontWeight: {
+        light: "300",
+        normal: "400",
+        medium: "500",
+        semibold: "600",
+        bold: "700",
       },
 
       colors: {
@@ -50,62 +40,39 @@ const config: Config = {
         black: "#000",
         white: "#FFF",
 
+        // blue scale
+        blue: {
+          0: "#E7F5FF",
+          1: "#D0EBFF",
+          2: "#A6D8FF",
+          3: "#74C0FC",
+          4: "#4DABF7",
+          5: "#339AF0",
+          6: "#238BE6",
+          7: "#1C7ED6",
+          8: "#1971C2",
+          9: "#1864AB",
+          10: "#175D9E",
+        },
+
         // gray scale
         gray: {
-          1: "#FBFBFB",
-          2: "#F7F7F7",
-          3: "#F5F4F3",
-          4: "#EFEFEF",
-          5: "#ECECEC",
-          6: "#DFDFDF",
-          7: "#C1C1C1",
-          8: "#A5A5A5",
-          9: "#8B8B8B",
-          10: "#6F6F6F",
-          11: "#555",
-          12: "#3D3D3D",
-          13: "#333",
-          14: "#242424",
-          15: "#171717",
-
-          // gray transparent scale
-          "transparent-1": "rgba(176, 179, 188, 0.1)",
-          "transparent-2": "rgba(176, 179, 188, 0.3)",
-          "transparent-3": "rgba(176, 179, 188, 0.5)",
-          "transparent-4": "rgba(176, 179, 188, 0.7)",
+          50: "#F9FAFB",
+          100: "#F3F4F6",
+          200: "#E5E7EB",
+          300: "#D1D5DB",
+          400: "#9CA3AF",
+          500: "#6B7280",
+          600: "#4B5563",
+          700: "#374151",
+          800: "#1F2937",
+          900: "#111827",
+          950: "#030712",
         },
 
-        // purple scale
-        purple: {
-          1: "#E1C5FE",
-          2: "#D3AAFD",
-          3: "#C084FC",
-          4: "#B773FB",
-          5: "#AB5EF9",
-          6: "#A451F7",
-          7: "#9653D9",
-          8: "#8256AE",
-          9: "#6E5784",
-          10: "#654C7E",
-          11: "#533670",
-          12: "#442365",
-        },
-
-        //system scale
-        green: {
-          "for-ios": "#06C755",
-          "for-android": "#4CC764",
-        },
-
-        blue: {
-          400: "#96B2FF",
-          500: "#638DFF",
-          600: "#4270ED",
-          700: "#2F59CC",
-        },
-
+        // red scale
         red: {
-          "ios-400": "#FF334B",
+          600: "#DC2626",
         },
       },
       boxShadow: {
