@@ -1,6 +1,5 @@
 import LikeButton from "@/app/gatherings/components/LikeButton";
-
-// TODO: DateTag 컴포넌트 수정
+import DateTag from "@/app/gatherings/components/DateTag";
 
 function CardHeader({
   name,
@@ -20,14 +19,8 @@ function CardHeader({
           <span className="text-body-1 text-gray-700">{location}</span>
         </div>
         <div className="flex">
-          <span>{dateTime}</span>
-          {/* 
-            const formattedDate = format(new Date(dateTime), "M월 dd일");
-            const formattedTime = format(new Date(dateTime), "HH:mm");
-
-            <DateTag dateText={formattedDate} textColor="#EA580C" />
-            <DateTag dateText={formattedTime} textColor="white" />     
-          */}
+          <DateTag dateText={dateTime} textColor={"white"} type={"day"} />
+          <DateTag dateText={dateTime} textColor={"orange"} type={"time"} />
         </div>
       </div>
       <LikeButton />

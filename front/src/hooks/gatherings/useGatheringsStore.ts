@@ -1,12 +1,12 @@
 import { GatheringType } from "@/types/gatherings";
 import { create } from "zustand";
 
-interface GatheringState {
+interface GatheringsState {
   tab: GatheringType;
   setTab: (tab: GatheringType) => void;
 }
 
-export const useGatheringStore = create<GatheringState>((set) => ({
+export const useGatheringsStore = create<GatheringsState>((set) => ({
   tab: "DALLAEMFIT",
   setTab: (gatheringsType: GatheringType) => set({ tab: gatheringsType }),
 }));
