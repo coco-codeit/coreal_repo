@@ -9,7 +9,7 @@ interface SignupData {
 }
 
 const signup = async (data: SignupData) => {
-  const response = await api.post("auths/signup", data);
+  const response = await api.post("/auths/signup", data);
   return response.data;
 };
 
