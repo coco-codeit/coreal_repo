@@ -1,12 +1,19 @@
-import axiosInstance from "./axiosInstance";
+import axiosInstance from "./axiosInstance"; 
 
-export const fetchReviews = async (type: string) => {
+export const fetchReviews = async (type: string | string[]) => {
   try {
-    const res = await axiosInstance.get(`/reviews?type=${type}`);
+    if (Array.isArray(type)) {
+      const promises = type.map((type) => axiosInstance.get(`/reviews`, { params: { type: type } }));
+      const responses = await Promise.all(promises);
+      const combinedData = responses.flatMap((res) => res.data);
 
-    return res.data;
+      return combinedData;
+    } else {
+      const res = await axiosInstance.get(`/reviews?type=${type}`);
+
+      return res.data;
+    }
   } catch (error) {
-    console.error("Failed to fetch reviews:", error);
     throw new Error("Failed to fetch reviews");
   }
 };

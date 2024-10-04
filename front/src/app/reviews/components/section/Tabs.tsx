@@ -13,6 +13,7 @@ const tabs = [
     imageSrc: "/images/dalaemfit.svg",
     alt: "dalaemfit",
     subTabs: [
+      { id: "ALL", label: "전체" },
       { id: "OFFICE_STRETCHING", label: "오피스 스트레칭" },
       { id: "MINDFULNESS", label: "마인드풀니스" },
     ],
@@ -29,11 +30,19 @@ const tabs = [
 export default function Tabs() {
   const [selectedTab, setSelectedTab] = useState(tabs[0].id);
   const [selectedSubTab, setSelectedSubTab] = useState(
-    tabs[0].subTabs ? tabs[0].subTabs[0].id : "",
+    tabs[0].subTabs ? tabs[0].subTabs[0].id : ""
   );
   console.log("selectedTab", selectedTab);
 
-  const { data, isLoading, isError } = useReviews(selectedSubTab);
+  const {
+    data: reviews,
+    isLoading,
+    isError,
+  } = useReviews(
+    selectedSubTab === "ALL"
+      ? ["OFFICE_STRETCHING", "MINDFULNESS"]
+      : selectedSubTab
+  );
 
   useEffect(() => {
     const currentTab = tabs.find((tab) => tab.id === selectedTab);
@@ -55,8 +64,6 @@ export default function Tabs() {
 
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Error loading data</p>;
-
-  const reviews = data || [];
 
   return (
     <div>
@@ -101,7 +108,7 @@ export default function Tabs() {
       </div>
 
       <div>
-        <Card reviews={reviews} tabs={tabs} />
+        <Card reviews={reviews || []} tabs={tabs} />
       </div>
     </div>
   );
