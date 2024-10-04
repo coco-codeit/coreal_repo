@@ -3,7 +3,8 @@ import React from "react";
 
 export default function CommentsCard() {
   return (
-    <>
+    <div className="h-[102px] mt-4">
+      <div className="h-6">하트 추가</div>
       <div className="text-[14px] mt-[10px]">
         따듯하게 느껴지는 공간이에요 평소에 달램 이용해보고 싶었는데 이렇게 같이
         달램 생기니까 너무 좋아요! 프로그램이 더 많이 늘어났으면 좋겠어요.
@@ -27,6 +28,6 @@ export default function CommentsCard() {
           style={{ objectFit: "contain" }}
         />
       </div>
-    </>
+    </div>
   );
 }

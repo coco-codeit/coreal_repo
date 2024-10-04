@@ -23,7 +23,7 @@ export default function CommentsSection() {
       <CommentsCard />
       <CommentsCard />
       <CommentsCard />
-      <div className="mt-2 mb-[100px]">
+      <div className="mt-2 mb-[6px]">
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
