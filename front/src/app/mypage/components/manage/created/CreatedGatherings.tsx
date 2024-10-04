@@ -6,6 +6,7 @@ import GatheringImage from "../../GatheringImage";
 import { getGatherings } from "@/apis/profile";
 import { ExtendedGatheringInterface } from "@/types/common";
 import ListWrapper from "../../ListWrapper";
+import OnEmpty from "../OnEmpty";
 
 export default function CreatedGatherings() {
   const [data, setData] = useState<ExtendedGatheringInterface[]>();
@@ -16,7 +17,8 @@ export default function CreatedGatherings() {
     });
   }, []);
 
-  if (!Array.isArray(data)) return <></>;
+  if (!Array.isArray(data) || data.length === 0)
+    return <OnEmpty message="아직 만든 모임이 없어요" />;
 
   return (
     <>
@@ -36,7 +38,6 @@ export default function CreatedGatherings() {
           </div>
         </ListWrapper>
       ))}
-      {data.length === 0 && <div>아직 만든 모임이 없어요</div>}
     </>
   );
 }

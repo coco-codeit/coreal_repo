@@ -4,8 +4,8 @@ import UserInfo from "./components/userinfo/UserInfo";
 import { UserProfileInterface } from "@/types/common";
 
 export default async function MyPage() {
-  const userInfo: UserProfileInterface = await getUserProfile();
-
+  const userInfo: UserProfileInterface | null = await getUserProfile();
+  if (!userInfo) return <>사용자 정보가 없음</>;
   return (
     <>
       <h1 className="text-lg md:text-2xl font-semibold mb-3 md:mb-5">

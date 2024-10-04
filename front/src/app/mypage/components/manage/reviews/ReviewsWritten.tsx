@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
-import { getReviews } from "@/apis/profile";
 import GatheringInfo from "../../GatheringInfo";
 import GatheringImage from "../../GatheringImage";
 import ListWrapper from "../../ListWrapper";
+import OnEmpty from "../OnEmpty";
+import { useMyReviews } from "@/hooks/queries/reviews";
 
 interface ReturnReviewsInterface {
   teamId: number;
@@ -28,15 +28,10 @@ interface ReturnReviewsInterface {
 }
 
 export default function ReviewsWritten() {
-  const [data, setData] = useState<ReturnReviewsInterface[]>();
-
-  useEffect(() => {
-    getReviews({}).then((data) => {
-      setData(data);
-    });
-  }, []);
-
-  if (!Array.isArray(data)) return <></>;
+  const { data, isLoading } = useMyReviews();
+  if (isLoading) return <>Loading...</>;
+  if (!Array.isArray(data) || data.length === 0)
+    return <OnEmpty message="아직 작성한 리뷰가 없어요" />;
 
   return (
     <>
@@ -57,7 +52,6 @@ export default function ReviewsWritten() {
           </div>
         </ListWrapper>
       ))}
-      {data.length === 0 && <div>아직 작성한 리뷰가 없어요</div>}
     </>
   );
 }
