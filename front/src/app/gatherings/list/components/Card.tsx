@@ -1,3 +1,4 @@
+import { useRouter } from "next/navigation";
 import { Gatherings } from "@/types/gatherings";
 import CardImage from "@/app/gatherings/list/components/CardImage";
 import CardHeader from "@/app/gatherings/list/components/CardHeader";
@@ -8,6 +9,13 @@ interface CardProps {
 }
 
 function Card({ data }: CardProps) {
+  const router = useRouter();
+
+  // 모임 상세 페이지로 이동
+  const handleCardClick = (id: number) => {
+    router.push(`/gatherings/${id}/detail`);
+  };
+
   return (
     <div className="grid grid-cols-1 gap-6 py-6 w-full">
       {data.length > 0 ? (
@@ -15,7 +23,8 @@ function Card({ data }: CardProps) {
           return (
             <div
               key={item.id}
-              className="h-[316px] md:h-[156px] grid grid-rows-[156px_1fr] md:grid-cols-[280px_1fr]"
+              className="h-[316px] md:h-[156px] grid grid-rows-[156px_1fr] md:grid-cols-[280px_1fr] cursor-pointer"
+              onClick={() => handleCardClick(item.id)}
             >
               <CardImage image={item.image} name={item.name} />
 
