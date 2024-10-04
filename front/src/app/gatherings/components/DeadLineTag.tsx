@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 
 interface IDeadLineTag {
   endTime: string;
@@ -11,13 +11,11 @@ interface IDeadLineTag {
 export default function DeadLineTag({ endTime, type }: IDeadLineTag) {
   const [isSameDate, setIsSameDate] = useState(false);
 
-  // The date to check
-  const targetDate = new Date(endTime);
+  const targetDate = useMemo(() => new Date(endTime), [endTime]);
   const targetHours = targetDate.getHours();
-  console.log(targetDate);
+
   useEffect(() => {
     const currentDate = new Date();
-    console.log(currentDate);
     const checkSameDate = (date1: Date, date2: Date) => {
       return (
         date1.getFullYear() === date2.getFullYear() &&
@@ -27,7 +25,7 @@ export default function DeadLineTag({ endTime, type }: IDeadLineTag) {
     };
 
     setIsSameDate(checkSameDate(targetDate, currentDate));
-  }, []);
+  }, [targetDate]);
 
   const customRound = {
     lg: "rounded-tr-3xl rounded-bl-lg",

@@ -13,7 +13,6 @@ export default function DateTag({ dateText, textColor, type }: IDateTag) {
     const day = date.getUTCDate();
     const hour = date.getUTCHours();
     const minute = date.getUTCMinutes();
-    console.log(hour);
     if (type === "day") {
       return `${month}월 ${day}일`;
     } else if (type === "time") {
