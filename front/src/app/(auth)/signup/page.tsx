@@ -1,20 +1,29 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { signIn, signOut } from "next-auth/react";
-import Toast from "../_components/toast";
+import { useSignupMutation } from "../utils/postSignup";
 
 /* 유효성 검사 */
-const signinSchema = z.object({
-  email: z.string().min(1, "이메일을 입력해주세요."),
-  password: z.string().min(8, "비밀번호가 8자 이상이 되도록 해 주세요."),
-});
+
+const signupSchema = z
+  .object({
+    name: z.string().min(1, "이름을 입력해주세요."),
+    email: z.string().min(1, "이메일을 입력해주세요."),
+    companyName: z.string().min(1, "회사명을 입력해 주세요."),
+    password: z.string().min(8, "비밀번호가 8자 이상이 되도록 해 주세요."),
+    confirmPassword: z.string().min(1, "비밀번호 확인은 필수입니다."),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "비밀번호가 일치하지 않습니다.",
+    path: ["confirmPassword"],
+  });
 
 /* 타입 정의 */
-type FormData = z.infer<typeof signinSchema>;
+
+type FormData = z.infer<typeof signupSchema>;
 
 interface FormFieldProps {
   label: string;
@@ -25,6 +34,8 @@ interface FormFieldProps {
 }
 
 /* 폼 필드의 컴포넌트 구성*/
+//TODO : 로그인에서도 사용가능한 컴포넌트분리
+
 const FormField = ({ label, name, type, register, error }: FormFieldProps) => (
   <div className="mb-4">
     <label
@@ -44,43 +55,23 @@ const FormField = ({ label, name, type, register, error }: FormFieldProps) => (
   </div>
 );
 
-export default function Signin() {
+export default function Signup() {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>({
-    resolver: zodResolver(signinSchema),
+    resolver: zodResolver(signupSchema),
   });
 
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  //TODO : 토스트알람으로 result -> code 비교후 알람띄우기 , message로 알람내용 띄우기
 
-  useEffect(() => {
-    if (toastMessage) {
-      const timer = setTimeout(() => {
-        setToastMessage(null);
-      }, 3000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [toastMessage]);
-
+  const signupMutation = useSignupMutation();
   const onSubmit = async (data: FormData) => {
-    console.log(data);
-    const result = await signIn("credentials", {
-      email: data.email,
-      password: data.password,
-      redirect: false,
-    });
-
-    if (result?.error) {
-      setToastMessage(
-        "로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요.",
-      );
-    } else {
-      setToastMessage("로그인에 성공했습니다!");
-      // 여기에 로그인 성공 후 리디렉션 로직을 추가할 수 있습니다.
-    }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { confirmPassword, ...submitData } = data;
+    const result = await signupMutation.mutateAsync(submitData);
+    console.log(result);
   };
 
   return (
@@ -90,11 +81,25 @@ export default function Signin() {
         className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full max-w-md"
       >
         <FormField
+          label="이름"
+          name="name"
+          type="text"
+          register={register}
+          error={errors.name?.message}
+        />
+        <FormField
           label="아이디"
           name="email"
           type="text"
           register={register}
           error={errors.email?.message}
+        />
+        <FormField
+          label="회사명"
+          name="companyName"
+          type="text"
+          register={register}
+          error={errors.companyName?.message}
         />
         <FormField
           label="비밀번호"
@@ -103,22 +108,22 @@ export default function Signin() {
           register={register}
           error={errors.password?.message}
         />
+        <FormField
+          label="비밀번호 확인"
+          name="confirmPassword"
+          type="password"
+          register={register}
+          error={errors.confirmPassword?.message}
+        />
         <div className="flex items-center justify-between">
           <button
             className="w-full bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-4"
             type="submit"
           >
-            로그인
+            가입하기
           </button>
         </div>
       </form>
-      <button
-        className="w-full bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-4"
-        onClick={() => signOut()}
-      >
-        로그아웃
-      </button>
-      {toastMessage && <Toast>{toastMessage}</Toast>}
     </div>
   );
 }
