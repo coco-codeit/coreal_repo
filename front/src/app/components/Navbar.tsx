@@ -56,7 +56,7 @@ export default function Navbar() {
               </Link>
             </div>
             <div>
-              <Link href="/reviews" className={isActive("/reviews")}>
+              <Link href="/reviews" className={isActive("/allReviews")}>
                 모든 리뷰
               </Link>
             </div>

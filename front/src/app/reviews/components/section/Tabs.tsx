@@ -1,50 +1,75 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import { useReviews } from "@/hooks/reviews/useReviews";
 import Card from "../content/Card";
 
 const tabs = [
   {
-    id: "dalaemfit",
+    id: "DALLAEMFIT",
     label: "달램핏",
+    hasSubTabs: true,
     imageSrc: "/images/dalaemfit.svg",
     alt: "dalaemfit",
+    subTabs: [
+      { id: "OFFICE_STRETCHING", label: "오피스 스트레칭" },
+      { id: "MINDFULNESS", label: "마인드풀니스" },
+    ],
   },
   {
-    id: "workation",
+    id: "WORKATION",
     label: "워케이션",
     imageSrc: "/images/workation.svg",
     alt: "workation",
+    hasSubTabs: false,
   },
 ];
 
-const subTabOptions = ["전체", "오피스 스트레칭", "마인드풀니스"];
-
 export default function Tabs() {
   const [selectedTab, setSelectedTab] = useState(tabs[0].id);
-  const [selectedSubTab, setSelectedSubTab] = useState("전체");
+  const [selectedSubTab, setSelectedSubTab] = useState(
+    tabs[0].subTabs ? tabs[0].subTabs[0].id : "",
+  );
+  console.log("selectedTab", selectedTab);
 
-  const handleSubTabChange = (subTab: string) => {
-    setSelectedSubTab(subTab);
+  const { data, isLoading, isError } = useReviews(selectedSubTab);
+
+  useEffect(() => {
+    const currentTab = tabs.find((tab) => tab.id === selectedTab);
+    if (currentTab?.hasSubTabs) {
+      setSelectedSubTab(currentTab?.subTabs ? currentTab.subTabs[0].id : "");
+    } else {
+      setSelectedSubTab("");
+    }
+  }, [selectedTab]);
+
+  const handleTabClick = (tabId: string) => {
+    setSelectedTab(tabId);
+    console.log("!!!!!!!!!!", tabId);
+  };
+  const handleSubTabClick = (subTabId: string) => {
+    setSelectedSubTab(subTabId);
+    console.log("!!!!!!!!!!", subTabId);
   };
 
-  const handleTabClick = (option: string) => {
-    setSelectedSubTab(option);
-    handleSubTabChange(option);
-  };
+  if (isLoading) return <p>Loading...</p>;
+  if (isError) return <p>Error loading data</p>;
+
+  const reviews = data || [];
 
   return (
     <div>
-      {/* 모임 종류 필터링: DALLAEMFIT, WORKATION */}
       <div className="flex gap-3">
         {tabs.map((tab) => (
           <button
             key={tab.id}
-            className={`flex items-center gap-1 pb-1 ${
-              selectedTab === tab.id ? "border-[#111827]" : "border-transparent"
+            className={`flex items-center gap-1 pb-1 text-lg font-semibold ${
+              selectedTab === tab.id
+                ? "border-[#111827] selected-tab"
+                : "border-transparent"
             } relative`}
-            onClick={() => setSelectedTab(tab.id)}
+            onClick={() => handleTabClick(tab.id)}
           >
             {tab.label}
             <span>
@@ -57,35 +82,26 @@ export default function Tabs() {
         ))}
       </div>
 
-      {/* 모임 종류 필터링: OFFICE_STRETCHING, MINDFULNESS */}
       <div className="">
-        {tabs.map(
-          (tab) =>
-            selectedTab === tab.id && (
-              <div key={tab.id}>
-                <div className="space-x-2 border-b-2 border-[#E5E7EB]">
-                  {subTabOptions.map((option) => (
-                    <button
-                      key={option}
-                      onClick={() => handleTabClick(option)}
-                      className={`${
-                        selectedSubTab === option
-                          ? "bg-black text-white"
-                          : "bg-[#E5E7EB]"
-                      } h-10 appearance-none px-4 py-[10px] rounded-xl my-4 text-center`}
-                    >
-                      {option}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            ),
+        {tabs.find((tab) => tab.id === selectedTab)?.hasSubTabs && (
+          <div className="space-x-2 border-b-2 border-[#E5E7EB]">
+            {tabs
+              .find((tab) => tab.id === selectedTab)
+              ?.subTabs?.map((subTab) => (
+                <button
+                  key={subTab.id}
+                  onClick={() => handleSubTabClick(subTab.id)}
+                  className={`${selectedSubTab === subTab.id ? "selected-subtab bg-black text-white" : "bg-[#E5E7EB]"} h-10 appearance-none px-4 rounded-xl my-4 text-center text-sm font-medium`}
+                >
+                  {subTab.label}
+                </button>
+              ))}
+          </div>
         )}
       </div>
 
       <div>
-        {/* <Card selectedTab={selectedSubTab} /> */}
-        <Card />
+        <Card reviews={reviews} tabs={tabs} />
       </div>
     </div>
   );
