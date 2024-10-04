@@ -7,19 +7,19 @@ export const getGatherDetail = async (gatherId: string) => {
 };
 
 export const putCancelGather = async (gatherId: string) => {
-  const res = await axiosInstance.put(`gathering/${gatherId}/cancel`);
+  const res = await axiosInstance.put(`/gatherings/${gatherId}/cancel`);
 
   return res?.data;
 };
 
 export const postJoinGather = async (gatherId: string) => {
-  const res = await axiosInstance.post(`gathering/${gatherId}/join`);
+  const res = await axiosInstance.post(`/gatherings/${gatherId}/join`);
 
   return res?.data;
 };
 
 export const getGatherParticipants = async (gatherId: string) => {
-  const res = await axiosInstance.get(`gathering/${gatherId}/partipants`);
+  const res = await axiosInstance.get(`/gatherings/${gatherId}/participants`);
 
   return res?.data;
 };
