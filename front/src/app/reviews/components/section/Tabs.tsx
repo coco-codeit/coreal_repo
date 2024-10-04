@@ -2,8 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import Card from "../content/Card";
 import { useReviews } from "@/hooks/reviews/useReviews";
+import Card from "../content/Card";
 
 const tabs = [
   {
@@ -29,13 +29,11 @@ const tabs = [
 export default function Tabs() {
   const [selectedTab, setSelectedTab] = useState(tabs[0].id);
   const [selectedSubTab, setSelectedSubTab] = useState(
-    tabs[0].subTabs ? tabs[0].subTabs[0].id : ""
+    tabs[0].subTabs ? tabs[0].subTabs[0].id : "",
   );
   console.log("selectedTab", selectedTab);
 
-  const teamId = 1;
-
-  const { data, isLoading, isError } = useReviews(teamId, selectedSubTab);
+  const { data, isLoading, isError } = useReviews(selectedSubTab);
 
   useEffect(() => {
     const currentTab = tabs.find((tab) => tab.id === selectedTab);

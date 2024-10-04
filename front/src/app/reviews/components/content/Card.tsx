@@ -30,7 +30,7 @@ interface CardProps {
 
 export default function Card({ reviews, tabs }: CardProps) {
   useEffect(() => {
-    console.log("리뷰 리스트 출력", reviews); 
+    console.log("리뷰 리스트 출력", reviews);
   }, [reviews]);
 
   const getLabelsFromType = (type: string) => {
@@ -150,7 +150,7 @@ export default function Card({ reviews, tabs }: CardProps) {
         {safeReviews.length > 0 ? (
           safeReviews.map((review) => {
             const { parentLabel, childLabel } = getLabelsFromType(
-              review.Gathering.type
+              review.Gathering.type,
             );
 
             return (
