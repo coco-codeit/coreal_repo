@@ -79,7 +79,7 @@ export default function Signin() {
       );
     } else {
       setToastMessage("로그인에 성공했습니다!");
-      // 여기에 로그인 성공 후 리디렉션 로직을 추가할 수 있습니다.
+      // 로그인 성공시 페이지 이동
     }
   };
 
