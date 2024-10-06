@@ -1,12 +1,9 @@
-import { useGatheringsStore } from "@/hooks/gatherings/useGatheringsStore";
-import { getGatheringList } from "@/libs/gatheringList";
 import { useQuery } from "@tanstack/react-query";
+import { getGatheringList } from "@/apis/gatheringsApi";
 
-export const useListQuery = () => {
-  const { tab } = useGatheringsStore();
-
+export const useGatheringsQuery = () => {
   return useQuery({
-    queryKey: ["gatheringList", tab],
-    queryFn: () => getGatheringList(tab),
+    queryKey: ["gatherings"],
+    queryFn: () => getGatheringList(),
   });
 };

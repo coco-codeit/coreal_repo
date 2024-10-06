@@ -4,7 +4,7 @@ import {
 } from "@/app/gatherings/list/components/Icons";
 import Button from "@/app/gatherings/components/Button";
 import { GatheringType } from "@/types/gatherings";
-import { useGatheringsStore } from "@/hooks/gatherings/useGatheringsStore";
+import { useGatheringsStore } from "@/stores/useGatheringsStore";
 
 const tabs = {
   DALLAEMFIT: {
