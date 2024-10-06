@@ -1,3 +1,5 @@
+// !deprecated) libs 폴더에 있는 axiosInstance로 사용해 주세요!
+
 import axios from "axios";
 
 const getApiHost = () => {

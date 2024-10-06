@@ -1,13 +1,13 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { ExtendedGatheringInterface } from "@/types/common";
+import { cancleGathering, getGatheringsJoined } from "@/apis/profile";
 import Button from "../../Button";
+import { FaCheck } from "react-icons/fa6";
+import ListWrapper from "../../ListWrapper";
 import GatheringInfo from "../../GatheringInfo";
 import GatheringImage from "../../GatheringImage";
-import { cancleGathering, getGatheringsJoined } from "@/apis/profile";
-import { ExtendedGatheringInterface } from "@/types/common";
-import ListWrapper from "../../ListWrapper";
-import { FaCheck } from "react-icons/fa6";
 import ReviewModalBtn from "../../ReviewModalBtn";
 
 export default function JoinedGatherings() {

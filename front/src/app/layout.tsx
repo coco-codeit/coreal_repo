@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./global.css";
 import Navbar from "./components/Navbar";
 import { ReactQueryClientProvider } from "./components/ReactQueryClientProvider";
+import { Provider as SessionProvider } from "./components/SessionProvider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -26,10 +27,12 @@ export default function RootLayout({
     <html lang="en" className={`${pretendard.variable} font-pretendard`}>
       <body className=" bg-gray-100 h-screen">
         <ReactQueryClientProvider>
-          <main>
-            <Navbar />
-            {children}
-          </main>
+          <SessionProvider>
+            <main>
+              <Navbar />
+              {children}
+            </main>
+          </SessionProvider>
         </ReactQueryClientProvider>
       </body>
     </html>

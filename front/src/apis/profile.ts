@@ -22,7 +22,6 @@ export const updateUserProfile = async (payload: {
   companyName: string;
   image: string;
 }) => {
-  console.log("request");
   try {
     return await fetch(`${BASE_URL}/${TEAM_ID}/auths/user`, {
       method: "PATCH",
