@@ -5,44 +5,15 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { signIn, signOut } from "next-auth/react";
-import Toast from "../_components/toast";
+import Toast from "../components/toast";
+import { FormField } from "../components/FormField";
 
-/* 유효성 검사 */
 const signinSchema = z.object({
   email: z.string().min(1, "이메일을 입력해주세요."),
   password: z.string().min(8, "비밀번호가 8자 이상이 되도록 해 주세요."),
 });
 
-/* 타입 정의 */
 type FormData = z.infer<typeof signinSchema>;
-
-interface FormFieldProps {
-  label: string;
-  name: keyof FormData;
-  type: string;
-  register: ReturnType<typeof useForm<FormData>>["register"];
-  error?: string;
-}
-
-/* 폼 필드의 컴포넌트 구성*/
-const FormField = ({ label, name, type, register, error }: FormFieldProps) => (
-  <div className="mb-4">
-    <label
-      className="block text-gray-700 text-sm font-bold mb-2"
-      htmlFor={name}
-    >
-      {label}
-    </label>
-    <input
-      {...register(name)}
-      className="shadow appearance-none border-2 border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-      id={name}
-      type={type}
-      placeholder={label}
-    />
-    {error && <p className="text-red-500 text-xs italic mt-1">{error}</p>}
-  </div>
-);
 
 export default function Signin() {
   const {

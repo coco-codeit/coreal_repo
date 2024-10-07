@@ -5,8 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useSignupMutation } from "../utils/postSignup";
-
-/* 유효성 검사 */
+import { FormField } from "../components/FormField";
 
 const signupSchema = z
   .object({
@@ -21,39 +20,7 @@ const signupSchema = z
     path: ["confirmPassword"],
   });
 
-/* 타입 정의 */
-
 type FormData = z.infer<typeof signupSchema>;
-
-interface FormFieldProps {
-  label: string;
-  name: keyof FormData;
-  type: string;
-  register: ReturnType<typeof useForm<FormData>>["register"];
-  error?: string;
-}
-
-/* 폼 필드의 컴포넌트 구성*/
-//TODO : 로그인에서도 사용가능한 컴포넌트분리
-
-const FormField = ({ label, name, type, register, error }: FormFieldProps) => (
-  <div className="mb-4">
-    <label
-      className="block text-gray-700 text-sm font-bold mb-2"
-      htmlFor={name}
-    >
-      {label}
-    </label>
-    <input
-      {...register(name)}
-      className="shadow appearance-none border-2 border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-      id={name}
-      type={type}
-      placeholder={label}
-    />
-    {error && <p className="text-red-500 text-xs italic mt-1">{error}</p>}
-  </div>
-);
 
 export default function Signup() {
   const {
@@ -63,8 +30,6 @@ export default function Signup() {
   } = useForm<FormData>({
     resolver: zodResolver(signupSchema),
   });
-
-  //TODO : 토스트알람으로 result -> code 비교후 알람띄우기 , message로 알람내용 띄우기
 
   const signupMutation = useSignupMutation();
   const onSubmit = async (data: FormData) => {
