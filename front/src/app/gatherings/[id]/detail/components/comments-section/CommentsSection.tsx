@@ -22,12 +22,12 @@ export default function CommentsSection({ pageId }: { pageId: string }) {
   };
 
   return (
-    <section className="mt-6 p-6 border-t-2 border-[#E5E7EB]">
+    <section className="flex flex-col justify-between sm:min-h-360px min-h-[687px] mt-6 p-6 border-t-2 border-[#E5E7EB]">
       {isReviewLoading ? (
         <LoadingSpinner />
       ) : (
         <>
-          <div className="min-h-[500px]">
+          <div>
             <h2 className="text-[18px] font-semibold mb-[16px]">
               이용자들은 이 프로그램을 이렇게 느꼈어요!
             </h2>
@@ -38,7 +38,7 @@ export default function CommentsSection({ pageId }: { pageId: string }) {
               />
             ))}
           </div>
-          <div className="mt-2 mb-[6px]">
+          <div className="mt-2 mb-[86px]">
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
