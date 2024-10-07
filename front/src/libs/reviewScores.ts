@@ -4,7 +4,7 @@ export const fetchReviewScores = async (type: string | string[]) => {
   try {
     if (Array.isArray(type)) {
       const promises = type.map((type) =>
-        axiosInstance.get(`/reviews/scores`, { params: { type } })
+        axiosInstance.get(`/reviews/scores`, { params: { type } }),
       );
       const responses = await Promise.all(promises);
       return responses.flatMap((res) => res.data);

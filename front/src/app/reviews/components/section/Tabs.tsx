@@ -32,13 +32,13 @@ const tabs = [
 export default function Tabs() {
   const [selectedTab, setSelectedTab] = useState(tabs[0].id);
   const [selectedSubTab, setSelectedSubTab] = useState(
-    tabs[0].subTabs ? tabs[0].subTabs[0].id : ""
+    tabs[0].subTabs ? tabs[0].subTabs[0].id : "",
   );
 
   console.log("selectedTab", selectedTab);
 
   const [selectedRegion, setSelectedRegion] = useState<string | undefined>(
-    "지역 선택"
+    "지역 선택",
   );
 
   const [selectedSort, setSelectedSort] = useState("createdAt");
@@ -50,7 +50,7 @@ export default function Tabs() {
         ? ["OFFICE_STRETCHING", "MINDFULNESS"]
         : selectedSubTab,
     selectedRegion === "지역 선택" ? undefined : selectedRegion,
-    selectedSort
+    selectedSort,
   );
 
   useEffect(() => {

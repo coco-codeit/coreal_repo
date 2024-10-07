@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import SortControls from "./SortControls";
+import HeartRating from "./HeartScore";
 
 interface Tab {
   id: string;
@@ -60,7 +61,7 @@ export default function Card({
     console.log("리뷰 평점 분포 출력", reviewScores);
   }, [reviews, reviewScores]);
 
-  const scoreData = reviewScores[0] || {};
+  const scoreData = reviewScores[0] || { averageScore: 0 };
 
   const scoreBars = [
     { label: "5점", value: scoreData.fiveStars },
@@ -125,18 +126,9 @@ export default function Card({
           <p className="text-2xl font-semibold">
             {scoreData.averageScore || 0}/5
           </p>
-          <span className="flex flex-row">
-            <Image
-              src="/images/active-heart.svg"
-              alt="heart"
-              width={24}
-              height={24}
-            />
-            <Image src="/images/heart.svg" alt="heart" width={24} height={24} />
-            <Image src="/images/heart.svg" alt="heart" width={24} height={24} />
-            <Image src="/images/heart.svg" alt="heart" width={24} height={24} />
-            <Image src="/images/heart.svg" alt="heart" width={24} height={24} />
-          </span>
+          <div className="flex flex-row">
+            <HeartRating averageScore={scoreData.averageScore} />
+          </div>
         </div>
         {/* 리뷰 평점 막대 */}
         <ul className="flex flex-col gap-2 text-sm font-medium">
