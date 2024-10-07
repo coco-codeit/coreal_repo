@@ -24,8 +24,21 @@ interface Review {
   createdAt: string;
 }
 
+interface ReviewScores {
+  teamId: number;
+  gatheringId: number;
+  type: string;
+  averageScore: number;
+  oneStar: number;
+  twoStars: number;
+  threeStars: number;
+  fourStars: number;
+  fiveStars: number;
+}
+
 interface CardProps {
   reviews: Review[];
+  reviewScores: ReviewScores[];
   tabs: Tab[];
   selectedRegion: string | undefined;
   setSelectedRegion: (region: string | undefined) => void;
@@ -35,6 +48,7 @@ interface CardProps {
 
 export default function Card({
   reviews,
+  reviewScores,
   tabs,
   selectedRegion,
   setSelectedRegion,
@@ -43,7 +57,18 @@ export default function Card({
 }: CardProps) {
   useEffect(() => {
     console.log("리뷰 리스트 출력", reviews);
-  }, [reviews]);
+    console.log("리뷰 평점 분포 출력", reviewScores);
+  }, [reviews, reviewScores]);
+
+  const scoreData = reviewScores[0] || {};
+
+  const scoreBars = [
+    { label: "5점", value: scoreData.fiveStars },
+    { label: "4점", value: scoreData.fourStars },
+    { label: "3점", value: scoreData.threeStars },
+    { label: "2점", value: scoreData.twoStars },
+    { label: "1점", value: scoreData.oneStar },
+  ];
 
   const getLabelsFromType = (type: string) => {
     for (const tab of tabs) {
@@ -94,9 +119,12 @@ export default function Card({
 
   return (
     <div>
+      {/* 리뷰 평점 평균 */}
       <div className="my-6 h-[180px] border-y-2 border-[#E5E7EB] bg-white flex justify-center items-center">
         <div className="flex flex-col items-center mr-[180px]">
-          <p className="text-2xl font-semibold">4.0/5</p>
+          <p className="text-2xl font-semibold">
+            {scoreData.averageScore || 0}/5
+          </p>
           <span className="flex flex-row">
             <Image
               src="/images/active-heart.svg"
@@ -110,44 +138,24 @@ export default function Card({
             <Image src="/images/heart.svg" alt="heart" width={24} height={24} />
           </span>
         </div>
+        {/* 리뷰 평점 막대 */}
         <ul className="flex flex-col gap-2 text-sm font-medium">
-          <li className="flex items-center justify-between">
-            <span className="w-[40px] text-end">5점</span>
-            <div className="w-[240px] h-1 bg-[#E5E7EB] rounded-sm mx-3">
-              <div className="bg-[#111827] rounded-lg w-9/12 h-full"></div>
-            </div>
-            <span className="w-[40px] text-start">27</span>
-          </li>
-
-          <li className="flex items-center justify-between">
-            <span className="w-[40px] text-end">4점</span>
-            <div className="w-[240px] h-1 bg-[#E5E7EB] rounded-sm mx-3">
-              <div className="bg-[#111827] rounded-lg w-7/12 h-full"></div>
-            </div>
-            <span className="w-[40px] text-start">19</span>
-          </li>
-
-          <li className="flex items-center justify-between">
-            <span className="w-[40px] text-end">3점</span>
-            <div className="w-[240px] h-1 bg-[#E5E7EB] rounded-sm mx-3">
-              <div className="bg-[#111827] rounded-lg w-1/12 h-full"></div>
-            </div>
-            <span className="w-[40px] text-start">2</span>
-          </li>
-
-          <li className="flex items-center justify-between">
-            <span className="w-[40px] text-end">2점</span>
-            <div className="w-[240px] h-1 bg-[#E5E7EB] rounded-sm mx-3"></div>
-            <span className="w-[40px] text-start">0</span>
-          </li>
-
-          <li className="flex items-center justify-between">
-            <span className="w-[40px] text-end">1점</span>
-            <div className="w-[240px] h-1 bg-[#E5E7EB] rounded-sm mx-3"></div>
-            <span className="w-[40px] text-start">0</span>
-          </li>
+          {scoreBars.map((score, index) => (
+            <li key={index} className="flex items-center justify-between">
+              <span className="w-[40px] text-end">{score.label}</span>
+              <div className="w-[240px] h-1 bg-[#E5E7EB] rounded-sm mx-3">
+                <div
+                  className="bg-[#111827] rounded-lg"
+                  style={{ width: `${(score.value || 0) / 100}%` }}
+                ></div>
+              </div>
+              <span className="w-[40px] text-start">{score.value || 0}</span>
+            </li>
+          ))}
         </ul>
       </div>
+
+      {/* 필터링 정렬 */}
       <div className="text-sm font-medium min-h-screen overflow-hidden  bg-white border-t-2 border-[#111827] p-6">
         <div className="flex justify-between mb-6">
           <div className="flex flex-row gap-2">
@@ -181,6 +189,7 @@ export default function Card({
               review.Gathering.type
             );
 
+            // 리뷰 카드
             return (
               <div key={review.id} className="flex gap-6 w-full mb-6">
                 <div className="w-[280px] h-[156px] relative">
@@ -195,37 +204,21 @@ export default function Card({
                 <div className="border-b-2 border-dashed border-[#E5E7EB] w-[644px]">
                   <div className="flex flex-col gap-[10px] text-[#374151]">
                     <div className="flex flex-row">
-                      <Image
-                        src="/images/active-heart.svg"
-                        alt="heart"
-                        width={24}
-                        height={24}
-                      />
-                      <Image
-                        src="/images/active-heart.svg"
-                        alt="heart"
-                        width={24}
-                        height={24}
-                      />
-                      <Image
-                        src="/images/active-heart.svg"
-                        alt="heart"
-                        width={24}
-                        height={24}
-                      />
-                      <Image
-                        src="/images/active-heart.svg"
-                        alt="heart"
-                        width={24}
-                        height={24}
-                      />
-                      <Image
-                        src="/images/active-heart.svg"
-                        alt="heart"
-                        width={24}
-                        height={24}
-                      />
+                      {Array.from({ length: 5 }).map((_, index) => (
+                        <Image
+                          key={`${review.id}-${index}`}
+                          src={
+                            index < review.score
+                              ? "/images/active-heart.svg"
+                              : "/images/heart.svg"
+                          }
+                          alt="heart"
+                          width={24}
+                          height={24}
+                        />
+                      ))}
                     </div>
+
                     <p>{review.comment}</p>
                     <p>
                       {`${parentLabel} ${childLabel} 이용`}

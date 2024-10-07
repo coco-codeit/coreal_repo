@@ -1,32 +1,49 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchReviews } from "@/libs/reviews";
+import { fetchReviewScores } from "@/libs/reviewScores";
 
 export const useReviews = (
   type: string | string[],
   location?: string,
   sortBy?: string
 ) => {
-  return useQuery({
+  const reviewsQuery = useQuery({
     queryKey: ["reviews", type, location, sortBy],
     queryFn: () => fetchReviews(type, location, sortBy),
     select: (data) => {
       if (sortBy === "score") {
         return data.sort(
-          (a: { score: number }, b: { score: number }) => b.score - a.score
+          (highScoreReview: { score: number }, lowScoreReview: { score: number }) =>
+            lowScoreReview.score - highScoreReview.score
         );
       } else if (sortBy === "participantCount") {
         return data.sort(
-          (a: { participantCount: number }, b: { participantCount: number }) =>
-            b.participantCount - a.participantCount
+          (
+            moreParticipantsReview: { participantCount: number },
+            fewerParticipantsReview: { participantCount: number }
+          ) => fewerParticipantsReview.participantCount - moreParticipantsReview.participantCount
         );
       } else {
         return data.sort(
           (
-            a: { createdAt: string | number | Date },
-            b: { createdAt: string | number | Date }
-          ) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+            newerReview: { createdAt: string | number | Date },
+            olderReview: { createdAt: string | number | Date }
+          ) =>
+            new Date(olderReview.createdAt).getTime() -
+            new Date(newerReview.createdAt).getTime()
         );
       }
     },
   });
+  const reviewScoresQuery = useQuery({
+    queryKey: ["reviewScores", type],
+    queryFn: () => fetchReviewScores(type),
+  });
+
+  return {
+    reviews: reviewsQuery.data,
+    reviewScores: reviewScoresQuery.data,
+    isLoading: reviewsQuery.isLoading || reviewScoresQuery.isLoading,
+    isError: reviewsQuery.isError || reviewScoresQuery.isError,
+  };
 };

@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { useReviews } from "@/hooks/reviews/useReviews";
+
 import Card from "../content/Card";
 
 const tabs = [
@@ -42,11 +43,7 @@ export default function Tabs() {
 
   const [selectedSort, setSelectedSort] = useState("createdAt");
 
-  const {
-    data: reviews,
-    isLoading,
-    isError,
-  } = useReviews(
+  const { reviews, reviewScores, isLoading, isError } = useReviews(
     selectedTab === "WORKATION"
       ? selectedTab
       : selectedSubTab === "ALL"
@@ -128,6 +125,7 @@ export default function Tabs() {
       <div>
         <Card
           reviews={reviews || []}
+          reviewScores={reviewScores || []}
           tabs={tabs}
           selectedRegion={selectedRegion}
           setSelectedRegion={setSelectedRegion}

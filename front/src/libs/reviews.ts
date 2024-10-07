@@ -15,8 +15,6 @@ export const fetchReviews = async (
 
       return combinedData;
     } else {
-      console.log("나와라라", { sortBy });
-
       const res = await axiosInstance.get(`/reviews`, {
         params: { type, location, sortBy },
       });
