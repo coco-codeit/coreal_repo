@@ -33,11 +33,14 @@ export default function Tabs() {
   const [selectedSubTab, setSelectedSubTab] = useState(
     tabs[0].subTabs ? tabs[0].subTabs[0].id : ""
   );
+
   console.log("selectedTab", selectedTab);
 
   const [selectedRegion, setSelectedRegion] = useState<string | undefined>(
-    undefined
+    "지역 선택"
   );
+
+  const [selectedSort, setSelectedSort] = useState("createdAt");
 
   const {
     data: reviews,
@@ -49,7 +52,8 @@ export default function Tabs() {
       : selectedSubTab === "ALL"
         ? ["OFFICE_STRETCHING", "MINDFULNESS"]
         : selectedSubTab,
-    selectedRegion === "지역 선택" ? undefined : selectedRegion
+    selectedRegion === "지역 선택" ? undefined : selectedRegion,
+    selectedSort
   );
 
   useEffect(() => {
@@ -127,6 +131,8 @@ export default function Tabs() {
           tabs={tabs}
           selectedRegion={selectedRegion}
           setSelectedRegion={setSelectedRegion}
+          selectedSort={selectedSort}
+          setSelectedSort={setSelectedSort}
         />
       </div>
     </div>

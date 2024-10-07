@@ -21,6 +21,7 @@ interface Review {
   id: number;
   comment: string;
   score: number;
+  createdAt: string;
 }
 
 interface CardProps {
@@ -28,6 +29,8 @@ interface CardProps {
   tabs: Tab[];
   selectedRegion: string | undefined;
   setSelectedRegion: (region: string | undefined) => void;
+  selectedSort: string;
+  setSelectedSort: (sort: string) => void;
 }
 
 export default function Card({
@@ -35,6 +38,8 @@ export default function Card({
   tabs,
   selectedRegion,
   setSelectedRegion,
+  selectedSort,
+  setSelectedSort,
 }: CardProps) {
   useEffect(() => {
     console.log("리뷰 리스트 출력", reviews);
@@ -71,7 +76,7 @@ export default function Card({
 
   const handleRegionSelect = (option: { id: string; label: string }) => {
     if (option.id === "all") {
-      setSelectedRegion(undefined);
+      setSelectedRegion("지역 선택");
     } else {
       setSelectedRegion(option.id);
     }
@@ -80,13 +85,12 @@ export default function Card({
   const dateOptions = [{ id: "all", label: "날짜 선택" }];
 
   const sortOptions = [
-    { id: "latest", label: "최신순" },
-    { id: "highestReview", label: "리뷰 높은 순" },
-    { id: "mostParticipants", label: "참여 인원 순" },
+    { id: "createdAt", label: "최신순" },
+    { id: "score", label: "리뷰 높은 순" },
+    { id: "participantCount", label: "참여 인원 순" },
   ];
 
   const [selectedDate, setSelectedDate] = useState("날짜 선택");
-  const [selectedSort, setSelectedSort] = useState("최신순");
 
   return (
     <div>
@@ -150,7 +154,7 @@ export default function Card({
             <div className="flex  gap-2 items-center justify-end ">
               <SortControls
                 options={regionOptions}
-                selectedOption={selectedRegion || "지역 선택"}
+                selectedOption={selectedRegion}
                 onOptionSelect={handleRegionSelect}
               />
               <SortControls
@@ -163,8 +167,10 @@ export default function Card({
           <div className="flex lg:gap-4 gap-2 items-center justify-end ">
             <SortControls
               options={sortOptions}
-              selectedOption={selectedSort}
-              onOptionSelect={(option) => setSelectedSort(option.label)}
+              selectedOption={
+                sortOptions.find((option) => option.id === selectedSort)?.label
+              }
+              onOptionSelect={(option) => setSelectedSort(option.id)}
             />
           </div>
         </div>
@@ -240,7 +246,7 @@ export default function Card({
                       {review.User.name}
                     </span>
                     <span className="ml-1 text-[#374151]">
-                      {`${new Date(review.Gathering.dateTime).getFullYear()}.${new Date(review.Gathering.dateTime).getMonth() + 1}.${new Date(review.Gathering.dateTime).getDate()}`}
+                      {`${new Date(review.createdAt).getFullYear()}.${String(new Date(review.createdAt).getMonth() + 1).padStart(2, "0")}.${String(new Date(review.createdAt).getDate()).padStart(2, "0")}`}
                     </span>
                   </div>
                 </div>
