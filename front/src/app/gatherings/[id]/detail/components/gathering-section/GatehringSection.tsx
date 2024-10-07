@@ -6,19 +6,18 @@ import UserAvatar from "./UserAvatar";
 import ProgressBar from "@/app/gatherings/components/ProgressBar";
 import DeadLineTag from "@/app/gatherings/components/DeadLineTag";
 import GatheringInfo from "./GatheringInfo";
-import { useParams } from "next/navigation";
+
 import {
   useGatherDeatilQuery,
   useGatherParticipants,
 } from "@/hooks/queries/gatherDetailQuery";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
 
-export default function GatehringSection() {
-  const { id }: { id: string } = useParams();
+export default function GatehringSection({ pageId }: { pageId: string }) {
   const { data: detailData, isLoading: isDetailLoading } =
-    useGatherDeatilQuery(id);
+    useGatherDeatilQuery(pageId);
   const { data: participantData, isLoading: participantLoading } =
-    useGatherParticipants(id);
+    useGatherParticipants(pageId);
 
   const isDataLoading = isDetailLoading || participantLoading;
 
