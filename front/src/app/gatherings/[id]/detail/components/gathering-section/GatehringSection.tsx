@@ -1,40 +1,64 @@
-import DateTag from "@/app/gatherings/components/DateTag";
+"use client";
+
+import React from "react";
+import Image from "next/image";
+import UserAvatar from "./UserAvatar";
 import ProgressBar from "@/app/gatherings/components/ProgressBar";
 import DeadLineTag from "@/app/gatherings/components/DeadLineTag";
-import Image from "next/image";
-import React from "react";
-import UserAvatar from "./UserAvatar";
 import GatheringInfo from "./GatheringInfo";
 
-export default function GatehringSection() {
-  return (
-    <section className="flex h-[270px] gap-6">
-      <div className="relative w-1/2">
-        <Image
-          className="relative rounded-3xl"
-          src="/images/detail/gatherDetail.png"
-          alt="Gather Detail Img"
-          fill
-        />
-        <DeadLineTag endTime="2024-07-25T09:06:16.184Z" />
-      </div>
+import {
+  useGatherDeatilQuery,
+  useGatherParticipants,
+} from "@/hooks/queries/gatherDetailQuery";
+import LoadingSpinner from "@/app/components/LoadingSpinner";
 
-      <div className="w-1/2 py-6 rounded-[24px] border-2 border-gray-200">
-        <GatheringInfo />
-        <div className="flex mx-[22px]">
-          <DateTag dateText="8월 7일" textColor="white" />
-          <DateTag dateText="17:30" textColor="#EA580C" />
+export default function GatehringSection({ pageId }: { pageId: string }) {
+  const { data: detailData, isLoading: isDetailLoading } =
+    useGatherDeatilQuery(pageId);
+  const { data: participantData, isLoading: participantLoading } =
+    useGatherParticipants(pageId);
+
+  const isDataLoading = isDetailLoading || participantLoading;
+
+  return (
+    <>
+      {isDataLoading ? (
+        <div className="flex justify-center items-center w-full min-h-[270px]">
+          <LoadingSpinner />
         </div>
-        <hr className="border-dashed border-gray-400 mt-[43px]" />
-        <div className="p-6">
-          <UserAvatar />
-          <ProgressBar percent={60} />
-          <div className="flex items-center justify-between text-[12px]">
-            <div>최소인원 5명</div>
-            <div>최대인원 20명</div>
+      ) : (
+        <section className="flex items-center justify-center md:flex-row flex-col gap-6">
+          <div className="relative w-full md:w-1/2 h-[270px]">
+            <Image
+              className="relative rounded-3xl"
+              src={detailData?.image}
+              alt="Gather Detail Img"
+              fill
+            />
+            <DeadLineTag endTime={detailData?.registrationEnd} type="lg" />
           </div>
-        </div>
-      </div>
-    </section>
+
+          <div className="w-full md:w-1/2 h-[270px] py-6 rounded-[24px] border-2 border-gray-200">
+            <GatheringInfo
+              dateInfo={detailData?.dateTime}
+              locationInfo={detailData?.location}
+            />
+
+            <hr className="border-dashed border-gray-400 mt-[43px]" />
+            <div className="p-6">
+              <UserAvatar participantData={participantData} />
+              <ProgressBar
+                percent={(participantData?.length / detailData?.capacity) * 100}
+              />
+              <div className="flex items-center justify-between text-[12px]">
+                <div>최소인원 5명</div>
+                <div>최대인원 {detailData?.capacity}명</div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+    </>
   );
 }

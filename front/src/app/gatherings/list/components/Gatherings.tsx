@@ -1,36 +1,21 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Header from "@/app/gatherings/list/components/Header";
-import GatheringTabs from "@/app/gatherings/list/components/GatheringsTabs";
+import GatheringsTabs from "@/app/gatherings/list/components/GatheringsTabs";
 import Card from "@/app/gatherings/list/components/Card";
-import { useGatheringStore } from "@/app/hooks/gatherings/useGatheringStore";
-import { fetchGatherings } from "@/apis/gatherings";
-
-// TODO: gatherings api fetch use-query로 변경
+import { useListQuery } from "@/hooks/queries/useGatheringsQuery";
 
 function Gatherings() {
-  const { tab } = useGatheringStore();
-  const [gatherings, setGatherings] = useState([]);
+  const { data, isLoading, error } = useListQuery();
 
-  useEffect(() => {
-    const getGatherings = async () => {
-      try {
-        const data = await fetchGatherings(tab);
-        setGatherings(data);
-      } catch (error) {
-        console.error("Error fetching gatherings:", error);
-      }
-    };
-
-    getGatherings();
-  }, [tab]);
+  if (isLoading) return <p className="bg-blue-8">Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
 
   return (
     <>
       <Header />
-      <GatheringTabs />
-      <Card data={gatherings} />
+      <GatheringsTabs />
+      <Card data={data} />
     </>
   );
 }

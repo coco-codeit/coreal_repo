@@ -1,10 +1,10 @@
-import { useGatheringStore } from "@/app/hooks/gatherings/useGatheringStore";
 import {
   DallaemfitIcon,
   WorkationIcon,
 } from "@/app/gatherings/list/components/Icons";
 import Button from "@/app/gatherings/components/Button";
-import { GatheringType } from "@/app/types/gatherings";
+import { GatheringType } from "@/types/gatherings";
+import { useGatheringsStore } from "@/hooks/gatherings/useGatheringsStore";
 
 const tabs = {
   DALLAEMFIT: {
@@ -26,7 +26,7 @@ const tabs = {
 };
 
 function GatheringsTabs() {
-  const { tab, setTab } = useGatheringStore();
+  const { tab, setTab } = useGatheringsStore();
 
   const isDallaemfitActive = [
     "DALLAEMFIT",
