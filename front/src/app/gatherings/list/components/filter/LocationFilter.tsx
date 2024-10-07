@@ -1,6 +1,7 @@
-import { LocationType, useGatheringsStore } from "@/stores/useGatheringsStore";
-import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
 import Image from "next/image";
+import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
+import { useGatheringsStore } from "@/stores/useGatheringsStore";
+import { LocationType } from "@/types/gatherings";
 
 function LocationFilter() {
   const { location, setLocation } = useGatheringsStore();

@@ -3,8 +3,11 @@ export type GatheringType =
   | "OFFICE_STRETCHING"
   | "MINDFULNESS"
   | "WORKATION";
+export type LocationType = "건대입구" | "을지로3가" | "신림" | "홍대입구";
+export type SortByType = "dateTime" | "registrationEnd" | "participantCount";
+export type SortOrderType = "asc" | "desc";
 
-export interface Gatherings {
+export interface IGatherings {
   teamId: string;
   id: number;
   type: GatheringType;

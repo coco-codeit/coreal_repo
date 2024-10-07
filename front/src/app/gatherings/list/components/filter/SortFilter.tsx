@@ -1,8 +1,9 @@
-import { SortByType, useGatheringsStore } from "@/stores/useGatheringsStore";
-import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
 import Image from "next/image";
+import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
+import { useGatheringsStore } from "@/stores/useGatheringsStore";
+import { SortByType } from "@/types/gatherings";
 
-function LocationFilter() {
+function SortFilter() {
   const { sortBy, setSortBy, setSortOrder } = useGatheringsStore();
 
   const sorts = [
@@ -66,4 +67,4 @@ function LocationFilter() {
   );
 }
 
-export default LocationFilter;
+export default SortFilter;

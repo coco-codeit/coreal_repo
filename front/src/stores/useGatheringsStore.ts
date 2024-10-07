@@ -1,8 +1,10 @@
-import { GatheringType } from "@/types/gatherings";
 import { create } from "zustand";
-
-export type LocationType = "건대입구" | "을지로3가" | "신림" | "홍대입구";
-export type SortByType = "dateTime" | "registrationEnd" | "participantCount";
+import {
+  GatheringType,
+  LocationType,
+  SortByType,
+  SortOrderType,
+} from "@/types/gatherings";
 
 interface GatheringsState {
   // 탭 필터, 기본값 DALLAEMFIT
@@ -18,12 +20,8 @@ interface GatheringsState {
   sortBy: SortByType | undefined;
   setSortBy: (sortBy: SortByType | undefined) => void;
   // 오름차순, 내림차순
-  sortOrder: string | undefined;
-  setSortOrder: (sortOrder: string | undefined) => void;
-
-  offset: number;
-  setOffset: (offset: number) => void;
-  resetOffset: () => void;
+  sortOrder: SortOrderType | undefined;
+  setSortOrder: (sortOrder: SortOrderType | undefined) => void;
 }
 
 export const useGatheringsStore = create<GatheringsState>((set) => ({
@@ -36,9 +34,5 @@ export const useGatheringsStore = create<GatheringsState>((set) => ({
   sortBy: "dateTime",
   setSortBy: (sortBy: SortByType | undefined) => set({ sortBy }),
   sortOrder: "asc",
-  setSortOrder: (sortOrder: string | undefined) => set({ sortOrder }),
-
-  offset: 0,
-  setOffset: (newOffset: number) => set({ offset: newOffset }),
-  resetOffset: () => set({ offset: 0 }),
+  setSortOrder: (sortOrder: SortOrderType | undefined) => set({ sortOrder }),
 }));

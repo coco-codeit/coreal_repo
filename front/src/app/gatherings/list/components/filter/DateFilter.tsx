@@ -1,12 +1,11 @@
-import React from "react";
+import Image from "next/image";
 import { Menu, MenuButton, MenuItems } from "@headlessui/react";
 import { DayPicker } from "react-day-picker";
-import "react-day-picker/dist/style.css";
-import Image from "next/image";
-import { useGatheringsStore } from "@/stores/useGatheringsStore";
 import { format } from "date-fns";
+import { useGatheringsStore } from "@/stores/useGatheringsStore";
+import "react-day-picker/dist/style.css";
 
-function DatePickerMenu() {
+function DateFilter() {
   const { date, setDate } = useGatheringsStore();
 
   const formatDate = (date: Date | undefined) => {
@@ -60,4 +59,4 @@ function DatePickerMenu() {
   );
 }
 
-export default DatePickerMenu;
+export default DateFilter;
