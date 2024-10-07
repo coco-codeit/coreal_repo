@@ -1,16 +1,22 @@
-import axiosInstance from "./axiosInstance"; 
+import axiosInstance from "./axiosInstance";
 
-export const fetchReviews = async (type: string | string[]) => {
+export const fetchReviews = async (
+  type: string | string[],
+  location?: string
+) => {
   try {
     if (Array.isArray(type)) {
-      const promises = type.map((type) => axiosInstance.get(`/reviews`, { params: { type: type } }));
+      const promises = type.map((type) =>
+        axiosInstance.get(`/reviews`, { params: { type, location } })
+      );
       const responses = await Promise.all(promises);
       const combinedData = responses.flatMap((res) => res.data);
 
       return combinedData;
     } else {
-      const res = await axiosInstance.get(`/reviews?type=${type}`);
-
+      const res = await axiosInstance.get(`/reviews`, {
+        params: { type, location },
+      });
       return res.data;
     }
   } catch (error) {

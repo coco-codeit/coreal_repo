@@ -23,7 +23,8 @@ const tabs = [
     label: "워케이션",
     imageSrc: "/images/workation.svg",
     alt: "workation",
-    hasSubTabs: false,
+    hasSubTabs: true,
+    subTabs: [{ id: "ALL", label: "전체" }],
   },
 ];
 
@@ -34,14 +35,21 @@ export default function Tabs() {
   );
   console.log("selectedTab", selectedTab);
 
+  const [selectedRegion, setSelectedRegion] = useState<string | undefined>(
+    undefined
+  );
+
   const {
     data: reviews,
     isLoading,
     isError,
   } = useReviews(
-    selectedSubTab === "ALL"
-      ? ["OFFICE_STRETCHING", "MINDFULNESS"]
-      : selectedSubTab
+    selectedTab === "WORKATION"
+      ? selectedTab
+      : selectedSubTab === "ALL"
+        ? ["OFFICE_STRETCHING", "MINDFULNESS"]
+        : selectedSubTab,
+    selectedRegion === "지역 선택" ? undefined : selectedRegion
   );
 
   useEffect(() => {
@@ -74,13 +82,19 @@ export default function Tabs() {
             className={`flex items-center gap-1 pb-1 text-lg font-semibold ${
               selectedTab === tab.id
                 ? "border-[#111827] selected-tab"
-                : "border-transparent"
+                : "text-gray-400 border-transparent"
             } relative`}
             onClick={() => handleTabClick(tab.id)}
           >
             {tab.label}
             <span>
-              <Image src={tab.imageSrc} alt={tab.alt} width={32} height={32} />
+              <Image
+                src={tab.imageSrc}
+                alt={tab.alt}
+                width={32}
+                height={32}
+                className={`${selectedTab === tab.id ? "fill-current text-red-400" : "fill-current text-gray-400"}`}
+              />
             </span>
             {selectedTab === tab.id && (
               <span className="absolute bottom-[-2px] left-0 right-0 h-[2px] bg-[#111827] rounded-[1px]"></span>
@@ -108,7 +122,12 @@ export default function Tabs() {
       </div>
 
       <div>
-        <Card reviews={reviews || []} tabs={tabs} />
+        <Card
+          reviews={reviews || []}
+          tabs={tabs}
+          selectedRegion={selectedRegion}
+          setSelectedRegion={setSelectedRegion}
+        />
       </div>
     </div>
   );

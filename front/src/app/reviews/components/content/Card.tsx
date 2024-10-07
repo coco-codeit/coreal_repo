@@ -26,9 +26,16 @@ interface Review {
 interface CardProps {
   reviews: Review[];
   tabs: Tab[];
+  selectedRegion: string | undefined;
+  setSelectedRegion: (region: string | undefined) => void;
 }
 
-export default function Card({ reviews, tabs }: CardProps) {
+export default function Card({
+  reviews,
+  tabs,
+  selectedRegion,
+  setSelectedRegion,
+}: CardProps) {
   useEffect(() => {
     console.log("리뷰 리스트 출력", reviews);
   }, [reviews]);
@@ -46,13 +53,29 @@ export default function Card({ reviews, tabs }: CardProps) {
   const safeReviews = Array.isArray(reviews) ? reviews : [];
   console.log(safeReviews);
 
+  useEffect(() => {
+    console.log("Filtered Reviews:", reviews);
+  }, [reviews]);
+
+  useEffect(() => {
+    console.log("Selected Region for Filtering:", selectedRegion);
+  }, [selectedRegion]);
+
   const regionOptions = [
-    { id: "all", label: "지역 선택" },
-    { id: "KonkukUniv", label: "건대입구" },
-    { id: "Euljiro3ga", label: "을지로 3가" },
-    { id: "sillim", label: "신림" },
-    { id: "hongikUniv", label: "홍대입구" },
+    { id: "all", label: "지역 전체" },
+    { id: "건대입구", label: "건대입구" },
+    { id: "을지로3가", label: "을지로 3가" },
+    { id: "신림", label: "신림" },
+    { id: "홍대입구", label: "홍대입구" },
   ];
+
+  const handleRegionSelect = (option: { id: string; label: string }) => {
+    if (option.id === "all") {
+      setSelectedRegion(undefined);
+    } else {
+      setSelectedRegion(option.id);
+    }
+  };
 
   const dateOptions = [{ id: "all", label: "날짜 선택" }];
 
@@ -62,7 +85,6 @@ export default function Card({ reviews, tabs }: CardProps) {
     { id: "mostParticipants", label: "참여 인원 순" },
   ];
 
-  const [selectedRegion, setSelectedRegion] = useState("지역 선택");
   const [selectedDate, setSelectedDate] = useState("날짜 선택");
   const [selectedSort, setSelectedSort] = useState("최신순");
 
@@ -128,8 +150,8 @@ export default function Card({ reviews, tabs }: CardProps) {
             <div className="flex  gap-2 items-center justify-end ">
               <SortControls
                 options={regionOptions}
-                selectedOption={selectedRegion}
-                onOptionSelect={(option) => setSelectedRegion(option.label)}
+                selectedOption={selectedRegion || "지역 선택"}
+                onOptionSelect={handleRegionSelect}
               />
               <SortControls
                 options={dateOptions}
@@ -150,11 +172,11 @@ export default function Card({ reviews, tabs }: CardProps) {
         {safeReviews.length > 0 ? (
           safeReviews.map((review) => {
             const { parentLabel, childLabel } = getLabelsFromType(
-              review.Gathering.type,
+              review.Gathering.type
             );
 
             return (
-              <div key={review.id} className="flex gap-6 w-full ">
+              <div key={review.id} className="flex gap-6 w-full mb-6">
                 <div className="w-[280px] h-[156px] relative">
                   <Image
                     src={review.Gathering.image}
