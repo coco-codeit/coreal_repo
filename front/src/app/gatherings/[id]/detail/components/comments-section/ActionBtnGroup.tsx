@@ -1,6 +1,21 @@
-import React from "react";
+"use client";
 
-export default function ActionBtnGroup() {
+import {
+  useGatherCancelMutation,
+  useGatherJoinMutation,
+} from "@/hooks/queries/gatherDetailQuery";
+import React, { useEffect, useState } from "react";
+
+export default function ActionBtnGroup({ pageId }: { pageId: string }) {
+  const [isJoined, setIsJoined] = useState(false);
+
+  const { mutate: cancelMutation } = useGatherCancelMutation(pageId);
+  const { mutate: joinMutation } = useGatherJoinMutation(pageId);
+
+  useEffect(() => {
+    setIsJoined(true);
+  }, []);
+
   return (
     <div className="fixed bottom-0 left-0 w-full h-[84px] border-t-2 border-black bg-white z-10">
       <div className="flex items-center justify-between max-w-[996px] mx-auto h-full">
@@ -11,9 +26,26 @@ export default function ActionBtnGroup() {
           </div>
         </div>
         <div>
-          <button className="flex justify-center items-center w-[115px] h-11 rounded-xl bg-orange-600 text-white">
-            참여하기
-          </button>
+          {isJoined ? (
+            <div className="flex">
+              <button
+                className="flex justify-center items-center w-[115px] h-11 rounded-xl text-orange-600 bg-white"
+                onClick={() => cancelMutation()}
+              >
+                취소하기
+              </button>
+              <button
+                className="flex justify-center items-center w-[115px] h-11 rounded-xl bg-orange-600 text-white"
+                onClick={() => joinMutation()}
+              >
+                공유하기
+              </button>
+            </div>
+          ) : (
+            <button className="flex justify-center items-center w-[115px] h-11 rounded-xl bg-orange-600 text-white">
+              참여하기
+            </button>
+          )}
         </div>
       </div>
     </div>

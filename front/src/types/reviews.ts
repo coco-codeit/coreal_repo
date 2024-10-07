@@ -8,6 +8,11 @@ export interface Review {
   User: User;
 }
 
+export interface ReviewArgs {
+  type?: string;
+  gatherId?: string;
+}
+
 export interface Gathering {
   teamId: number;
   id: number;
