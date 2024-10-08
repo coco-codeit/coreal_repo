@@ -1,10 +1,9 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import CommentsCard from "./CommentsCard";
 import Pagination from "./Pagination";
 import { useReviews } from "@/hooks/reviews/useReviews";
-import { useDetailLoadingStore } from "@/stores/useGatherDetilStore";
 import CommentSecSkeleton from "./CommentSecSkeleton";
 
 export default function CommentsSection({ pageId }: { pageId: string }) {
@@ -14,11 +13,6 @@ export default function CommentsSection({ pageId }: { pageId: string }) {
   const { data: reviewData = [], isLoading: isReviewLoading } = useReviews({
     gatherId: pageId,
   });
-  const { setCommentsLoading } = useDetailLoadingStore();
-
-  useEffect(() => {
-    setCommentsLoading(isReviewLoading);
-  }, [isReviewLoading, setCommentsLoading]);
 
   const totalPages = Math.ceil(reviewData.length / reviewsPerPage);
 
