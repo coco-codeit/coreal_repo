@@ -18,21 +18,22 @@ export default function UserAvatar({
       <div className="flex items-center">
         <div className="text-[14px]">모집정원 16명</div>
         <div className="flex ml-[22px]">
-          {userArr?.map((item: GatheringsUser) => (
-            <div
-              key={item.id}
-              className="relative h-[29px] w-[29px] rounded-full bg-gray-300 -ml-[10px]"
-            >
-              {item.image && (
+          {userArr?.map((item: GatheringsUser) => {
+            const userImgSrc = item.image || "/images/profile.svg";
+            return (
+              <div
+                key={item.id}
+                className="relative h-[29px] w-[29px] rounded-full bg-gray-300 -ml-[10px]"
+              >
                 <Image
                   className="rounded-full"
-                  src={item.image}
+                  src={userImgSrc}
                   alt="Gather Detail Img"
                   fill
                 />
-              )}
-            </div>
-          ))}
+              </div>
+            );
+          })}
           {isMoreUser && (
             <div className="flex items-center justify-center text-[14px] h-[29px] w-[29px] rounded-full bg-gray-500 -ml-[10px]">
               +{userArr.length - 5}

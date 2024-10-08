@@ -33,7 +33,7 @@ export default function Tabs() {
   );
   console.log("selectedTab", selectedTab);
 
-  const { data, isLoading, isError } = useReviews(selectedSubTab);
+  const { data, isLoading, isError } = useReviews({ type: selectedSubTab });
 
   useEffect(() => {
     const currentTab = tabs.find((tab) => tab.id === selectedTab);
