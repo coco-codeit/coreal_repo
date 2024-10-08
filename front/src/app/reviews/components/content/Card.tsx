@@ -178,7 +178,7 @@ export default function Card({
         {safeReviews.length > 0 ? (
           safeReviews.map((review) => {
             const { parentLabel, childLabel } = getLabelsFromType(
-              review.Gathering.type
+              review.Gathering.type,
             );
 
             // 리뷰 카드

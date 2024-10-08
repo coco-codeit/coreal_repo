@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { useReviews } from "@/hooks/reviews/useReviews";
+import { useReviews } from "@/hooks/queries/useReviews";
 
 import Card from "../content/Card";
 
