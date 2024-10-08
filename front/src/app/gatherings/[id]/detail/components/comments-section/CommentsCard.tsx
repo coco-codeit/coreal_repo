@@ -1,8 +1,9 @@
 import { HeartIcon } from "@/app/components/HeartIcon";
-import { useDateConverter } from "@/hooks/gatherings/useDateConverter";
 import { Review } from "@/types/reviews";
 import Image from "next/image";
 import React from "react";
+import { format } from "date-fns";
+import { ko } from "date-fns/locale";
 
 export default function CommentsCard({
   singleReviewData,
@@ -10,7 +11,6 @@ export default function CommentsCard({
   singleReviewData: Review;
 }) {
   const userImgSrc = singleReviewData.User.image || "/images/profile.svg";
-  const convertedDate = useDateConverter(singleReviewData.createdAt, "date");
 
   const renderHearts = (score: number) => {
     const hearts = [];
@@ -37,7 +37,11 @@ export default function CommentsCard({
         </div>
         <span className="pl-2">{singleReviewData.User.name}</span>
         <span className="w-1 px-[1px] ml-2 mr-3">|</span>
-        <span>{convertedDate}</span>
+        <span>
+          {format(singleReviewData.createdAt, "MMMM d일", {
+            locale: ko,
+          }).replace("MMMM", "월")}
+        </span>
       </div>
       <div className="relative w-full h-[2px] my-4">
         <Image
