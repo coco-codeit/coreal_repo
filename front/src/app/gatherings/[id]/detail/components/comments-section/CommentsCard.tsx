@@ -1,3 +1,4 @@
+import { HeartIcon } from "@/app/components/HeartIcon";
 import { useDateConverter } from "@/hooks/gatherings/useDateConverter";
 import { Review } from "@/types/reviews";
 import Image from "next/image";
@@ -11,9 +12,19 @@ export default function CommentsCard({
   const userImgSrc = singleReviewData.User.image || "/images/profile.svg";
   const convertedDate = useDateConverter(singleReviewData.createdAt, "date");
 
+  const renderHearts = (score: number) => {
+    const hearts = [];
+    for (let i = 1; i <= 5; i++) {
+      hearts.push(<HeartIcon key={i} shouldAnimate={i <= score} />);
+    }
+    return hearts;
+  };
+
   return (
     <div className="h-[102px] mt-4">
-      <div className="h-6">하트 추가</div>
+      <div className="flex h-6 space-x-1">
+        {renderHearts(singleReviewData.score)}
+      </div>
       <div className="text-[14px] mt-[10px]">{singleReviewData.comment}</div>
       <div className="flex items-center text-[12px] mt-2">
         <div className="relative w-6 h-6">
