@@ -1,7 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useMemo } from "react";
+import { formatDistanceToNow, isToday } from "date-fns";
+import { ko } from "date-fns/locale";
 
 interface IDeadLineTag {
   endTime: string;
@@ -9,23 +11,30 @@ interface IDeadLineTag {
 }
 
 export default function DeadLineTag({ endTime, type }: IDeadLineTag) {
-  const [isSameDate, setIsSameDate] = useState(false);
-
   const targetDate = useMemo(() => new Date(endTime), [endTime]);
-  const targetHours = targetDate.getHours();
 
-  useEffect(() => {
-    const currentDate = new Date();
-    const checkSameDate = (date1: Date, date2: Date) => {
-      return (
-        date1.getFullYear() === date2.getFullYear() &&
-        date1.getMonth() === date2.getMonth() &&
-        date1.getDate() === date2.getDate()
-      );
-    };
+  const formatDeadline = () => {
+    const distance = formatDistanceToNow(targetDate, {
+      locale: ko,
+      addSuffix: true,
+    });
 
-    setIsSameDate(checkSameDate(targetDate, currentDate));
-  }, [targetDate]);
+    if (isToday(targetDate)) {
+      return `오늘 ${targetDate.getHours()}시 마감`;
+    } else {
+      const daysMatch = distance.match(/(\d+)\s*일/);
+      if (daysMatch) {
+        const days = daysMatch[1];
+        return `${days}일 후 마감`;
+      }
+
+      return distance.includes("분")
+        ? `${distance.replace("분", "분 후")} 마감`
+        : distance;
+    }
+  };
+
+  const formattedDeadline = formatDeadline();
 
   const customRound = {
     lg: "rounded-tr-3xl rounded-bl-lg",
@@ -34,7 +43,7 @@ export default function DeadLineTag({ endTime, type }: IDeadLineTag) {
 
   return (
     <div
-      className={` ${isSameDate ? "flex" : "hidden"} absolute items-center right-[2px] top-[2px] w-[123px] h-8 rounded-bl-lg bg-[#EA580C] text-white ${customRound[type]}`}
+      className={`flex items-center absolute right-0 top-0 min-w-[110px] w-auto h-8 rounded-bl-lg bg-[#EA580C] text-white ${customRound[type]}`}
     >
       <Image
         className="ml-2 mr-1"
@@ -43,7 +52,7 @@ export default function DeadLineTag({ endTime, type }: IDeadLineTag) {
         width={24}
         height={24}
       />
-      <span className="text-[12px]">{`오늘 ${targetHours}시 마감`}</span>
+      <span className="text-[12px]">{formattedDeadline}</span>
     </div>
   );
 }
