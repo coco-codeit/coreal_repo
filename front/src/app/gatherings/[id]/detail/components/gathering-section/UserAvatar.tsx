@@ -11,7 +11,7 @@ export default function UserAvatar({
   const userArr = participantData?.map(
     (item: GatheringsParticipants) => item.User,
   );
-  const isMoreUser = userArr?.length >= 5;
+  const isMoreUser = userArr?.length > 5;
 
   return (
     <div className="flex items-center justify-between">
@@ -35,7 +35,7 @@ export default function UserAvatar({
             );
           })}
           {isMoreUser && (
-            <div className="flex items-center justify-center text-[14px] h-[29px] w-[29px] rounded-full bg-gray-500 -ml-[10px]">
+            <div className="flex items-center justify-center text-[14px] h-[29px] w-[29px] rounded-full bg-gray-200 -ml-[10px] z-30">
               +{userArr.length - 5}
             </div>
           )}

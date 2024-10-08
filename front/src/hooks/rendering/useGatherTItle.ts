@@ -10,6 +10,5 @@ export const useGatherTitle = ({
     MINDFULNESS: `마인드풀니스 ${location} 모임`,
     WORKATION: `워케이션 ${location} 모임`,
   };
-  console.log(titleMap[type]);
   return titleMap[type] || "";
 };
