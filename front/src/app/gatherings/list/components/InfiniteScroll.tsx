@@ -25,7 +25,7 @@ const InfiniteScroll = ({
   }, [inView, hasNextPage, isFetching, fetchNextPage]);
 
   return (
-    <ul className="grid grid-cols-1 gap-6 py-6 w-full">
+    <ul className="grid grid-cols-1 gap-6 py-4 md:py-6 w-full">
       {children}
       {hasNextPage && <li ref={ref} className="h-[20px]" />}
     </ul>

@@ -6,7 +6,7 @@ import Button from "@/app/gatherings/components/Button";
 import { GatheringType } from "@/types/gatherings";
 import { useGatheringsStore } from "@/stores/useGatheringsStore";
 
-const tabs = {
+const tabConfig = {
   DALLAEMFIT: {
     label: "달램핏",
     value: "DALLAEMFIT" as GatheringType,
@@ -25,7 +25,7 @@ const tabs = {
   },
 };
 
-function GatheringsTabs() {
+function Tabs() {
   const { tab, setTab } = useGatheringsStore();
 
   const isDallaemfitActive = [
@@ -35,22 +35,22 @@ function GatheringsTabs() {
   ].includes(tab);
 
   const currentSubTabs = isDallaemfitActive
-    ? tabs["DALLAEMFIT"].subTabs
-    : tabs["WORKATION"].subTabs;
+    ? tabConfig["DALLAEMFIT"].subTabs
+    : tabConfig["WORKATION"].subTabs;
 
   return (
     <div className="flex flex-col gap-2">
       <div className="flex justify-between items-start font-title ">
         <div className="flex justify-center items-center gap-3 text-subhead-3">
-          {Object.values(tabs).map(({ label, value, Icon }) => (
+          {Object.values(tabConfig).map(({ label, value, Icon }) => (
             <button
               key={value}
               className={`flex items-center gap-1 border-b-2 pb-1 ${
                 isDallaemfitActive && value === "DALLAEMFIT"
-                  ? "border-black text-black"
+                  ? "border-gray-900 text-gray-900"
                   : tab === value
-                    ? "border-black text-black"
-                    : "border-white text-gray-400"
+                    ? "border-gray-900 text-gray-900"
+                    : "border-none text-gray-400"
               }`}
               onClick={() => setTab(value)}
             >
@@ -60,7 +60,11 @@ function GatheringsTabs() {
           ))}
         </div>
 
-        <Button variant="primary" type="create">
+        <Button
+          className="font-semibold px-[18px] md:px-[21px] py-[10px]"
+          style="solid"
+          size="responsive"
+        >
           모임 만들기
         </Button>
       </div>
@@ -69,9 +73,10 @@ function GatheringsTabs() {
         {currentSubTabs.map(({ label, value }) => (
           <Button
             key={value}
-            variant={tab === value ? "dark" : "light"}
-            type="tab"
+            style={tab === value ? "active" : "default"}
             onClick={() => setTab(value)}
+            size="responsive"
+            className="px-[12px] py-[8px] md:px-4 md:py-[10px]"
           >
             {label}
           </Button>
@@ -81,4 +86,4 @@ function GatheringsTabs() {
   );
 }
 
-export default GatheringsTabs;
+export default Tabs;

@@ -27,13 +27,7 @@ function DateFilter() {
         <span className="text-sm flex items-center">
           {date ? formatDate(date) : "날짜 선택"}
         </span>
-        <Image
-          src="/images/down.svg"
-          alt="icon"
-          width={24}
-          height={24}
-          className={date ? "filter invert" : ""}
-        />
+        <Image src="/images/down.svg" alt="icon" width={24} height={24} />
       </MenuButton>
 
       <MenuItems className="z-20 absolute mt-2 w-auto rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">

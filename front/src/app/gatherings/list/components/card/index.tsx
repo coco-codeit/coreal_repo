@@ -21,7 +21,7 @@ function Card({ data }: CardProps) {
       className="h-[316px] md:h-[156px] grid grid-rows-[156px_1fr] md:grid-cols-[280px_1fr] cursor-pointer"
       onClick={() => handleCardClick(data.id)}
     >
-      <CardImage image={data.image} name={data.name} />
+      <CardImage image={data.image} name={data.name} endTime={data.dateTime} />
 
       <div className="flex flex-col border-2 border-gray-100 py-4 px-4 md:pl-6 rounded-b-3xl md:rounded-b-none md:rounded-tr-3xl md:rounded-br-3xl">
         <CardHeader
