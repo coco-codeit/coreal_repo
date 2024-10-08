@@ -43,6 +43,7 @@ export default function GatehringSection({ pageId }: { pageId: string }) {
             <GatheringInfo
               dateInfo={detailData?.dateTime}
               locationInfo={detailData?.location}
+              typeInfo={detailData?.type}
             />
 
             <hr className="border-dashed border-gray-400 mt-[43px]" />
