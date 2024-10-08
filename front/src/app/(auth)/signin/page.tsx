@@ -4,9 +4,10 @@ import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { signIn, signOut } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import Toast from "../components/toast";
 import { FormField } from "../components/FormField";
+import { useRouter } from "next/navigation";
 
 const signinSchema = z.object({
   email: z.string().min(1, "이메일을 입력해주세요."),
@@ -36,6 +37,8 @@ export default function Signin() {
     }
   }, [toastMessage]);
 
+  const router = useRouter();
+
   const onSubmit = async (data: FormData) => {
     console.log(data);
     const result = await signIn("credentials", {
@@ -51,44 +54,53 @@ export default function Signin() {
     } else {
       setToastMessage("로그인에 성공했습니다!");
       // 로그인 성공시 페이지 이동
+      setTimeout(() => router.push("/"), 2000);
     }
   };
 
   return (
-    <div className="border-4 border-gray-400 rounded-lg p-8 w-full max-w-md mx-auto">
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full max-w-md"
-      >
-        <FormField
-          label="아이디"
-          name="email"
-          type="text"
-          register={register}
-          error={errors.email?.message}
-        />
-        <FormField
-          label="비밀번호"
-          name="password"
-          type="password"
-          register={register}
-          error={errors.password?.message}
-        />
-        <div className="flex items-center justify-between">
+    <div className="w-[343px] sm:w-[608px] md:w-[510px] md:min-w-[510px] md:h-[422px] rounded-3xl px-[16px] py-[32px] sm:px-[54px] sm:py-[32px] bg-white shadow-md">
+      <div className="w-full max-w-[311px] h-[358px] sm:max-w-[500px] sm:h-[358px] md:max-w-[402px] flex flex-col">
+        <span className="text-2xl font-semibold text-left text-gray-800 mb-[32px]">
+          로그인
+        </span>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="w-full mb-4 flex-grow"
+        >
+          <FormField
+            label="아이디"
+            name="email"
+            type="text"
+            register={register}
+            error={errors.email?.message}
+          />
+          <FormField
+            label="비밀번호"
+            name="password"
+            type="password"
+            register={register}
+            error={errors.password?.message}
+          />
           <button
-            className="w-full bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-4"
+            className="w-full bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2.5 px-4 rounded-xl focus:outline-none focus:shadow-outline mt-[16px] "
             type="submit"
           >
             로그인
           </button>
-        </div>
-      </form>
-      <button
-        className="w-full bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-4"
-        onClick={() => signOut()}
-      >
-        로그아웃
-      </button>
+        </form>
+        <p className="text-[15px] font-medium text-gray-800 text-center">
+          같이 달램이 처음이신가요?{" "}
+          <button
+            className="text-orange-600 underline"
+            onClick={() => {
+              router.push("/signup");
+            }}
+          >
+            회원가입
+          </button>
+        </p>
+      </div>
       {toastMessage && <Toast>{toastMessage}</Toast>}
     </div>
   );

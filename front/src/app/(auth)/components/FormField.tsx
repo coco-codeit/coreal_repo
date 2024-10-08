@@ -1,5 +1,20 @@
+import React from "react";
 import { UseFormRegister, FieldValues, Path } from "react-hook-form";
 
+// 반응형 래퍼 컴포넌트
+interface FormWrapperProps {
+  children: React.ReactNode;
+}
+
+export function FormWrapper({ children }: FormWrapperProps) {
+  return (
+    <div className="w-full max-w-[311px] h-[398px] sm:max-w-[500px] sm:h-[414px] lg:max-w-[402px] lg:h-[414px] mx-auto p-4">
+      {children}
+    </div>
+  );
+}
+
+// 수정된 FormField 컴포넌트
 interface FormFieldProps<T extends FieldValues> {
   label: string;
   name: Path<T>;
@@ -16,21 +31,38 @@ export function FormField<T extends FieldValues>({
   error,
 }: FormFieldProps<T>) {
   return (
-    <div className="mb-4">
+    <div className="flex flex-col justify-start items-start w-full relative gap-2 mb-[24px]">
       <label
-        className="block text-gray-700 text-sm font-bold mb-2"
         htmlFor={name}
+        className="text-sm font-semibold text-gray-900 mb-1"
       >
         {label}
       </label>
-      <input
-        {...register(name)}
-        className="shadow appearance-none border-2 border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        id={name}
-        type={type}
-        placeholder={label}
-      />
-      {error && <p className="text-red-500 text-xs italic mt-1">{error}</p>}
+      <div
+        className={`flex justify-start items-center w-full overflow-hidden gap-2.5 px-4 py-2.5 rounded-xl ${
+          error ? "bg-gray-50 border-2 border-red-600" : "bg-gray-50"
+        }`}
+      >
+        <div className="flex justify-between items-center w-full relative">
+          <input
+            {...register(name)}
+            className="w-full text-base font-medium text-left bg-transparent focus:outline-none
+                    autofill:bg-gray-50 autofill:text-gray-900 autofill:shadow-[inset_0_0_0px_1000px_rgb(249,250,251)]
+                      spellcheck-off"
+            id={name}
+            type={type}
+            placeholder={label}
+            spellCheck="false"
+            autoCorrect="off"
+            autoCapitalize="off"
+          />
+        </div>
+      </div>
+      {error && (
+        <p className="text-sm font-semibold text-left text-red-600 mt-1">
+          {error}
+        </p>
+      )}
     </div>
   );
 }

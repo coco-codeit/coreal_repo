@@ -6,6 +6,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useSignupMutation } from "../utils/postSignup";
 import { FormField } from "../components/FormField";
+import { useRouter } from "next/navigation";
+import Toast from "../components/toast";
 
 const signupSchema = z
   .object({
@@ -32,63 +34,88 @@ export default function Signup() {
   });
 
   const signupMutation = useSignupMutation();
+  const router = useRouter();
+  const [toastMessage, setToastMessage] = React.useState<string | null>(null);
+
   const onSubmit = async (data: FormData) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { confirmPassword, ...submitData } = data;
-    const result = await signupMutation.mutateAsync(submitData);
-    console.log(result);
+    try {
+      const result = await signupMutation.mutateAsync(submitData);
+      console.log(result);
+      setToastMessage("회원가입에 성공했습니다!");
+      // 회원가입 성공 시 로그인 페이지로 이동
+      setTimeout(() => router.push("/signin"), 2000);
+    } catch (error) {
+      setToastMessage("회원가입에 실패했습니다. 다시 시도해주세요.");
+    }
   };
 
   return (
-    <div className="border-4 border-gray-400 rounded-lg p-8 w-full max-w-md mx-auto">
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full max-w-md"
-      >
-        <FormField
-          label="이름"
-          name="name"
-          type="text"
-          register={register}
-          error={errors.name?.message}
-        />
-        <FormField
-          label="아이디"
-          name="email"
-          type="text"
-          register={register}
-          error={errors.email?.message}
-        />
-        <FormField
-          label="회사명"
-          name="companyName"
-          type="text"
-          register={register}
-          error={errors.companyName?.message}
-        />
-        <FormField
-          label="비밀번호"
-          name="password"
-          type="password"
-          register={register}
-          error={errors.password?.message}
-        />
-        <FormField
-          label="비밀번호 확인"
-          name="confirmPassword"
-          type="password"
-          register={register}
-          error={errors.confirmPassword?.message}
-        />
-        <div className="flex items-center justify-between">
+    <div className="w-full max-w-[510px] md:min-w-[510px] min-h-[710px] rounded-3xl px-4 sm:px-[54px] py-8 bg-white shadow-md mt-[-60px]">
+      <div className="w-full h-full flex flex-col">
+        <span className="text-2xl font-semibold text-left text-gray-800 mb-[32px]">
+          회원가입
+        </span>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="w-full mb-4 flex-grow overflow-y-auto"
+        >
+          <FormField
+            label="이름"
+            name="name"
+            type="text"
+            register={register}
+            error={errors.name?.message}
+          />
+          <FormField
+            label="아이디"
+            name="email"
+            type="text"
+            register={register}
+            error={errors.email?.message}
+          />
+          <FormField
+            label="회사명"
+            name="companyName"
+            type="text"
+            register={register}
+            error={errors.companyName?.message}
+          />
+          <FormField
+            label="비밀번호"
+            name="password"
+            type="password"
+            register={register}
+            error={errors.password?.message}
+          />
+          <FormField
+            label="비밀번호 확인"
+            name="confirmPassword"
+            type="password"
+            register={register}
+            error={errors.confirmPassword?.message}
+          />
           <button
-            className="w-full bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-4"
+            className="w-full bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2.5 px-4 rounded-xl focus:outline-none focus:shadow-outline mt-[16px]"
             type="submit"
           >
-            가입하기
+            회원가입
           </button>
-        </div>
-      </form>
+        </form>
+        <p className="text-[15px] font-medium text-gray-800 text-center">
+          이미 계정이 있으신가요?{" "}
+          <button
+            className="text-orange-600 underline"
+            onClick={() => {
+              router.push("/signin");
+            }}
+          >
+            로그인
+          </button>
+        </p>
+      </div>
+      {toastMessage && <Toast>{toastMessage}</Toast>}
     </div>
   );
 }
