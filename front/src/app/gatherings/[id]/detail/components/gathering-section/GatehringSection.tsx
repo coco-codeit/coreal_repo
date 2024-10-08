@@ -20,7 +20,7 @@ export default function GatehringSection({ pageId }: { pageId: string }) {
     useGatherParticipants(pageId);
 
   const isDataLoading = isDetailLoading || participantLoading;
-
+  console.log(detailData);
   return (
     <>
       {isDataLoading ? (
