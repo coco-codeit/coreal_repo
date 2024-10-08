@@ -1,24 +1,43 @@
+import { HeartIcon } from "@/app/components/HeartIcon";
+import { useDateConverter } from "@/hooks/gatherings/useDateConverter";
+import { Review } from "@/types/reviews";
 import Image from "next/image";
 import React from "react";
 
-export default function CommentsCard() {
+export default function CommentsCard({
+  singleReviewData,
+}: {
+  singleReviewData: Review;
+}) {
+  const userImgSrc = singleReviewData.User.image || "/images/profile.svg";
+  const convertedDate = useDateConverter(singleReviewData.createdAt, "date");
+
+  const renderHearts = (score: number) => {
+    const hearts = [];
+    for (let i = 1; i <= 5; i++) {
+      hearts.push(<HeartIcon key={i} shouldAnimate={i <= score} />);
+    }
+    return hearts;
+  };
+
   return (
     <div className="h-[102px] mt-4">
-      <div className="h-6">하트 추가</div>
-      <div className="text-[14px] mt-[10px]">
-        따듯하게 느껴지는 공간이에요 평소에 달램 이용해보고 싶었는데 이렇게 같이
-        달램 생기니까 너무 좋아요! 프로그램이 더 많이 늘어났으면 좋겠어요.
+      <div className="flex h-6 space-x-1">
+        {renderHearts(singleReviewData.score)}
       </div>
+      <div className="text-[14px] mt-[10px]">{singleReviewData.comment}</div>
       <div className="flex items-center text-[12px] mt-2">
-        <Image
-          src="/images/profile.svg"
-          width={24}
-          height={24}
-          alt="profile img"
-        />
-        <span className="pl-2">닉네임</span>
+        <div className="relative w-6 h-6">
+          <Image
+            src={userImgSrc}
+            className="rounded-full"
+            fill
+            alt="profile img"
+          />
+        </div>
+        <span className="pl-2">{singleReviewData.User.name}</span>
         <span className="w-1 px-[1px] ml-2 mr-3">|</span>
-        <span>2024.05.22</span>
+        <span>{convertedDate}</span>
       </div>
       <div className="relative w-full h-[2px] my-4">
         <Image

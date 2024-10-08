@@ -2,9 +2,9 @@
 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { useReviews } from "@/hooks/queries/useReviews";
 
 import Card from "../content/Card";
+import { useReviews } from "@/hooks/queries/useReviews";
 
 const tabs = [
   {
@@ -32,26 +32,27 @@ const tabs = [
 export default function Tabs() {
   const [selectedTab, setSelectedTab] = useState(tabs[0].id);
   const [selectedSubTab, setSelectedSubTab] = useState(
-    tabs[0].subTabs ? tabs[0].subTabs[0].id : "",
+    tabs[0].subTabs ? tabs[0].subTabs[0].id : ""
   );
 
   console.log("selectedTab", selectedTab);
 
   const [selectedRegion, setSelectedRegion] = useState<string | undefined>(
-    "지역 선택",
+    "지역 선택"
   );
 
   const [selectedSort, setSelectedSort] = useState("createdAt");
 
-  const { reviews, reviewScores, isLoading, isError } = useReviews(
-    selectedTab === "WORKATION"
-      ? selectedTab
-      : selectedSubTab === "ALL"
-        ? ["OFFICE_STRETCHING", "MINDFULNESS"]
-        : selectedSubTab,
-    selectedRegion === "지역 선택" ? undefined : selectedRegion,
-    selectedSort,
-  );
+  const { reviews, reviewScores, isLoading, isError } = useReviews({
+    type:
+      selectedTab === "WORKATION"
+        ? selectedTab
+        : selectedSubTab === "ALL"
+          ? ["OFFICE_STRETCHING", "MINDFULNESS"]
+          : selectedSubTab,
+    location: selectedRegion === "지역 선택" ? undefined : selectedRegion,
+    sortBy: selectedSort,
+  });
 
   useEffect(() => {
     const currentTab = tabs.find((tab) => tab.id === selectedTab);

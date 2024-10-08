@@ -1,5 +1,3 @@
-import React from "react";
-
 function DallaemfitIcon({ isSelected }: { isSelected: boolean }) {
   const fillColor = isSelected ? "#111827" : "#9CA3AF"; // gray-900 or gray-400
   const strokeColor = isSelected ? "#111827" : "#9CA3AF"; // gray-900 or gray-400

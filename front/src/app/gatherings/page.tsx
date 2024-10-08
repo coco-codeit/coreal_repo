@@ -1,10 +1,32 @@
+import {
+  QueryClient,
+  dehydrate,
+  HydrationBoundary,
+} from "@tanstack/react-query";
 import Gatherings from "@/app/gatherings/list/components/Gatherings";
+import { usePrefetchGatherings } from "@/hooks/queries/useGatheringsQuery";
 
-function Home() {
+export default async function Home() {
+  const queryClient = new QueryClient();
+
+  const type = "DALLAEMFIT";
+  const location = undefined;
+  const sortBy = "dateTime";
+  const sortOrder = "asc";
+
+  await usePrefetchGatherings({
+    queryClient,
+    type,
+    location,
+    sortBy,
+    sortOrder,
+  });
+
+  const dehydratedState = dehydrate(queryClient);
+
   return (
-    <div className="max-w-[343px] md:max-w-[695px] lg:max-w-[996px] mx-auto flex flex-col">
+    <HydrationBoundary state={dehydratedState}>
       <Gatherings />
-    </div>
+    </HydrationBoundary>
   );
 }
-export default Home;

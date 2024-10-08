@@ -1,5 +1,6 @@
 import {
   getGatherDetail,
+  getGatherParticipants,
   postJoinGather,
   putCancelGather,
 } from "@/libs/gatherDetail";
@@ -15,7 +16,7 @@ export const useGatherDeatilQuery = (gatherId: string) => {
 export const useGatherParticipants = (gatherId: string) => {
   return useQuery({
     queryKey: ["gatherParticipants"],
-    queryFn: () => getGatherDetail(gatherId),
+    queryFn: () => getGatherParticipants(gatherId),
   });
 };
 

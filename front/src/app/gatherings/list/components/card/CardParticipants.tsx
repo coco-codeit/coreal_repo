@@ -28,8 +28,10 @@ function CardParticipants({
           <ProgressBar percent={percent} />
         </div>
       </div>
-      <div className="flex items-end gap-2 h-6">
-        <span className="text-orange-600 leading-none">join now</span>
+      <div className="flex gap-2 items-center">
+        <span className="font-semibold text-base text-orange-600">
+          join now
+        </span>
         <LuArrowRight className="text-orange-600 w-[18px] h-[18px]" />
       </div>
     </div>

@@ -12,6 +12,17 @@ const config: Config = {
         "screen-minus-nav": "calc(100vh - 60px)",
       },
 
+      keyframes: {
+        fillToBorder: {
+          "0%": { r: "0" },
+          "50%": { r: "12" },
+          "100%": { r: "15" },
+        },
+      },
+      animation: {
+        fillToBorder: "fillToBorder 1s ease-in-out forwards",
+      },
+
       fontFamily: {
         pretendard: ["var(--font-pretendard)"],
       },

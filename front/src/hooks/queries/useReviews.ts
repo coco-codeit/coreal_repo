@@ -1,15 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchReviewScores } from "@/libs/reviewScores";
 import { fetchReviews } from "@/libs/reviews";
+import { fetchReviewScores } from "@/libs/reviewScores";
+import { ReviewArgs } from "@/types/reviews";
 
-export const useReviews = (
-  type: string | string[],
-  location?: string,
-  sortBy?: string
-) => {
+export const useReviews = (args: ReviewArgs) => {
+  const { gatherId, type, location, sortBy } = args;
+
   const reviewsQuery = useQuery({
-    queryKey: ["reviews", type, location, sortBy],
-    queryFn: () => fetchReviews({ type, location }),
+    queryKey: ["reviews", gatherId, type, location, sortBy],
+    queryFn: () => fetchReviews(args),
     select: (data) => {
       if (sortBy === "score") {
         return data.sort(
@@ -39,9 +38,10 @@ export const useReviews = (
       }
     },
   });
+
   const reviewScoresQuery = useQuery({
     queryKey: ["reviewScores", type],
-    queryFn: () => fetchReviewScores(type),
+    queryFn: () => (type ? fetchReviewScores(type) : Promise.resolve([])),
   });
 
   return {

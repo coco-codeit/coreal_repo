@@ -8,6 +8,13 @@ export interface Review {
   User: User;
 }
 
+export interface ReviewArgs {
+  type?: string | string[]; 
+  gatherId?: string;
+  location?: string;
+  sortBy?: string;
+}
+
 export interface Gathering {
   teamId: number;
   id: number;
