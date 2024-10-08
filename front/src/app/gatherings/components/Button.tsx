@@ -1,34 +1,59 @@
-interface ButtonProps {
-  variant?: "primary" | "secondary" | "dark" | "light";
-  type?: "create" | "tab";
+interface IButton {
+  className?: string;
+  style?: "solid" | "outlined" | "default" | "active";
+  size: "small" | "large" | "responsive";
+  disabled?: boolean;
   onClick?: () => void;
-  isActive?: boolean;
   children?: React.ReactNode;
 }
 
 function Button({
-  variant = "primary",
-  type = "create",
+  size = "large",
+  disabled = false,
   onClick = () => {},
   children,
-}: ButtonProps) {
-  // 버튼 색상 및 스타일 임의 설정
-  const variantClasses = {
-    primary: "bg-purple-3 text-white hover:bg-purple-5",
-    secondary: "bg-gray-200 text-purple-6 hover:bg-purple-1",
-    dark: "bg-gray-900 text-white",
-    light: "bg-gray-200 text-gray-900",
+  className,
+  style = "solid",
+}: IButton) {
+  const sizeClasses = {
+    small: "text-sm",
+    large: "text-base",
+    responsive: "text-sm md:text-base",
   };
 
-  const typeClasses = {
-    create: "px-[18px] py-[10px] body-1 md:px-[21px] md:py-[10px] md:body-2",
-    tab: "px-3 py-2 text-body-1 md:px-4 md:py-[10px] md:text-body-1",
+  const solidClasses = `
+    bg-orange-600 text-white 
+    hover:bg-orange-700 
+    active:bg-orange-800 
+    disabled:bg-gray-400 disabled:text-white
+  `;
+
+  const outlinedClasses = `
+    bg-white border border-orange-600 text-orange-600
+    hover:border-orange-700 hover:text-orange-700 
+    active:border-orange-800 active:text-orange-800 
+    disabled:border-gray-400 disabled:text-gray-400
+  `;
+
+  const customStyleClasses = {
+    default: "bg-gray-200 text-gray-900",
+    active: "bg-gray-900 text-white",
   };
+
+  const styleClasses =
+    style === "solid"
+      ? solidClasses
+      : style === "outlined"
+        ? outlinedClasses
+        : customStyleClasses[style];
 
   return (
     <button
       onClick={onClick}
-      className={`flex items-center space-x-2 rounded-xl ${variantClasses[variant]} ${typeClasses[type]}`}
+      className={`flex items-center space-x-2 rounded-xl 
+        ${sizeClasses[size]} 
+        ${styleClasses} ${className}`}
+      disabled={disabled}
     >
       {children}
     </button>
