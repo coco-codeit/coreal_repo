@@ -2,26 +2,20 @@
 
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
+import { Menu } from "@headlessui/react";
+import { useSession, signIn, signOut } from "next-auth/react";
+import useAuthStore from "@/stores/useAuthStore";
 import Link from "next/link";
 import Image from "next/image";
-import { Menu } from "@headlessui/react";
-import { useSession } from "next-auth/react";
-import useAuthStore from "@/stores/useAuthStore";
 
 export default function Navbar() {
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { isLoggedIn, setIsLoggedIn } = useAuthStore();
-
   const pathname = usePathname();
-  const { status } = useSession();
+  const { data: session, status } = useSession();
 
   useEffect(() => {
     setIsLoggedIn(status === "authenticated");
   }, [status, setIsLoggedIn]);
-
-  const toggleLogin = () => {
-    setIsLoggedIn(!isLoggedIn);
-  };
 
   const isActive = (path: string) =>
     pathname === path || (path === "/" && pathname === "/gatherings")
@@ -73,12 +67,8 @@ export default function Navbar() {
         </section>
 
         <section>
-          {!isLoggedIn ? (
-            <>
-              <Link href="/#" passHref>
-                <button onClick={toggleLogin}>로그인</button>
-              </Link>
-            </>
+        {!isLoggedIn ? (
+            <button onClick={() => signIn()}>로그인</button>
           ) : (
             <div className="relative">
               <div>
@@ -88,7 +78,7 @@ export default function Navbar() {
                       width={40}
                       height={40}
                       alt="profile"
-                      src="/images/profile.svg"
+                      src={session?.user?.image ?? "/images/profile.svg"}
                     />
                   </Menu.Button>
                   <Menu.Items className="absolute lg:left-0 right-0 lg:mt-2 mt-[6px] lg:min-w-[142px] min-h-[80px] min-w-[110px] p-1 rounded-2xl flex flex-col items-start justify-start bg-white border border-gray-4 shadow-custom text-[#1F2937]">
@@ -103,6 +93,7 @@ export default function Navbar() {
                     <Link href="/#">
                       <Menu.Item
                         as="button"
+                        onClick={() => signOut()}
                         className="lg:px-4 px-3 py-[10px] w-full text-start"
                       >
                         로그아웃
