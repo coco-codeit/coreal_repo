@@ -1,14 +1,23 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { Menu } from "@headlessui/react";
+import { useSession } from "next-auth/react";
+import useAuthStore from "@/stores/useAuthStore";
 
 export default function Navbar() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { isLoggedIn, setIsLoggedIn } = useAuthStore();
+
   const pathname = usePathname();
+  const { status } = useSession();
+
+  useEffect(() => {
+    setIsLoggedIn(status === "authenticated");
+  }, [status, setIsLoggedIn]);
 
   const toggleLogin = () => {
     setIsLoggedIn(!isLoggedIn);

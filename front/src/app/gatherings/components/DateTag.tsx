@@ -15,7 +15,7 @@ export default function DateTag({ dateText, textColor, type }: DateTag) {
     if (type === "day") {
       return format(dateText, "MMMM d일", { locale: ko }).replace("MMMM", "월");
     } else if (type === "time") {
-      return format(dateText, "HH시 mm분");
+      return format(dateText, "HH:mm");
     }
   };
 
