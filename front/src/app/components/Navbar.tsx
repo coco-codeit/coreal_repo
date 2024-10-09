@@ -16,12 +16,12 @@ export default function Navbar() {
 
   const isActive = (path: string) =>
     pathname === path || (path === "/" && pathname === "/gatherings")
-      ? "text-[#111827]"
+      ? "text-gray-900"
       : "text-[#FFF7ED]";
 
   return (
-    <nav className="container max-w-[1920px] h-14 md:max-h-[60px] bg-[rgb(234,88,12)] text-white border-b-2 border-[#111827]">
-      <div className="flex h-full lg:justify-around items-center md:px-6 justify-between px-4">
+    <nav className="h-14 md:max-h-[60px] bg-[rgb(234,88,12)] text-base font-semibold text-[#FFF7ED] border-b-2 border-[#111827] flex justify-center">
+      <div className="flex w-[1200px] h-full items-center justify-between px-4">
         <section className="flex md:gap-5 gap-3 items-center">
           <div className="hidden md:block">
             <Link href="/" aria-label="Go to homepage">
@@ -56,7 +56,7 @@ export default function Navbar() {
               </Link>
             </div>
             <div>
-              <Link href="/reviews" className={isActive("/allReviews")}>
+              <Link href="/reviews" className={isActive("/reviews")}>
                 모든 리뷰
               </Link>
             </div>
@@ -66,8 +66,8 @@ export default function Navbar() {
         <section>
           {!isLoggedIn ? (
             <>
-              <Link href="/#" onClick={toggleLogin}>
-                로그인
+              <Link href="/#" passHref>
+                <button onClick={toggleLogin}>로그인</button>
               </Link>
             </>
           ) : (
