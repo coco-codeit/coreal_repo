@@ -12,23 +12,26 @@ export const usePrefetchGatherings = async ({
   queryClient,
   type,
   location,
+  date,
   sortBy,
   sortOrder,
 }: {
   queryClient: QueryClient;
   type?: GatheringType;
   location?: LocationType;
+  date?: Date;
   sortBy?: SortByType;
   sortOrder?: SortOrderType;
 }) => {
   await queryClient.prefetchInfiniteQuery({
     initialPageParam: 0,
-    queryKey: ["gatherings", type, location, sortBy, sortOrder],
+    queryKey: ["gatherings", type, location, date, sortBy, sortOrder],
     queryFn: ({ pageParam = 0 }) =>
       getGatheringList({
         pageParam,
         type,
         location,
+        date,
         sortBy,
         sortOrder,
       }),
@@ -44,23 +47,26 @@ export const useFetchGatherings = ({
   type,
   location,
   sortBy,
+  date,
   sortOrder,
   pageSize = 10,
 }: {
   type?: GatheringType;
   location?: LocationType;
+  date?: Date;
   sortBy?: SortByType;
   sortOrder?: SortOrderType;
   pageSize?: number;
 }) => {
   return useInfiniteQuery({
-    queryKey: ["gatherings", type, location, sortBy, sortOrder],
+    queryKey: ["gatherings", type, location, date, sortBy, sortOrder],
     initialPageParam: 0,
     queryFn: ({ pageParam = 0 }: { pageParam: number }) =>
       getGatheringList({
         pageParam,
         type,
         location,
+        date,
         sortBy,
         sortOrder,
       }),
