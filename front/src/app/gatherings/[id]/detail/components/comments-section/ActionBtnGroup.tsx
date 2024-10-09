@@ -7,6 +7,7 @@ import {
 import React, { useEffect, useState } from "react";
 import LoginAlertModal from "@/app/components/LoginAlertModal";
 import { useRouter } from "next/navigation";
+import useAuthStore from "@/stores/useAuthStore";
 
 export default function ActionBtnGroup({ pageId }: { pageId: string }) {
   const [isJoined, setIsJoined] = useState(false);
@@ -16,12 +17,18 @@ export default function ActionBtnGroup({ pageId }: { pageId: string }) {
   const { mutate: cancelMutation } = useGatherCancelMutation(pageId);
   const { mutate: joinMutation } = useGatherJoinMutation(pageId);
 
+  const { isLoggedIn } = useAuthStore();
+
   useEffect(() => {
     setIsJoined(false);
   }, []);
 
   const handleJoinClick = () => {
-    setIsModalOpen(true);
+    if (isLoggedIn) {
+      joinMutation();
+    } else {
+      setIsModalOpen(true);
+    }
   };
 
   const handleLoginRedirect = () => {
