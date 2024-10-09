@@ -25,7 +25,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${pretendard.variable} font-pretendard`}>
-      <body className=" bg-gray-100 h-screen">
+      <body className="w-full bg-gray-100">
         <ReactQueryClientProvider>
           <SessionProvider>
             <main>
