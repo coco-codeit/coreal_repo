@@ -2,8 +2,9 @@
 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { useReviews } from "@/hooks/reviews/useReviews";
+
 import Card from "../content/Card";
+import { useReviews } from "@/hooks/queries/useReviews";
 
 const tabs = [
   {
@@ -13,6 +14,7 @@ const tabs = [
     imageSrc: "/images/dalaemfit.svg",
     alt: "dalaemfit",
     subTabs: [
+      { id: "ALL", label: "전체" },
       { id: "OFFICE_STRETCHING", label: "오피스 스트레칭" },
       { id: "MINDFULNESS", label: "마인드풀니스" },
     ],
@@ -22,7 +24,8 @@ const tabs = [
     label: "워케이션",
     imageSrc: "/images/workation.svg",
     alt: "workation",
-    hasSubTabs: false,
+    hasSubTabs: true,
+    subTabs: [{ id: "ALL", label: "전체" }],
   },
 ];
 
@@ -31,9 +34,25 @@ export default function Tabs() {
   const [selectedSubTab, setSelectedSubTab] = useState(
     tabs[0].subTabs ? tabs[0].subTabs[0].id : "",
   );
+
   console.log("selectedTab", selectedTab);
 
-  const { data, isLoading, isError } = useReviews({ type: selectedSubTab });
+  const [selectedRegion, setSelectedRegion] = useState<string | undefined>(
+    "지역 선택",
+  );
+
+  const [selectedSort, setSelectedSort] = useState("createdAt");
+
+  const { reviews, reviewScores, isLoading, isError } = useReviews({
+    type:
+      selectedTab === "WORKATION"
+        ? selectedTab
+        : selectedSubTab === "ALL"
+          ? ["OFFICE_STRETCHING", "MINDFULNESS"]
+          : selectedSubTab,
+    location: selectedRegion === "지역 선택" ? undefined : selectedRegion,
+    sortBy: selectedSort,
+  });
 
   useEffect(() => {
     const currentTab = tabs.find((tab) => tab.id === selectedTab);
@@ -56,8 +75,6 @@ export default function Tabs() {
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Error loading data</p>;
 
-  const reviews = data || [];
-
   return (
     <div>
       <div className="flex gap-3">
@@ -67,13 +84,19 @@ export default function Tabs() {
             className={`flex items-center gap-1 pb-1 text-lg font-semibold ${
               selectedTab === tab.id
                 ? "border-[#111827] selected-tab"
-                : "border-transparent"
+                : "text-gray-400 border-transparent"
             } relative`}
             onClick={() => handleTabClick(tab.id)}
           >
             {tab.label}
             <span>
-              <Image src={tab.imageSrc} alt={tab.alt} width={32} height={32} />
+              <Image
+                src={tab.imageSrc}
+                alt={tab.alt}
+                width={32}
+                height={32}
+                className={`${selectedTab === tab.id ? "fill-current text-red-400" : "fill-current text-gray-400"}`}
+              />
             </span>
             {selectedTab === tab.id && (
               <span className="absolute bottom-[-2px] left-0 right-0 h-[2px] bg-[#111827] rounded-[1px]"></span>
@@ -101,7 +124,15 @@ export default function Tabs() {
       </div>
 
       <div>
-        <Card reviews={reviews} tabs={tabs} />
+        <Card
+          reviews={reviews || []}
+          reviewScores={reviewScores || []}
+          tabs={tabs}
+          selectedRegion={selectedRegion}
+          setSelectedRegion={setSelectedRegion}
+          selectedSort={selectedSort}
+          setSelectedSort={setSelectedSort}
+        />
       </div>
     </div>
   );

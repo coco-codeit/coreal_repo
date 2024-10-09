@@ -9,7 +9,7 @@ interface DropdownOption {
 
 interface DropdownProps {
   options: DropdownOption[];
-  selectedOption: string;
+  selectedOption?: string;
   onOptionSelect: (option: DropdownOption) => void;
 }
 
