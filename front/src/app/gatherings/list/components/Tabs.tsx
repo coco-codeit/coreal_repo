@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { signIn, useSession } from "next-auth/react";
 import Button from "@/app/gatherings/components/Button";
+import CreateGatheringModal from "@/app/gatherings/list/components/create/CreateGatheringModal";
 import { GatheringType } from "@/types/gatherings";
 import { useGatheringsStore } from "@/stores/useGatheringsStore";
-import CreateGatheringModal from "../../create/CreateGatheringModal";
 import {
   DallaemfitIcon,
   WorkationIcon,
 } from "@/app/gatherings/list/components/Icons";
+
 const tabConfig = {
   DALLAEMFIT: {
     label: "달램핏",
@@ -51,7 +52,7 @@ function Tabs() {
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex justify-between items-start font-title ">
+      <div className="flex justify-between items-start font-lg font-semibold ">
         <div className="flex justify-center items-center gap-3 text-subhead-3">
           {Object.values(tabConfig).map(({ label, value, Icon }) => (
             <button

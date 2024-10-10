@@ -5,7 +5,7 @@ import Image from "next/image";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
-import { isToday } from "date-fns";
+import { isToday, format } from "date-fns";
 import {
   Dialog,
   DialogPanel,
@@ -14,8 +14,8 @@ import {
 } from "@headlessui/react";
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
 import Button from "@/app/gatherings/components/Button";
-import Calendar from "@/app/gatherings/list/components/filter/Calendar";
-import TimeButton from "@/app/gatherings/create/TimeButton";
+import Calendar from "@/app/components/Calendar";
+import TimeButton from "@/app/gatherings/list/components/create/TimeButton";
 import { useCreateGathering } from "@/hooks/queries/useCreateGatheringQuery";
 import { createType, locations, timeSlots } from "@/types/gatherings";
 import { DownIcon, DeleteIcon } from "@/app/gatherings/list/components/Icons";
@@ -24,7 +24,7 @@ import { useCreateGatheringStore } from "@/stores/useCreateGatheringStore";
 const createSChema = z.object({
   name: z.string().min(1, "이름을 입력해주세요."),
   location: z.string().min(1, "장소를 선택해주세요."),
-  type: z.string().min(1, "모임 종류를 선택해주세요."),
+  type: z.string().min(1, "서비스를 선택해주세요."),
   image: z
     .instanceof(File, { message: "이미지를 첨부해주세요." })
     .refine((file) => !!file, "이미지를 첨부해주세요."),
@@ -53,11 +53,10 @@ const CreateGatheringModal = ({
     setValue,
     clearErrors,
     setError,
+    trigger,
     formState: { errors, isSubmitting },
   } = useForm<createData>({
     resolver: zodResolver(createSChema),
-    mode: "onSubmit",
-    reValidateMode: "onSubmit",
   });
 
   const { mutate, isPending } = useCreateGathering();
@@ -72,7 +71,9 @@ const CreateGatheringModal = ({
     }
 
     const imageFile = data.image as File;
-    const dateTimeString = `${selectedDate.toISOString().split("T")[0]}T${selectedTime}:00`;
+
+    const datePart = selectedDate ? format(selectedDate, "yyyy-MM-dd") : "";
+    const dateTimeString = `${datePart}T${selectedTime}:00`;
     setValue("dateTime", dateTimeString);
 
     if (data.location === "을지로 3가") data.location = "을지로3가";
@@ -80,6 +81,7 @@ const CreateGatheringModal = ({
     if (data.type === "워케이션") data.type = "WORKATION";
     if (data.type === "마인드풀니스") data.type = "MINDFULNESS";
 
+    console.log(data);
     const gatheringData = {
       ...data,
       image: imageFile,
@@ -93,9 +95,25 @@ const CreateGatheringModal = ({
     });
   };
 
-  const handleTimeClick = (time: string) => {
+  const handleDateChange = (selectedDate: Date | undefined) => {
+    setSelectedDate(selectedDate);
+    setSelectedTime(undefined);
+    setValue("dateTime", "");
+  };
+
+  const handleTimeClick = async (time: string) => {
     if (selectedDate) {
       setSelectedTime(time);
+
+      const datePart = selectedDate ? format(selectedDate, "yyyy-MM-dd") : "";
+      const dateTimeString = `${datePart}T${time}:00`;
+
+      setValue("dateTime", dateTimeString, {
+        shouldValidate: false,
+        shouldDirty: true,
+      });
+
+      await trigger("dateTime", { shouldFocus: false }); // dateTime 필드만 검증
       clearErrors("dateTime");
     } else {
       setError("dateTime", {
@@ -155,10 +173,6 @@ const CreateGatheringModal = ({
     return "default";
   };
 
-  const handleDateChange = (selectedDate: Date | undefined) => {
-    setSelectedDate(selectedDate);
-  };
-
   return (
     <Transition show={isOpen} as={Fragment}>
       <Dialog
@@ -211,7 +225,8 @@ const CreateGatheringModal = ({
                 <div className="w-full">
                   <Menu as="div" className="relative inline-block w-full">
                     <MenuButton
-                      className={`w-full h-10 rounded-xl bg-gray-50 border-gray-50 inline-flex items-center justify-between py-2 px-3 border-2 focus:ring-orange-500 focus:ring-2 focus:outline-none ${location ? " text-gray-800" : " text-gray-400"} `}
+                      className={`w-full h-10 rounded-xl bg-gray-50 border-gray-50 inline-flex items-center justify-between 
+                        py-2 px-3 border-2 focus:ring-orange-500 focus:ring-2 focus:outline-none ${location ? " text-gray-800" : " text-gray-400"} `}
                     >
                       <span>{location || "장소를 선택해주세요."}</span>
                       <DownIcon />
@@ -250,7 +265,7 @@ const CreateGatheringModal = ({
               <div className="flex flex-col gap-3">
                 <label className="font-semibold">이미지</label>
                 <div className="flex justify-between">
-                  <div className="w-[251px] md:w-[360px] py-[10px] px-4 rounded-xl bg-gray-50">
+                  <div className="w-[251px] md:w-[360px] py-[10px] px-4 rounded-xl bg-gray-50 ">
                     {image ? (
                       <span className="text-gray-800">{image.name}</span>
                     ) : (
@@ -262,7 +277,7 @@ const CreateGatheringModal = ({
 
                   <Button
                     type="button"
-                    className="px-[14px] md:px-[20px] py-[10px]"
+                    className="px-[14px] md:px-[20px] py-[10px] focus:ring-orange-500 focus:ring-2 focus:outline-none "
                     style="outlined"
                     size="responsive"
                     onClick={() =>
@@ -360,7 +375,6 @@ const CreateGatheringModal = ({
                     onSelectDate={handleDateChange}
                   />
                 </div>
-                {/* 오전 시간 선택 */}
                 <div className="text-sm text-gray-800">오전</div>
                 <div className="flex flex-wrap gap-2">
                   {timeSlots.morning.map((time) => (
@@ -372,7 +386,6 @@ const CreateGatheringModal = ({
                     />
                   ))}
                 </div>
-                {/* 오후 시간 선택 */}
                 <div className="text-sm text-gray-800">오후</div>
                 <div className="flex flex-wrap gap-2">
                   {timeSlots.afternoon.map((time) => (
@@ -385,12 +398,7 @@ const CreateGatheringModal = ({
                   ))}
                 </div>
 
-                <input
-                  type="hidden"
-                  {...register("dateTime", {
-                    required: "날짜 및 시간을 선택해주세요.",
-                  })}
-                />
+                <input type="hidden" {...register("dateTime")} />
                 {errors.dateTime && (
                   <span className="text-red-500 text-sm">
                     {errors.dateTime.message}
@@ -420,12 +428,12 @@ const CreateGatheringModal = ({
                 type="submit"
                 style="solid"
                 size="responsive"
-                className="mt-4 py-[10px] px-[159px] md:px-[222px]"
+                className="mt-4 py-[10px] items-center flex justify-center"
                 disabled={
                   isPending || Object.keys(errors).length > 0 || isSubmitting
                 }
               >
-                {isPending ? "모임 생성 중..." : "확인"}
+                {isPending ? "모임 생성 중...." : "확인"}
               </Button>
             </form>
           </DialogPanel>
