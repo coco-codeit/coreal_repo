@@ -5,23 +5,42 @@ import { usePathname } from "next/navigation";
 import { Menu } from "@headlessui/react";
 import { useSession, signIn, signOut } from "next-auth/react";
 import useAuthStore from "@/stores/useAuthStore";
+import { getUserProfile } from "@/apis/profile";
 import Link from "next/link";
 import Image from "next/image";
 
+
 export default function Navbar() {
-  const { isLoggedIn, setIsLoggedIn } = useAuthStore();
+  const { isLoggedIn, setIsLoggedIn, userInfo, setUserInfo } = useAuthStore();
+  const { data: session } = useSession();
   const pathname = usePathname();
-  const { data: session, status } = useSession();
 
   useEffect(() => {
-    setIsLoggedIn(status === "authenticated");
-  }, [status, setIsLoggedIn]);
+    setIsLoggedIn(!!session);
+  }, [session, setIsLoggedIn]);
+
+  // 프로필 정보 확인
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      if (isLoggedIn) {
+        try {
+          const profileData = await getUserProfile();
+          setUserInfo(profileData);
+          console.log("유저 프로필:", profileData);
+        } catch (error) {
+          console.error("유저 프로필 가져오기 실패:", error);
+        }
+      }
+    };
+
+    fetchUserProfile();
+  }, [isLoggedIn, setUserInfo]);
 
   const isActive = (path: string) =>
     pathname === path || (path === "/" && pathname === "/gatherings")
       ? "text-gray-900"
       : "text-[#FFF7ED]";
-
+      
   return (
     <nav className="h-14 md:max-h-[60px] bg-[rgb(234,88,12)] text-base font-semibold text-[#FFF7ED] border-b-2 border-[#111827] flex justify-center">
       <div className="flex w-[1200px] h-full items-center justify-between px-4">
@@ -67,7 +86,7 @@ export default function Navbar() {
         </section>
 
         <section>
-        {!isLoggedIn ? (
+          {!isLoggedIn ? (
             <button onClick={() => signIn()}>로그인</button>
           ) : (
             <div className="relative">
@@ -78,7 +97,8 @@ export default function Navbar() {
                       width={40}
                       height={40}
                       alt="profile"
-                      src={session?.user?.image ?? "/images/profile.svg"}
+                      src={userInfo?.image || "/images/profile.svg"}
+                      className="border-2 border-gray-200 rounded-full"
                     />
                   </Menu.Button>
                   <Menu.Items className="absolute lg:left-0 right-0 lg:mt-2 mt-[6px] lg:min-w-[142px] min-h-[80px] min-w-[110px] p-1 rounded-2xl flex flex-col items-start justify-start bg-white border border-gray-4 shadow-custom text-[#1F2937]">
