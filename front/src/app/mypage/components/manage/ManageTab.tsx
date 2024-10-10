@@ -6,9 +6,27 @@ import JoinedGatherings from "./joined/JoinedGatherings";
 import CreatedGatherings from "./created/CreatedGatherings";
 
 const tabList = [
-  { name: "나의 모임", content: <JoinedGatherings /> },
-  { name: "나의 리뷰", content: <MyReviews /> },
-  { name: "내가 만든 모임", content: <CreatedGatherings /> },
+  {
+    name: "Joined Gatherings",
+    label: "나의 모임",
+    render: () => {
+      return <JoinedGatherings />;
+    },
+  },
+  {
+    name: "My Reviews",
+    label: "나의 리뷰",
+    render: () => {
+      return <MyReviews />;
+    },
+  },
+  {
+    name: "Created Gatherings",
+    label: "내가 만든 모임",
+    render: () => {
+      return <CreatedGatherings />;
+    },
+  },
 ];
 
 export default function ManageTab({ className }: { className?: string }) {
@@ -18,18 +36,18 @@ export default function ManageTab({ className }: { className?: string }) {
     >
       <TabGroup>
         <TabList className="flex flex-row gap-3 font-semibold text-[#9CA3AF]">
-          {tabList.map(({ name }, index) => (
+          {tabList.map(({ label }, index) => (
             <Tab
-              key={`${name}-${index}`}
+              key={`${label}-${index}`}
               className="py-1 border-b-2 border-transparent data-[selected]:border-gray-900 data-[selected]:text-gray-900 hover:text-gray-900 outline-none"
             >
-              {name}
+              {label}
             </Tab>
           ))}
         </TabList>
         <TabPanels>
-          {tabList.map(({ content }, index) => (
-            <TabPanel key={`${content}-${index}`}>{content}</TabPanel>
+          {tabList.map((tab, index) => (
+            <TabPanel key={`${tab.name}-${index}`}>{tab.render()}</TabPanel>
           ))}
         </TabPanels>
       </TabGroup>

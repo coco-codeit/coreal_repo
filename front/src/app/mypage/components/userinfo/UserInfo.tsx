@@ -1,24 +1,20 @@
 import Image from "next/image";
 import ModifyProfileBtn from "./ModifyProfileBtn";
+import useUserInfo from "@/stores/useUserInfo";
 
-interface UserInfoProps {
-  teamId: number;
-  id: number;
-  email: string;
-  name: string;
-  companyName: string;
-  image: string;
-  createdAt: string;
-  updatedAt: string;
-}
-export default function UserInfo({
-  userInfo,
-  className,
-}: {
-  userInfo?: UserInfoProps;
-  className?: string;
-}) {
-  if (!userInfo) return <></>;
+// interface UserInfoProps {
+//   teamId: number;
+//   id: number;
+//   email: string;
+//   name: string;
+//   companyName: string;
+//   image: string;
+//   createdAt: string;
+//   updatedAt: string;
+// }
+export default function UserInfo({ className }: { className?: string }) {
+  const { name, email, image, companyName } = useUserInfo();
+
   return (
     <div
       className={`box-border rounded-3xl border-2 border-gray-200 overflow-hidden ${className}`}
@@ -28,14 +24,14 @@ export default function UserInfo({
         <ModifyProfileBtn />
       </div>
       <div className="flex flex-row px-4 gap-2">
-        <UserImage src={userInfo.image} name={userInfo.name} />
+        <UserImage src={image} name={name} />
         <div className="pb-4 pt-3">
-          <p className="text-base font-semibold mb-2">{userInfo.name}</p>
+          <p className="text-base font-semibold mb-2">{name}</p>
           <div className="text-sm grid grid-cols-[70px,1fr] gap-x-2 gap-y-1">
             <span className="font-medium">company.</span>
-            <span>{userInfo.companyName}</span>
+            <span>{companyName}</span>
             <span className="font-medium">E-mail.</span>
-            <span>{userInfo.email}</span>
+            <span>{email}</span>
           </div>
         </div>
       </div>

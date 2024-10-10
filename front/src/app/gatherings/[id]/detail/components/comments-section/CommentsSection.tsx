@@ -3,28 +3,33 @@
 import React, { useState } from "react";
 import CommentsCard from "./CommentsCard";
 import Pagination from "./Pagination";
-import { useReviews } from "@/hooks/reviews/useReviews";
-import LoadingSpinner from "@/app/components/LoadingSpinner";
+import { useReviews } from "@/hooks/queries/useReviews";
+import { Review } from "@/types/reviews";
+import CommentSecSkeleton from "./CommentSecSkeleton";
 
 export default function CommentsSection({ pageId }: { pageId: string }) {
   const [currentPage, setCurrentPage] = useState(1);
+  const reviewsPerPage = 4;
 
-  const { data: reviewData = [], isLoading: isReviewLoading } = useReviews({
+  const { reviews: reviewData = [], isLoading: isReviewLoading } = useReviews({
     gatherId: pageId,
   });
 
-  const totalPages = Math.ceil(reviewData.length || 0 / 4);
+  const totalPages = Math.ceil(reviewData.length / reviewsPerPage);
+
+  const indexOfLastReview = currentPage * reviewsPerPage;
+  const indexOfFirstReview = indexOfLastReview - reviewsPerPage;
+  const currentReviews = reviewData.slice(
+    indexOfFirstReview,
+    indexOfLastReview,
+  );
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
 
   if (isReviewLoading) {
-    return (
-      <section className="flex flex-col items-center justify-center min-h-[687px] mt-6 p-6 border-t-2 border-[#E5E7EB]">
-        <LoadingSpinner />
-      </section>
-    );
+    return <CommentSecSkeleton />;
   }
 
   return (
@@ -33,13 +38,15 @@ export default function CommentsSection({ pageId }: { pageId: string }) {
         이용자들은 이 프로그램을 이렇게 느꼈어요!
       </h2>
 
-      {reviewData && reviewData.length > 0 ? (
+      {currentReviews && currentReviews.length > 0 ? (
         <>
-          {reviewData.map((review) => (
-            <CommentsCard key={review.id} singleReviewData={review} />
-          ))}
+          <div className="min-h-[500px]">
+            {currentReviews.map((review: Review) => (
+              <CommentsCard key={review.id} singleReviewData={review} />
+            ))}
+          </div>
 
-          {reviewData.length > 4 && (
+          {reviewData.length > reviewsPerPage && (
             <div className="mt-2 mb-[86px]">
               <Pagination
                 currentPage={currentPage}

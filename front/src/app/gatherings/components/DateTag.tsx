@@ -1,5 +1,6 @@
-import { useDateConverter } from "@/hooks/gatherings/useDateConverter";
 import React from "react";
+import { format } from "date-fns";
+import { ko } from "date-fns/locale";
 
 interface DateTag {
   dateText: string; //서버에서 주는 데이터 "2024-10-19T01:21:47.762Z" 형식
@@ -8,14 +9,21 @@ interface DateTag {
 }
 
 export default function DateTag({ dateText, textColor, type }: DateTag) {
-  const convertedDate = useDateConverter(dateText, type);
   const colors = { white: "text-white", orange: "text-[#EA580C]" };
+
+  const dateFormatter = (dateText: string, type: string) => {
+    if (type === "day") {
+      return format(dateText, "MMMM d일", { locale: ko }).replace("MMMM", "월");
+    } else if (type === "time") {
+      return format(dateText, "HH:mm");
+    }
+  };
 
   return (
     <div
       className={`flex items-center justify-center h-6 p-2 mr-2 text-[14px] font-medium leading-5 rounded-[4px] bg-[#111827] ${colors[textColor]}`}
     >
-      {convertedDate}
+      {dateFormatter(dateText, type)}
     </div>
   );
 }

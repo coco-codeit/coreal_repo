@@ -1,22 +1,56 @@
 "use client";
 
+import InfiniteScroll from "@/app/gatherings/list/components/InfiniteScroll";
 import Header from "@/app/gatherings/list/components/Header";
-import GatheringsTabs from "@/app/gatherings/list/components/GatheringsTabs";
-import Card from "@/app/gatherings/list/components/Card";
-import { useListQuery } from "@/hooks/queries/useGatheringsQuery";
+import Tabs from "@/app/gatherings/list/components/Tabs";
+import Filters from "@/app/gatherings/list/components/filter";
+import Card from "@/app/gatherings/list/components/card";
+import LoadingSpinner from "@/app/components/LoadingSpinner";
+import { useFetchGatherings } from "@/hooks/queries/useGatheringsQuery";
+import { useGatheringsStore } from "@/stores/useGatheringsStore";
+import { IGatherings } from "@/types/gatherings";
 
 function Gatherings() {
-  const { data, isLoading, error } = useListQuery();
+  const { tab: type, location, date, sortBy, sortOrder } = useGatheringsStore();
 
-  if (isLoading) return <p className="bg-blue-8">Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+  const {
+    data: gatherings = [],
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isLoading,
+  } = useFetchGatherings({
+    type,
+    location,
+    date,
+    sortBy,
+    sortOrder,
+  });
 
   return (
-    <>
+    <div className="min-w-[375px] max-w-[375px] px-4 md:max-w-[744px] md:px-[24.5px] lg:max-w-[996px] lg:min-w-[1200px] lg:px-[102px] min-h-screen mx-auto flex flex-col bg-gray-50">
       <Header />
-      <GatheringsTabs />
-      <Card data={data} />
-    </>
+      <Tabs />
+      <Filters />
+      <InfiniteScroll
+        isFetching={isFetching}
+        fetchNextPage={fetchNextPage}
+        hasNextPage={hasNextPage}
+      >
+        {isLoading ? (
+          <LoadingSpinner />
+        ) : gatherings.length === 0 ? (
+          <div className="text-sm text-gray-500 pt-[224px] md:pt-[355px] lg:pt-[335px] w-full text-center">
+            <p>아직 모임이 없어요.</p>
+            <p>지금 바로 모임을 만들어보세요.</p>
+          </div>
+        ) : (
+          gatherings.map((item: IGatherings) => (
+            <Card key={item.id} data={item} />
+          ))
+        )}
+      </InfiniteScroll>
+    </div>
   );
 }
 

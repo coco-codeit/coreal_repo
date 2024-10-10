@@ -4,7 +4,9 @@ import api from "@/apis/index";
 
 declare module "next-auth" {
   interface Session {
-    token: string;
+    token: {
+      token: string;
+    };
   }
 }
 
@@ -48,15 +50,12 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.token = (user as CustomUser).token;
+        return { ...token, userToken: (user as CustomUser).token };
       }
       return token;
     },
     async session({ session, token }) {
-      return {
-        ...session,
-        token: token.token as string,
-      };
+      return { ...session, token: token.userToken as string };
     },
   },
   pages: {

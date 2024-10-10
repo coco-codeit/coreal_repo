@@ -1,22 +1,22 @@
 "use client";
 
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 import GatheringInfo from "../../GatheringInfo";
 import GatheringImage from "../../GatheringImage";
-import { getGatherings } from "@/apis/profile";
+// import { getGatheringCreatedByMe } from "@/apis/profile";
 import { ExtendedGatheringInterface } from "@/types/common";
 import ListWrapper from "../../ListWrapper";
+import OnEmpty from "../OnEmpty";
+import { useGatherCreated } from "@/hooks/queries/mypage";
+import useUserInfo from "@/stores/useUserInfo";
 
 export default function CreatedGatherings() {
-  const [data, setData] = useState<ExtendedGatheringInterface[]>();
+  // const [data, setData] = useState<ExtendedGatheringInterface[]>();
+  const { id } = useUserInfo();
+  const { data } = useGatherCreated(id);
 
-  useEffect(() => {
-    getGatherings({ createdBy: 0 }).then((data) => {
-      setData(data);
-    });
-  }, []);
-
-  if (!Array.isArray(data)) return <></>;
+  if (!Array.isArray(data) || data.length === 0)
+    return <OnEmpty message="아직 만든 모임이 없어요" />;
 
   return (
     <>
@@ -36,7 +36,6 @@ export default function CreatedGatherings() {
           </div>
         </ListWrapper>
       ))}
-      {data.length === 0 && <div>아직 만든 모임이 없어요</div>}
     </>
   );
 }
