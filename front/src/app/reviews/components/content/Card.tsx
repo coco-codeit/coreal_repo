@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import SortControls from "./SortControls";
 import HeartRating from "./HeartScore";
+import ProgressBar from "./ProgressBar";
 
 interface Tab {
   id: string;
@@ -118,6 +119,15 @@ export default function Card({
 
   const [selectedDate, setSelectedDate] = useState("날짜 선택");
 
+  const totalReviews =
+    scoreData.oneStar +
+    scoreData.twoStars +
+    scoreData.threeStars +
+    scoreData.fourStars +
+    scoreData.fiveStars;
+
+  const safeTotalReviews = totalReviews === 0 ? 1 : totalReviews;
+
   return (
     <div>
       {/* 리뷰 평점 평균 */}
@@ -135,12 +145,10 @@ export default function Card({
           {scoreBars.map((score, index) => (
             <li key={index} className="flex items-center justify-between">
               <span className="w-[40px] text-end">{score.label}</span>
-              <div className="w-[240px] h-1 bg-[#E5E7EB] rounded-sm mx-3">
-                <div
-                  className="bg-[#111827] rounded-lg"
-                  style={{ width: `${(score.value || 0) / 100}%` }}
-                ></div>
-              </div>
+              <ProgressBar
+                percent={((score.value || 0) / safeTotalReviews) * 100}
+                width="240px"
+              />
               <span className="w-[40px] text-start">{score.value || 0}</span>
             </li>
           ))}
@@ -148,7 +156,7 @@ export default function Card({
       </div>
 
       {/* 필터링 정렬 */}
-      <div className="text-sm font-medium min-h-screen overflow-hidden  bg-white border-t-2 border-[#111827] p-6">
+      <div className="text-sm font-medium min-h-screen overflow-hidden bg-white border-t-2 border-[#111827] p-6">
         <div className="flex justify-between mb-6">
           <div className="flex flex-row gap-2">
             <div className="flex  gap-2 items-center justify-end ">
@@ -178,7 +186,7 @@ export default function Card({
         {safeReviews.length > 0 ? (
           safeReviews.map((review) => {
             const { parentLabel, childLabel } = getLabelsFromType(
-              review.Gathering.type,
+              review.Gathering.type
             );
 
             // 리뷰 카드
