@@ -11,7 +11,7 @@ import { useGatheringsStore } from "@/stores/useGatheringsStore";
 import { IGatherings } from "@/types/gatherings";
 
 function Gatherings() {
-  const { tab: type, location, sortBy, sortOrder } = useGatheringsStore();
+  const { tab: type, location, date, sortBy, sortOrder } = useGatheringsStore();
 
   const {
     data: gatherings = [],
@@ -22,6 +22,7 @@ function Gatherings() {
   } = useFetchGatherings({
     type,
     location,
+    date,
     sortBy,
     sortOrder,
   });

@@ -14,26 +14,26 @@ export const useReviews = (args: ReviewArgs) => {
         return data.sort(
           (
             highScoreReview: { score: number },
-            lowScoreReview: { score: number }
-          ) => lowScoreReview.score - highScoreReview.score
+            lowScoreReview: { score: number },
+          ) => lowScoreReview.score - highScoreReview.score,
         );
       } else if (sortBy === "participantCount") {
         return data.sort(
           (
             moreParticipantsReview: { participantCount: number },
-            fewerParticipantsReview: { participantCount: number }
+            fewerParticipantsReview: { participantCount: number },
           ) =>
             fewerParticipantsReview.participantCount -
-            moreParticipantsReview.participantCount
+            moreParticipantsReview.participantCount,
         );
       } else {
         return data.sort(
           (
             newerReview: { createdAt: string | number | Date },
-            olderReview: { createdAt: string | number | Date }
+            olderReview: { createdAt: string | number | Date },
           ) =>
             new Date(olderReview.createdAt).getTime() -
-            new Date(newerReview.createdAt).getTime()
+            new Date(newerReview.createdAt).getTime(),
         );
       }
     },

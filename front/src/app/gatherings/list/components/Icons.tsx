@@ -139,4 +139,56 @@ function WorkationIcon({ isSelected }: { isSelected: boolean }) {
   );
 }
 
-export { DallaemfitIcon, WorkationIcon };
+interface IconProps {
+  inverse?: boolean;
+}
+
+function DownIcon({ inverse = false }: IconProps) {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M12.7151 15.4653C12.3975 15.7654 11.9008 15.7654 11.5832 15.4653L5.8047 10.006C5.26275 9.49404 5.6251 8.58286 6.37066 8.58286L17.9276 8.58286C18.6732 8.58286 19.0355 9.49404 18.4936 10.006L12.7151 15.4653Z"
+        fill={inverse ? "#F9FAFB" : "#1F2937"}
+      />
+    </svg>
+  );
+}
+
+interface DeleteIconProps {
+  color?: string; // 색상을 선택적으로 받는 prop
+}
+
+function DeleteIcon({ color = "#111827" }: DeleteIconProps) {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M5 5L19.5 19.5"
+        stroke={color} // prop으로 전달된 색상 사용
+        strokeWidth="1.8"
+        strokeLinecap="round"
+      />
+      <path
+        d="M19.5 5L5 19.5"
+        stroke={color} // prop으로 전달된 색상 사용
+        strokeWidth="1.8"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+export default DeleteIcon;
+
+export { DallaemfitIcon, WorkationIcon, DownIcon, DeleteIcon };

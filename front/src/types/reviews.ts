@@ -9,7 +9,7 @@ export interface Review {
 }
 
 export interface ReviewArgs {
-  type?: string | string[]; 
+  type?: string | string[];
   gatherId?: string;
   location?: string;
   sortBy?: string;
