@@ -12,28 +12,24 @@ export const useReviews = (args: ReviewArgs) => {
     select: (data) => {
       if (sortBy === "score") {
         return data.sort(
-          (
-            highScoreReview: { score: number },
-            lowScoreReview: { score: number }
-          ) => lowScoreReview.score - highScoreReview.score
+          (currentReview: { score: number }, nextReview: { score: number }) =>
+            nextReview.score - currentReview.score
         );
       } else if (sortBy === "participantCount") {
         return data.sort(
           (
-            moreParticipantsReview: { participantCount: number },
-            fewerParticipantsReview: { participantCount: number }
-          ) =>
-            fewerParticipantsReview.participantCount -
-            moreParticipantsReview.participantCount
+            currentReview: { participantCount: number },
+            nextReview: { participantCount: number }
+          ) => nextReview.participantCount - currentReview.participantCount
         );
       } else {
         return data.sort(
           (
-            newerReview: { createdAt: string | number | Date },
-            olderReview: { createdAt: string | number | Date }
+            currentReview: { createdAt: string | number | Date },
+            nextReview: { createdAt: string | number | Date }
           ) =>
-            new Date(olderReview.createdAt).getTime() -
-            new Date(newerReview.createdAt).getTime()
+            new Date(nextReview.createdAt).getTime() -
+            new Date(currentReview.createdAt).getTime()
         );
       }
     },
