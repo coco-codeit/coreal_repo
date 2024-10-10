@@ -160,4 +160,35 @@ function DownIcon({ inverse = false }: IconProps) {
   );
 }
 
-export { DallaemfitIcon, WorkationIcon, DownIcon };
+interface DeleteIconProps {
+  color?: string; // 색상을 선택적으로 받는 prop
+}
+
+function DeleteIcon({ color = "#111827" }: DeleteIconProps) {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M5 5L19.5 19.5"
+        stroke={color} // prop으로 전달된 색상 사용
+        strokeWidth="1.8"
+        strokeLinecap="round"
+      />
+      <path
+        d="M19.5 5L5 19.5"
+        stroke={color} // prop으로 전달된 색상 사용
+        strokeWidth="1.8"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+export default DeleteIcon;
+
+export { DallaemfitIcon, WorkationIcon, DownIcon, DeleteIcon };
