@@ -2,8 +2,7 @@
 
 import Image from "next/image";
 import React, { useMemo } from "react";
-import { formatDistanceToNow, isToday } from "date-fns";
-import { ko } from "date-fns/locale";
+import { differenceInHours, differenceInDays } from "date-fns";
 
 interface IDeadLineTag {
   endTime: string;
@@ -14,36 +13,30 @@ export default function DeadLineTag({ endTime, type }: IDeadLineTag) {
   const targetDate = useMemo(() => new Date(endTime), [endTime]);
 
   const formatDeadline = () => {
-    const distance = formatDistanceToNow(targetDate, {
-      locale: ko,
-      addSuffix: true,
-    });
+    const now = new Date();
+    const hoursDiff = differenceInHours(targetDate, now);
 
-    if (isToday(targetDate)) {
+    // Check if the deadline is expired
+    if (hoursDiff < 0) {
+      return "마감";
+    } else if (hoursDiff < 24) {
       return `오늘 ${targetDate.getHours()}시 마감`;
     } else {
-      const daysMatch = distance.match(/(\d+)\s*일/);
-      if (daysMatch) {
-        const days = daysMatch[1];
-        return `${days}일 후 마감`;
-      }
-
-      return distance.includes("분")
-        ? `${distance.replace("분", "분 후")} 마감`
-        : distance;
+      const daysDiff = differenceInDays(targetDate, now);
+      return `${daysDiff}일 후 마감`;
     }
   };
 
   const formattedDeadline = formatDeadline();
 
   const customRound = {
-    lg: "rounded-tr-3xl rounded-bl-lg",
-    sm: "rounded-bl-xl",
+    lg: "rounded-tr-3xl rounded-bl-lg pr-5",
+    sm: "rounded-bl-xl pr-3",
   };
 
   return (
     <div
-      className={`flex items-center absolute right-0 top-0 min-w-[110px] w-auto h-8 rounded-bl-lg bg-[#EA580C] text-white ${customRound[type]}`}
+      className={`flex items-center absolute right-0 top-0 h-8 rounded-bl-lg bg-[#EA580C] text-white ${customRound[type]}`}
     >
       <Image
         className="ml-2 mr-1"

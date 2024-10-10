@@ -1,9 +1,12 @@
 import {
+  cancelCreateGather,
   getGatherDetail,
+  getGatherJoined,
   getGatherParticipants,
   postJoinGather,
-  putCancelGather,
+  putCancelJoinGather,
 } from "@/libs/gatherDetail";
+import useAuthStore from "@/stores/useAuthStore";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const useGatherDeatilQuery = (gatherId: string) => {
@@ -20,7 +23,15 @@ export const useGatherParticipants = (gatherId: string) => {
   });
 };
 
-//공통으로 사용가능한지 검토
+export const useGetJoinedGathers = () => {
+  const { isLoggedIn } = useAuthStore();
+  return useQuery({
+    queryKey: ["joined1Gather"],
+    queryFn: () => getGatherJoined(),
+    enabled: isLoggedIn,
+  });
+};
+
 const useGatherMutation = (
   gatherId: string,
   mutationFn: (gatherId: string) => Promise<unknown>,
@@ -29,32 +40,19 @@ const useGatherMutation = (
   return useMutation({
     mutationFn: () => mutationFn(gatherId),
     onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: ["gatherDetail"] }),
+      queryClient.invalidateQueries({
+        queryKey: ["gatherDetail", "gatherParticipants"],
+      }),
   });
 };
 
-export const useGatherJoinMutation = (gatherId: string) => {
+export const useGatherJoin = (gatherId: string) => {
   return useGatherMutation(gatherId, postJoinGather);
 };
-
-export const useGatherCancelMutation = (gatherId: string) => {
-  return useGatherMutation(gatherId, putCancelGather);
+export const useGatherjoinCancel = (gatherId: string) => {
+  return useGatherMutation(gatherId, putCancelJoinGather);
 };
 
-// export const useGatherJoinMutaiton = (gatherId: string) => {
-//   const queryClient = useQueryClient();
-//   useMutation({
-//     mutationFn: () => postJoinGather(gatherId),
-//     onSuccess: () =>
-//       queryClient.invalidateQueries({ queryKey: ["gatherDetail"] }),
-//   });
-// };
-
-// export const useGatherCancelMutation = (gatherId: string) => {
-//   const queryClient = useQueryClient();
-//   useMutation({
-//     mutationFn: () => putCancelGather(gatherId),
-//     onSuccess: () =>
-//       queryClient.invalidateQueries({ queryKey: ["gatherDetail"] }),
-//   });
-// };
+export const useCreateCancel = (gatherId: string) => {
+  return useGatherMutation(gatherId, cancelCreateGather);
+};

@@ -5,8 +5,10 @@ import React from "react";
 
 export default function UserAvatar({
   participantData,
+  gatherCapacity,
 }: {
   participantData: GatheringsParticipants[];
+  gatherCapacity: number;
 }) {
   const userArr = participantData?.map(
     (item: GatheringsParticipants) => item.User,
@@ -16,7 +18,7 @@ export default function UserAvatar({
   return (
     <div className="flex items-center justify-between">
       <div className="flex items-center">
-        <div className="text-[14px]">모집정원 16명</div>
+        <div className="text-[14px]">모집정원 {gatherCapacity}명</div>
         <div className="flex ml-[22px]">
           {userArr?.map((item: GatheringsUser) => {
             const userImgSrc = item.image || "/images/profile.svg";
