@@ -61,11 +61,19 @@ jobs:
             next-build.tar.xz $EC2_USER@$EC2_HOST:~/front/
           ssh -i ~/.ssh/ec2_key.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST "
             cd ~/front && \
+            # 기존 파일 정리
+            rm -rf .next && \
+            # 새 빌드 압축 해제
             xz -d next-build.tar.xz && \
             tar -xf next-build.tar && \
             rm next-build.tar && \
+            # 프로덕션 의존성 설치
             yarn install --production --frozen-lockfile && \
+            # PM2로 애플리케이션 재시작
             pm2 stop frontend || true && \
             pm2 delete frontend || true && \
-            pm2 start yarn --name 'frontend' -- start --port 8080
+            pm2 start yarn --name 'frontend' -- start --port 8080 && \
+            # 사용하지 않는 PM2 프로세스 정리
+            pm2 save && \
+            pm2 cleanup
           "
