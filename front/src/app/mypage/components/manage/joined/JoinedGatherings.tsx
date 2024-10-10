@@ -6,10 +6,7 @@ import ListWrapper from "../../ListWrapper";
 import GatheringInfo from "../../GatheringInfo";
 import GatheringImage from "../../GatheringImage";
 import ReviewModalBtn from "../../ReviewModalBtn";
-import {
-  useGatherJoined,
-  useCancelGatherJoined,
-} from "@/hooks/queries/gatherings";
+import { useGatherJoined, useCancelGatherJoined } from "@/hooks/queries/mypage";
 import OnEmpty from "../OnEmpty";
 
 export default function JoinedGatherings() {

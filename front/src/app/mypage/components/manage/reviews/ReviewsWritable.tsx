@@ -4,7 +4,7 @@ import GatheringInfo from "../../GatheringInfo";
 import GatheringImage from "../../GatheringImage";
 import ReviewModalBtn from "../../ReviewModalBtn";
 import OnEmpty from "../OnEmpty";
-import { useGatherJoined } from "@/hooks/queries/gatherings";
+import { useGatherJoined } from "@/hooks/queries/mypage";
 
 export default function ReviewsWritable() {
   const { data, isLoading } = useGatherJoined({

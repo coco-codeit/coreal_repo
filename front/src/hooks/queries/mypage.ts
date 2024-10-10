@@ -1,4 +1,10 @@
-import { cancleGatheringJoined, getGatheringsJoined } from "@/apis/profile";
+import {
+  cancleGatheringJoined,
+  getGatheringCreatedByMe,
+  getGatheringsJoined,
+  getReviews,
+  getUserProfile,
+} from "@/apis/profile";
 import { useMutation, useQuery, UseQueryResult } from "@tanstack/react-query";
 
 export const useGatherJoined = (option?: {
@@ -15,11 +21,43 @@ export const useGatherJoined = (option?: {
   });
 };
 
+export const useGatherCreated = (id: number | undefined): UseQueryResult => {
+  return useQuery({
+    queryKey: ["gatherCreated"],
+    queryFn: () => id !== undefined && getGatheringCreatedByMe(id),
+  });
+};
+
 export const useCancelGatherJoined = () => {
   return useMutation({
     mutationFn: (id: number) => {
       console.log("삭제 완료");
       return cancleGatheringJoined(id);
     },
+  });
+};
+
+export const useMyReviews = (opt?: {
+  gatheringId?: number;
+  userId?: number;
+  type?: string;
+  location?: string;
+  date?: string;
+  registrationEnd?: string;
+  sortBy?: "createdAt" | "score" | "participantCount";
+  sortOrder?: "asc" | "desc";
+  limit?: number;
+  offset?: number;
+}) => {
+  return useQuery({
+    queryKey: ["myReviews"],
+    queryFn: () => getReviews(opt),
+  });
+};
+
+export const useUserProfile = () => {
+  return useQuery({
+    queryKey: ["userProfile"],
+    queryFn: () => getUserProfile(),
   });
 };
