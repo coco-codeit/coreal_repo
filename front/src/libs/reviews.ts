@@ -40,7 +40,7 @@ const addParticipantCountToReviews = async (reviews: Review[]) => {
     reviews.map(async (review) => {
       try {
         const gatheringData = await getGatherDetail(
-          review.Gathering.id.toString()
+          review.Gathering.id.toString(),
         );
         return {
           ...review,
@@ -53,7 +53,7 @@ const addParticipantCountToReviews = async (reviews: Review[]) => {
           participantCount: 0,
         };
       }
-    })
+    }),
   );
 
   return reviewsWithParticipantCount;

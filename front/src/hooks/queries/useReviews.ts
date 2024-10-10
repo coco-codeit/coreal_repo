@@ -13,23 +13,23 @@ export const useReviews = (args: ReviewArgs) => {
       if (sortBy === "score") {
         return data.sort(
           (currentReview: { score: number }, nextReview: { score: number }) =>
-            nextReview.score - currentReview.score
+            nextReview.score - currentReview.score,
         );
       } else if (sortBy === "participantCount") {
         return data.sort(
           (
             currentReview: { participantCount: number },
-            nextReview: { participantCount: number }
-          ) => nextReview.participantCount - currentReview.participantCount
+            nextReview: { participantCount: number },
+          ) => nextReview.participantCount - currentReview.participantCount,
         );
       } else {
         return data.sort(
           (
             currentReview: { createdAt: string | number | Date },
-            nextReview: { createdAt: string | number | Date }
+            nextReview: { createdAt: string | number | Date },
           ) =>
             new Date(nextReview.createdAt).getTime() -
-            new Date(currentReview.createdAt).getTime()
+            new Date(currentReview.createdAt).getTime(),
         );
       }
     },
