@@ -29,6 +29,10 @@ jobs:
           node-version: "20"
 
       - name: 의존성 설치 및 빌드
+        env:
+          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+          NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
+          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
         run: |
           yarn install --frozen-lockfile
           yarn build
