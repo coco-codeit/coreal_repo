@@ -1,33 +1,26 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { ExtendedGatheringInterface } from "@/types/common";
-import { cancleGathering, getGatheringsJoined } from "@/apis/profile";
 import Button from "../../Button";
 import { FaCheck } from "react-icons/fa6";
 import ListWrapper from "../../ListWrapper";
 import GatheringInfo from "../../GatheringInfo";
 import GatheringImage from "../../GatheringImage";
 import ReviewModalBtn from "../../ReviewModalBtn";
+import { useGatherJoined, useCancelGatherJoined } from "@/hooks/queries/mypage";
+import OnEmpty from "../OnEmpty";
 
 export default function JoinedGatherings() {
-  const now = new Date();
-  const [joinedList, setJoinedList] = useState<ExtendedGatheringInterface[]>();
+  const { data, isLoading } = useGatherJoined();
+  const { mutate: cancelGatherJoined } = useCancelGatherJoined();
 
-  useEffect(() => {
-    getGatheringsJoined().then((data) => setJoinedList(data));
-  }, []);
+  if (isLoading) return <>Loading...</>;
 
-  const handleCancleGathering = async (gatheringId: number) => {
-    const res = await cancleGathering(gatheringId);
-    res.status === 200 && console.log("예약 취소 완료");
-  };
-
-  if (!joinedList || !Array.isArray(joinedList)) return <></>;
+  if (!Array.isArray(data) || data.length === 0)
+    return <OnEmpty message="신청한 모임이 아직 없어요" />;
 
   return (
     <>
-      {joinedList.map((item, index) => (
+      {data.map((item, index) => (
         <ListWrapper key={`${item}-${index}`}>
           <GatheringImage src={item.image} />
           <div className="flex flex-col justify-between items-start gap-4">
@@ -44,12 +37,12 @@ export default function JoinedGatherings() {
                 capacity: item.capacity,
               }}
             />
-            {new Date(item.dateTime) < now ? (
+            {new Date(item.dateTime) < new Date() ? (
               <ReviewModalBtn teamId={item.teamId} />
             ) : (
               <Button
                 className="border-2 bg-white border-orange-600 hover:border-red-500 hover:bg-red-500 text-orange-600 hover:text-white"
-                onClick={() => handleCancleGathering(item.id)}
+                onClick={() => cancelGatherJoined(item.id)}
               >
                 예약 취소하기
               </Button>
@@ -57,7 +50,6 @@ export default function JoinedGatherings() {
           </div>
         </ListWrapper>
       ))}
-      {joinedList.length === 0 && <p>신청한 모임이 아직 없어요</p>}
     </>
   );
 }
