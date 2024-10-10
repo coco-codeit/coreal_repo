@@ -9,7 +9,6 @@ import { getUserProfile } from "@/apis/profile";
 import Link from "next/link";
 import Image from "next/image";
 
-
 export default function Navbar() {
   const { isLoggedIn, setIsLoggedIn, userInfo, setUserInfo } = useAuthStore();
   const { data: session } = useSession();
@@ -40,7 +39,7 @@ export default function Navbar() {
     pathname === path || (path === "/" && pathname === "/gatherings")
       ? "text-gray-900"
       : "text-[#FFF7ED]";
-      
+
   return (
     <nav className="h-14 md:max-h-[60px] bg-[rgb(234,88,12)] text-base font-semibold text-[#FFF7ED] border-b-2 border-[#111827] flex justify-center">
       <div className="flex w-[1200px] h-full items-center justify-between px-4">
@@ -101,7 +100,7 @@ export default function Navbar() {
                       className="border-2 border-gray-200 rounded-full"
                     />
                   </Menu.Button>
-                  <Menu.Items className="absolute lg:left-0 right-0 lg:mt-2 mt-[6px] lg:min-w-[142px] min-h-[80px] min-w-[110px] p-1 rounded-2xl flex flex-col items-start justify-start bg-white border border-gray-4 shadow-custom text-[#1F2937]">
+                  <Menu.Items className="max-w-full absolute left-auto right-0 lg:mt-2 mt-[6px] lg:min-w-[142px] min-h-[80px] min-w-[110px] p-1 rounded-2xl flex flex-col items-start justify-start bg-white border border-gray-4 shadow-custom text-[#1F2937]">
                     <Link href="/mypage">
                       <Menu.Item
                         as="button"
