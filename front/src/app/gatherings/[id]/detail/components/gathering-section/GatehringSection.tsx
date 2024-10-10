@@ -40,8 +40,7 @@ export default function GatehringSection({ pageId }: { pageId: string }) {
       <div className="w-full md:w-1/2 h-[270px] py-6 rounded-[24px] border-2 border-gray-200">
         <GatheringInfo
           dateInfo={detailData?.dateTime}
-          locationInfo={detailData?.location}
-          typeInfo={detailData?.type}
+          titleInfo={detailData?.name}
         />
 
         <hr className="border-dashed border-gray-400 mt-[43px]" />

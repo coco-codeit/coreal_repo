@@ -1,31 +1,49 @@
 "use client";
 
+type JoinedListItem = {
+  id: string;
+};
+
 import {
-  useGatherCancelMutation,
-  useGatherJoinMutation,
+  useGatherjoinCancel,
+  useCreateCancel,
+  useGatherJoin,
 } from "@/hooks/queries/gatherDetailQuery";
 import React, { useEffect, useState } from "react";
 import LoginAlertModal from "@/app/components/LoginAlertModal";
 import { useRouter } from "next/navigation";
 import useAuthStore from "@/stores/useAuthStore";
+import { useGatherJoined } from "@/hooks/queries/mypage";
 
 export default function ActionBtnGroup({ pageId }: { pageId: string }) {
   const [isJoined, setIsJoined] = useState(false);
+  const [isCreated, setIsCreated] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [isCopied, setIsCopied] = useState(false);
   const router = useRouter();
-
-  const { mutate: cancelMutation } = useGatherCancelMutation(pageId);
-  const { mutate: joinMutation } = useGatherJoinMutation(pageId);
-
   const { isLoggedIn } = useAuthStore();
 
+  const { mutate: deleteMutation } = useCreateCancel(pageId);
+  const { mutate: joinMutation } = useGatherJoin(pageId);
+  const { mutate: cancelJoinMutation } = useGatherjoinCancel(pageId);
+  const { data: joinedGatherList } = useGatherJoined();
+  console.log(joinedGatherList);
+  const joinedListIdArr = (joinedGatherList as JoinedListItem[])?.map(
+    (item) => item.id,
+  );
+  const isJoinedGather = joinedListIdArr?.find((elem) => elem === pageId);
+
   useEffect(() => {
-    setIsJoined(false);
-  }, []);
+    isJoinedGather && setIsJoined(true);
+    setIsCreated(false);
+    // userId && setIsCreated(true);
+  }, [pageId, isJoinedGather]);
 
   const handleJoinClick = () => {
-    if (isLoggedIn) {
+    if (isLoggedIn && !isJoined) {
       joinMutation();
+    } else if (isLoggedIn && isJoined) {
+      cancelJoinMutation();
     } else {
       setIsModalOpen(true);
     }
@@ -34,6 +52,14 @@ export default function ActionBtnGroup({ pageId }: { pageId: string }) {
   const handleLoginRedirect = () => {
     setIsModalOpen(false);
     router.push("/signin");
+  };
+
+  const handleShareClick = () => {
+    const currentUrl = window.location.href;
+    navigator.clipboard.writeText(currentUrl).then(() => {
+      // setIsCopied(true);
+      // setTimeout(() => setIsCopied(false), 2000); // Reset after 2 seconds
+    });
   };
 
   return (
@@ -47,17 +73,17 @@ export default function ActionBtnGroup({ pageId }: { pageId: string }) {
             </div>
           </div>
           <div>
-            {isJoined ? (
+            {isCreated ? (
               <div className="flex">
                 <button
                   className="flex justify-center items-center w-[115px] h-11 rounded-xl text-orange-600 bg-white"
-                  onClick={() => cancelMutation()}
+                  onClick={() => deleteMutation()}
                 >
                   취소하기
                 </button>
                 <button
                   className="flex justify-center items-center w-[115px] h-11 rounded-xl bg-orange-600 text-white"
-                  onClick={() => joinMutation()}
+                  onClick={() => handleShareClick()}
                 >
                   공유하기
                 </button>
@@ -67,7 +93,7 @@ export default function ActionBtnGroup({ pageId }: { pageId: string }) {
                 className="flex justify-center items-center w-[115px] h-11 rounded-xl bg-orange-600 text-white"
                 onClick={handleJoinClick}
               >
-                참여하기
+                {isJoined ? "참여 취소하기" : "참여하기"}
               </button>
             )}
           </div>

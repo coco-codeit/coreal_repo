@@ -21,10 +21,10 @@ function CardImage({
         className="object-cover"
         sizes="(max-width: 768px) 100vw, (min-width: 768px) and (max-width: 1024px) 50vw, 280px"
       />
-      <div className="block absolute top-[-2px] right-[-2px] md:hidden">
+      <div className="block top-[-2px] right-[-2px] md:hidden">
         <DeadLineTag endTime={endTime} type="lg" />
       </div>
-      <div className="hidden absolute top-[-2px] right-[-2px] md:block">
+      <div className="hidden top-[-2px] right-[-2px] md:block">
         <DeadLineTag endTime={endTime} type="sm" />
       </div>
     </div>
