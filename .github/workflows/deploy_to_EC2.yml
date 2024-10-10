@@ -73,7 +73,4 @@ jobs:
             pm2 stop frontend || true && \
             pm2 delete frontend || true && \
             pm2 start yarn --name 'frontend' -- start --port 8080 && \
-            # 사용하지 않는 PM2 프로세스 정리
-            pm2 save && \
-            pm2 cleanup
           "
