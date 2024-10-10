@@ -1,6 +1,7 @@
 interface IButton {
   className?: string;
   style?: "solid" | "outlined" | "default" | "active";
+  type?: "submit" | "button" | "reset";
   size: "small" | "large" | "responsive";
   disabled?: boolean;
   onClick?: () => void;
@@ -14,6 +15,7 @@ function Button({
   children,
   className,
   style = "solid",
+  type = "button",
 }: IButton) {
   const sizeClasses = {
     small: "text-sm",
@@ -49,8 +51,9 @@ function Button({
 
   return (
     <button
+      type={type}
       onClick={onClick}
-      className={`flex items-center space-x-2 rounded-xl 
+      className={`flex items-center space-x-2 rounded-xl active:outline-none
         ${sizeClasses[size]} 
         ${styleClasses} ${className}`}
       disabled={disabled}

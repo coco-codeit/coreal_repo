@@ -1,11 +1,13 @@
+import { useState } from "react";
+import { signIn, useSession } from "next-auth/react";
+import Button from "@/app/gatherings/components/Button";
+import { GatheringType } from "@/types/gatherings";
+import { useGatheringsStore } from "@/stores/useGatheringsStore";
+import CreateGatheringModal from "../../create/CreateGatheringModal";
 import {
   DallaemfitIcon,
   WorkationIcon,
 } from "@/app/gatherings/list/components/Icons";
-import Button from "@/app/gatherings/components/Button";
-import { GatheringType } from "@/types/gatherings";
-import { useGatheringsStore } from "@/stores/useGatheringsStore";
-
 const tabConfig = {
   DALLAEMFIT: {
     label: "달램핏",
@@ -27,7 +29,16 @@ const tabConfig = {
 
 function Tabs() {
   const { tab, setTab } = useGatheringsStore();
+  const [isOpen, setIsOpen] = useState(false);
+  const { data: session } = useSession();
 
+  const openModal = () => {
+    if (session) {
+      setIsOpen(true);
+    } else {
+      signIn();
+    }
+  };
   const isDallaemfitActive = [
     "DALLAEMFIT",
     "OFFICE_STRETCHING",
@@ -64,9 +75,16 @@ function Tabs() {
           className="font-semibold px-[18px] md:px-[21px] py-[10px]"
           style="solid"
           size="responsive"
+          onClick={openModal}
         >
           모임 만들기
         </Button>
+        {isOpen && (
+          <CreateGatheringModal
+            isOpen={isOpen}
+            onClose={() => setIsOpen(false)}
+          />
+        )}
       </div>
 
       <div className="flex justify-start items-center font-title gap-2 pb-[14px] border-b-2 border-gray-200">

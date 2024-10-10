@@ -11,6 +11,7 @@ export default async function Home() {
 
   const type = "DALLAEMFIT";
   const location = undefined;
+  const date = undefined;
   const sortBy = "dateTime";
   const sortOrder = "asc";
 
@@ -18,6 +19,7 @@ export default async function Home() {
     queryClient,
     type,
     location,
+    date,
     sortBy,
     sortOrder,
   });
