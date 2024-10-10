@@ -29,3 +29,11 @@ export const getGatherParticipants = async (gatherId: string) => {
 
   return res?.data;
 };
+
+export const getGatherJoined = async () => {
+  const res = await axiosInstance.get(
+    `/gatherings/joined?sortBy=dateTime&sortOrder=asc`,
+  );
+
+  return res?.data;
+};

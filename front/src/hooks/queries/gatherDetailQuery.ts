@@ -1,10 +1,12 @@
 import {
   cancelCreateGather,
   getGatherDetail,
+  getGatherJoined,
   getGatherParticipants,
   postJoinGather,
   putCancelJoinGather,
 } from "@/libs/gatherDetail";
+import useAuthStore from "@/stores/useAuthStore";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const useGatherDeatilQuery = (gatherId: string) => {
@@ -21,7 +23,15 @@ export const useGatherParticipants = (gatherId: string) => {
   });
 };
 
-//공통으로 사용가능한지 검토
+export const useGetJoinedGathers = () => {
+  const { isLoggedIn } = useAuthStore();
+  return useQuery({
+    queryKey: ["joined1Gather"],
+    queryFn: () => getGatherJoined(),
+    enabled: isLoggedIn,
+  });
+};
+
 const useGatherMutation = (
   gatherId: string,
   mutationFn: (gatherId: string) => Promise<unknown>,

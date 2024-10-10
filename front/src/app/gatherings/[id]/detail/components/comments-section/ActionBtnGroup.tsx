@@ -1,19 +1,15 @@
 "use client";
 
-type JoinedListItem = {
-  id: string;
-};
-
 import {
   useGatherjoinCancel,
   useCreateCancel,
   useGatherJoin,
+  useGetJoinedGathers,
 } from "@/hooks/queries/gatherDetailQuery";
 import React, { useEffect, useState } from "react";
 import LoginAlertModal from "@/app/components/LoginAlertModal";
 import { useRouter } from "next/navigation";
 import useAuthStore from "@/stores/useAuthStore";
-import { useGatherJoined } from "@/hooks/queries/mypage";
 
 export default function ActionBtnGroup({ pageId }: { pageId: string }) {
   const [isJoined, setIsJoined] = useState(false);
@@ -26,12 +22,13 @@ export default function ActionBtnGroup({ pageId }: { pageId: string }) {
   const { mutate: deleteMutation } = useCreateCancel(pageId);
   const { mutate: joinMutation } = useGatherJoin(pageId);
   const { mutate: cancelJoinMutation } = useGatherjoinCancel(pageId);
-  const { data: joinedGatherList } = useGatherJoined();
-  console.log(joinedGatherList);
-  const joinedListIdArr = (joinedGatherList as JoinedListItem[])?.map(
-    (item) => item.id,
-  );
-  const isJoinedGather = joinedListIdArr?.find((elem) => elem === pageId);
+  const { data: joinedData } = useGetJoinedGathers();
+
+  const joinedDataArr =
+    joinedData?.map((item: { id: number }) => item.id) ?? [];
+  console.log(joinedDataArr);
+
+  const isJoinedGather = joinedDataArr.find((elem: number) => elem === +pageId);
 
   useEffect(() => {
     isJoinedGather && setIsJoined(true);
@@ -64,15 +61,17 @@ export default function ActionBtnGroup({ pageId }: { pageId: string }) {
 
   return (
     <>
-      <div className="fixed bottom-0 left-0 w-full h-[84px] border-t-2 border-black bg-white z-10">
-        <div className="flex items-center justify-between max-w-[996px] mx-auto h-full">
-          <div>
-            <h3>더 건강한 나와 팀을 위한 프로그램 🏃‍️️</h3>
-            <div>
+      <div className="fixed bottom-0 left-0 w-full min-h-[84px]  border-t-2 border-black bg-white z-10 ">
+        <div className="block md:flex items-center justify-between max-w-[996px] my-5 mx-auto h-full">
+          <div className="px-6">
+            <h3 className="font-semibold">
+              더 건강한 나와 팀을 위한 프로그램 🏃‍️️
+            </h3>
+            <div className="text-[12px]">
               모임을 공유해서 더 많은 사람들이 참여할 수 있도록 독려해봐요
             </div>
           </div>
-          <div>
+          <div className="px-4 md:mt-0 mt-[10px]">
             {isCreated ? (
               <div className="flex">
                 <button

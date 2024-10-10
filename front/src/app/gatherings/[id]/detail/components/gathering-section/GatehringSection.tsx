@@ -45,7 +45,10 @@ export default function GatehringSection({ pageId }: { pageId: string }) {
 
         <hr className="border-dashed border-gray-400 mt-[43px]" />
         <div className="p-6">
-          <UserAvatar participantData={participantData} />
+          <UserAvatar
+            participantData={participantData}
+            gatherCapacity={detailData.capacity}
+          />
           <ProgressBar
             percent={(participantData?.length / detailData?.capacity) * 100}
           />

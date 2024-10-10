@@ -47,7 +47,7 @@ export default function CommentsSection({ pageId }: { pageId: string }) {
           </div>
 
           {reviewData.length > reviewsPerPage && (
-            <div className="mt-2 mb-[86px]">
+            <div className="mt-2 md:pb-[86px] pb-[134px]">
               <Pagination
                 currentPage={currentPage}
                 totalPages={totalPages}
@@ -57,7 +57,7 @@ export default function CommentsSection({ pageId }: { pageId: string }) {
           )}
         </>
       ) : (
-        <div className="flex items-center justify-center h-[600px] pb-[86px]">
+        <div className="flex items-center justify-center h-[600px] md:pb-[86px] pb-[134px]">
           <p className="text-gray-500">이직 리뷰가 없어요</p>
         </div>
       )}
