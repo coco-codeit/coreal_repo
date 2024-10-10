@@ -11,14 +11,14 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const useGatherDeatilQuery = (gatherId: string) => {
   return useQuery({
-    queryKey: ["gatherDetail"],
+    queryKey: ["gatherDetail", gatherId],
     queryFn: () => getGatherDetail(gatherId),
   });
 };
 
 export const useGatherParticipants = (gatherId: string) => {
   return useQuery({
-    queryKey: ["gatherParticipants"],
+    queryKey: ["gatherParticipants", gatherId],
     queryFn: () => getGatherParticipants(gatherId),
   });
 };
@@ -39,10 +39,17 @@ const useGatherMutation = (
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: () => mutationFn(gatherId),
-    onSuccess: () =>
+    onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["gatherDetail", "gatherParticipants"],
-      }),
+        queryKey: ["gatherDetail", gatherId],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["gatherParticipants", gatherId],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["joined1Gather"],
+      });
+    },
   });
 };
 
