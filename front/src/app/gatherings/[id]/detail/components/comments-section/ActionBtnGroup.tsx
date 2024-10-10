@@ -26,12 +26,11 @@ export default function ActionBtnGroup({ pageId }: { pageId: string }) {
 
   const joinedDataArr =
     joinedData?.map((item: { id: number }) => item.id) ?? [];
-  console.log(joinedDataArr);
 
   const isJoinedGather = joinedDataArr.find((elem: number) => elem === +pageId);
 
   useEffect(() => {
-    isJoinedGather && setIsJoined(true);
+    setIsJoined(!!isJoinedGather);
     setIsCreated(false);
     // userId && setIsCreated(true);
   }, [pageId, isJoinedGather]);
