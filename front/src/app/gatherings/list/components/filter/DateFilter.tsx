@@ -3,7 +3,7 @@ import { format } from "date-fns";
 import { useGatheringsStore } from "@/stores/useGatheringsStore";
 import { DownIcon } from "@/app/gatherings/list/components/Icons";
 import Button from "@/app/gatherings/components/Button";
-import Calendar from "./Calendar";
+import Calendar from "@/app/components/Calendar";
 import { useRef } from "react";
 
 function DateFilter() {
