@@ -37,10 +37,11 @@ export default function ActionBtnGroup({
   const isCreatedGather = createdBy === userInfo?.id;
 
   useEffect(() => {
-    setIsJoined(!!isJoinedGather);
-    setIsCreated(false);
-    isCreatedGather && setIsCreated(true);
-  }, [pageId, isJoinedGather, isCreatedGather]);
+    if (isLoggedIn) {
+      setIsJoined(!!isJoinedGather);
+      setIsCreated(!!isCreatedGather);
+    }
+  }, [pageId, isJoinedGather, isCreatedGather, isLoggedIn]);
 
   const handleJoinClick = () => {
     if (isLoggedIn && !isJoined) {
@@ -51,6 +52,8 @@ export default function ActionBtnGroup({
       setIsModalOpen(true);
     }
   };
+
+  console.log(isCreatedGather);
 
   const handleDeleteClick = () => {
     deleteMutation();
@@ -82,7 +85,14 @@ export default function ActionBtnGroup({
               더 건강한 나와 팀을 위한 프로그램 🏃‍️️
             </h3>
             <div className="text-[12px]">
-              모임을 공유해서 더 많은 사람들이 참여할 수 있도록 독려해봐요
+              {isCreated ? (
+                "모임을 공유해서 더 많은 사람들이 참여할 수 있도록 독려해봐요"
+              ) : (
+                <div className="md:flex">
+                  <div>국내 최고 웰니스 전문가와 프로그램을 </div>
+                  <div>통해 지친 몸과 마음을 회복해요</div>
+                </div>
+              )}
             </div>
           </div>
           <div className="px-4 md:mt-0 mt-[10px]">

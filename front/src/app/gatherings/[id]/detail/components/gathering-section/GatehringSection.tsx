@@ -32,8 +32,9 @@ export default function GatehringSection({
       <div className="relative w-full md:w-1/2 h-[270px]">
         <Image
           className="relative rounded-3xl"
-          src={detailData?.image}
+          src={detailData.image || "/images/default_gathering_image.png"}
           alt="Gather Detail Img"
+          sizes="100%"
           fill
         />
         <DeadLineTag endTime={detailData?.registrationEnd} type="lg" />
