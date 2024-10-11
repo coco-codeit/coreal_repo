@@ -97,7 +97,7 @@ export default function Navbar() {
                       height={40}
                       alt="profile"
                       src={userInfo?.image || "/images/profile.svg"}
-                      className="border-2 border-gray-200 rounded-full"
+                      className="border-2 border-gray-200 rounded-full object-cover w-10 h-10"
                     />
                   </Menu.Button>
                   <Menu.Items className="max-w-full absolute left-auto right-0 lg:mt-2 mt-[6px] lg:min-w-[142px] min-h-[80px] min-w-[110px] p-1 rounded-2xl flex flex-col items-start justify-start bg-white border border-gray-4 shadow-custom text-[#1F2937]">
