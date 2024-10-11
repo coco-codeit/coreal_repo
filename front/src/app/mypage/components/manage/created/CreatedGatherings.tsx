@@ -9,12 +9,14 @@ import ListWrapper from "../../ListWrapper";
 import OnEmpty from "../OnEmpty";
 import { useGatherCreated } from "@/hooks/queries/mypage";
 import useUserInfo from "@/stores/useUserInfo";
+import OnLoading from "../OnLoading";
 
 export default function CreatedGatherings() {
   // const [data, setData] = useState<ExtendedGatheringInterface[]>();
   const { id } = useUserInfo();
-  const { data } = useGatherCreated(id);
+  const { data, isLoading } = useGatherCreated(id);
 
+  if (isLoading) return <OnLoading />;
   if (!Array.isArray(data) || data.length === 0)
     return <OnEmpty message="아직 만든 모임이 없어요" />;
 
