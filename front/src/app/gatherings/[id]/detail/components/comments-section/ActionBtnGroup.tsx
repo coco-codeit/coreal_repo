@@ -10,30 +10,37 @@ import React, { useEffect, useState } from "react";
 import LoginAlertModal from "@/app/components/LoginAlertModal";
 import { useRouter } from "next/navigation";
 import useAuthStore from "@/stores/useAuthStore";
+import { useToastStore } from "@/stores/useToastStore";
+export default function ActionBtnGroup({
+  pageId,
+  createdBy,
+}: {
+  pageId: string;
+  createdBy: number;
+}) {
+  const router = useRouter();
 
-export default function ActionBtnGroup({ pageId }: { pageId: string }) {
   const [isJoined, setIsJoined] = useState(false);
   const [isCreated, setIsCreated] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  // const [isCopied, setIsCopied] = useState(false);
-  const router = useRouter();
-  const { isLoggedIn } = useAuthStore();
+  const { isLoggedIn, userInfo } = useAuthStore();
+  const { showToast } = useToastStore();
 
   const { mutate: deleteMutation } = useCreateCancel(pageId);
   const { mutate: joinMutation } = useGatherJoin(pageId);
   const { mutate: cancelJoinMutation } = useGatherjoinCancel(pageId);
   const { data: joinedData } = useGetJoinedGathers();
-
   const joinedDataArr =
     joinedData?.map((item: { id: number }) => item.id) ?? [];
 
   const isJoinedGather = joinedDataArr.find((elem: number) => elem === +pageId);
+  const isCreatedGather = createdBy === userInfo?.id;
 
   useEffect(() => {
     setIsJoined(!!isJoinedGather);
     setIsCreated(false);
-    // userId && setIsCreated(true);
-  }, [pageId, isJoinedGather]);
+    isCreatedGather && setIsCreated(true);
+  }, [pageId, isJoinedGather, isCreatedGather]);
 
   const handleJoinClick = () => {
     if (isLoggedIn && !isJoined) {
@@ -45,6 +52,10 @@ export default function ActionBtnGroup({ pageId }: { pageId: string }) {
     }
   };
 
+  const handleDeleteClick = () => {
+    deleteMutation();
+  };
+
   const handleLoginRedirect = () => {
     setIsModalOpen(false);
     router.push("/signin");
@@ -52,10 +63,14 @@ export default function ActionBtnGroup({ pageId }: { pageId: string }) {
 
   const handleShareClick = () => {
     const currentUrl = window.location.href;
-    navigator.clipboard.writeText(currentUrl).then(() => {
-      // setIsCopied(true);
-      // setTimeout(() => setIsCopied(false), 2000); // Reset after 2 seconds
-    });
+    navigator.clipboard
+      .writeText(currentUrl)
+      .then(() => {
+        showToast("링크 복사성공", "success");
+      })
+      .catch(() => {
+        showToast("에러가 발생했습니다", "error");
+      });
   };
 
   return (
@@ -75,7 +90,7 @@ export default function ActionBtnGroup({ pageId }: { pageId: string }) {
               <div className="flex">
                 <button
                   className="flex justify-center items-center w-[115px] h-11 rounded-xl text-orange-600 bg-white"
-                  onClick={() => deleteMutation()}
+                  onClick={() => handleDeleteClick()}
                 >
                   취소하기
                 </button>
@@ -97,7 +112,6 @@ export default function ActionBtnGroup({ pageId }: { pageId: string }) {
           </div>
         </div>
       </div>
-
       <LoginAlertModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
