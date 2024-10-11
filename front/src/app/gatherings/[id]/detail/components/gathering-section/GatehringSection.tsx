@@ -51,9 +51,10 @@ export default function GatehringSection({
           <UserAvatar
             participantData={participantData}
             gatherCapacity={detailData.capacity}
+            participantCount={detailData.participantCount}
           />
           <ProgressBar
-            percent={(participantData?.length / detailData?.capacity) * 100}
+            percent={(detailData.participantCount / detailData?.capacity) * 100}
           />
           <div className="flex items-center justify-between text-[12px]">
             <div>최소인원 5명</div>

@@ -53,8 +53,6 @@ export default function ActionBtnGroup({
     }
   };
 
-  console.log(isCreatedGather);
-
   const handleDeleteClick = () => {
     deleteMutation();
   };
