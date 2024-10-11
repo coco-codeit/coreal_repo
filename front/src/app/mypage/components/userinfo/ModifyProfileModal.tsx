@@ -5,12 +5,12 @@ import {
   DialogPanel,
   DialogTitle,
 } from "@headlessui/react";
-import { getUserProfile, updateUserProfile } from "@/apis/profile";
-import { UserProfileInterface } from "@/types/common";
 import { IoCloseOutline } from "react-icons/io5";
-import { UserImage } from "./UserInfo";
-import useUserInfo from "@/stores/useUserInfo";
+import { UserProfileInterface } from "@/types/common";
+import { getUserProfile, updateUserProfile } from "@/apis/profile";
 import Button from "../Button";
+import UserImage from "../UserImage";
+import useUserInfo from "@/stores/useUserInfo";
 
 interface FormDataInterface {
   companyName: string;
@@ -65,7 +65,10 @@ export default function ModifyProfileModal({
         <DialogPanel className="z-50 space-y-4 bg-white rounded-xl p-6 w-[90vw] max-w-[400px]">
           <DialogTitle className="font-bold relative">
             프로필 수정
-            <button onClick={closeModal} className="absolute top-0 right-0">
+            <button
+              onClick={closeModal}
+              className="absolute top-0 right-0 rounded-full p-1 hover:bg-gray-100 active:bg-gray-50"
+            >
               <IoCloseOutline />
             </button>
           </DialogTitle>
@@ -91,7 +94,7 @@ export default function ModifyProfileModal({
                   className="rounded-lg bg-gray-50 py-2 px-3 w-full"
                 />
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-2 md:gap-4 font-semibold">
                 <Button
                   onClick={closeModal}
                   className="border border-orange-600 text-orange-600 hover:shadow-lg"

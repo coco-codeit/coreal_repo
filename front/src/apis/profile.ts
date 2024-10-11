@@ -62,7 +62,7 @@ export const getGatheringCreatedByMe = async (id: number) => {
 
 export const submitReview = async (payload: {
   gatheringId: string;
-  score: string;
+  score: number;
   comment: string;
 }) =>
   await axiosInstance

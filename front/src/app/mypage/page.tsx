@@ -1,12 +1,13 @@
 "use client";
-import ManageTab from "./components/manage/ManageTab";
-import UserInfo from "./components/userinfo/UserInfo";
-import { useSession } from "next-auth/react";
+
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useUserProfile } from "@/hooks/queries/mypage";
-import LoadingSpinner from "../components/LoadingSpinner";
 import useUserInfo from "@/stores/useUserInfo";
+import UserInfo from "./components/userinfo/UserInfo";
+import ManageTab from "./components/manage/ManageTab";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 export default function MyPage() {
   const router = useRouter();

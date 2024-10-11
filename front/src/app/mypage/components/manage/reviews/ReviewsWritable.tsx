@@ -1,11 +1,11 @@
+import { useGatherJoined } from "@/hooks/queries/mypage";
 import { ExtendedGatheringInterface } from "@/types/common";
+import OnEmpty from "../OnEmpty";
+import OnLoading from "../OnLoading";
 import ListWrapper from "../../ListWrapper";
 import GatheringInfo from "../../GatheringInfo";
 import GatheringImage from "../../GatheringImage";
 import ReviewModalBtn from "../../ReviewModalBtn";
-import OnEmpty from "../OnEmpty";
-import { useGatherJoined } from "@/hooks/queries/mypage";
-import OnLoading from "../OnLoading";
 
 export default function ReviewsWritable() {
   const { data, isLoading } = useGatherJoined({
