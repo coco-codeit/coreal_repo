@@ -37,10 +37,11 @@ export default function ActionBtnGroup({
   const isCreatedGather = createdBy === userInfo?.id;
 
   useEffect(() => {
-    setIsJoined(!!isJoinedGather);
-    setIsCreated(false);
-    isCreatedGather && setIsCreated(true);
-  }, [pageId, isJoinedGather, isCreatedGather]);
+    if (isLoggedIn) {
+      setIsJoined(!!isJoinedGather);
+      setIsCreated(!!isCreatedGather);
+    }
+  }, [pageId, isJoinedGather, isCreatedGather, isLoggedIn]);
 
   const handleJoinClick = () => {
     if (isLoggedIn && !isJoined) {
@@ -51,6 +52,8 @@ export default function ActionBtnGroup({
       setIsModalOpen(true);
     }
   };
+
+  console.log(isCreatedGather);
 
   const handleDeleteClick = () => {
     deleteMutation();
