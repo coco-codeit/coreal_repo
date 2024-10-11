@@ -7,12 +7,12 @@ import {
   DialogPanel,
   DialogTitle,
 } from "@headlessui/react";
+import { RiPencilFill } from "react-icons/ri";
 import { IoCloseOutline } from "react-icons/io5";
 import { updateUserProfile } from "@/apis/profile";
 import Button from "../Button";
 import UserImage from "../UserImage";
 import useUserInfo from "@/stores/useUserInfo";
-import { RiPencilFill } from "react-icons/ri";
 
 export default function ModifyProfileModal({
   open,
@@ -25,15 +25,11 @@ export default function ModifyProfileModal({
   const [previewImage, setPreviewImage] = useState<string>("");
   const [inputImage, setInputImage] = useState<File | string>("");
   const [inputCompany, setInputCompany] = useState<string>("");
-  // const [formData, setFormData] = useState<FormDataInterface | undefined>({
-  //   image: "",
-  //   companyName: "",
-  // });
 
   useEffect(() => {
     if (image && image !== previewImage) {
       setPreviewImage(image);
-      setImage(image);
+      setInputImage(image);
     }
     if (companyName && companyName !== inputCompany) {
       setInputCompany(companyName);
@@ -98,7 +94,7 @@ export default function ModifyProfileModal({
                 htmlFor="image"
                 className="inline-block relative hover:drop-shadow-lg cursor-pointer"
               >
-                <UserImage src={previewImage} name="" />
+                <UserImage src={previewImage} />
                 <span className="inline-block absolute -bottom-1 -right-1 rounded-full p-1 bg-gray-200 border-2 border-white box-border">
                   <RiPencilFill color="#fff" size="0.75rem" />
                 </span>
