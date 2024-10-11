@@ -46,6 +46,8 @@ interface CardProps {
   setSelectedRegion: (region: string | undefined) => void;
   selectedSort: string;
   setSelectedSort: (sort: string) => void;
+  selectedDate: Date | undefined;
+  setSelectedDate: (date: Date | undefined) => void;
 }
 
 export default function Card({
@@ -56,6 +58,8 @@ export default function Card({
   setSelectedRegion,
   selectedSort,
   setSelectedSort,
+  selectedDate,
+  setSelectedDate,
 }: CardProps) {
   useEffect(() => {
     console.log("리뷰 리스트 출력", reviews);
@@ -63,6 +67,7 @@ export default function Card({
   }, [reviews, reviewScores]);
 
   const scoreData = reviewScores[0] || { averageScore: 0 };
+  const [filteredReviews, setFilteredReviews] = useState<Review[]>([]);
 
   const scoreBars = [
     { label: "5점", value: scoreData.fiveStars },
@@ -109,15 +114,11 @@ export default function Card({
     }
   };
 
-  const dateOptions = [{ id: "all", label: "날짜 선택" }];
-
   const sortOptions = [
     { id: "createdAt", label: "최신순" },
     { id: "score", label: "리뷰 높은 순" },
     { id: "participantCount", label: "참여 인원 순" },
   ];
-
-  const [selectedDate, setSelectedDate] = useState("날짜 선택");
 
   const totalReviews =
     scoreData.oneStar +
@@ -127,6 +128,78 @@ export default function Card({
     scoreData.fiveStars;
 
   const safeTotalReviews = totalReviews === 0 ? 1 : totalReviews;
+
+  useEffect(() => {
+    if (!selectedDate) {
+      setFilteredReviews(reviews);
+    }
+  }, [selectedDate, reviews]);
+
+  const applyDateFilter = () => {
+    if (!selectedDate) {
+      setFilteredReviews(reviews);
+      return;
+    }
+
+    const formattedSelectedDate = new Date(
+      selectedDate.getTime() - selectedDate.getTimezoneOffset() * 60000
+    )
+      .toISOString()
+      .split("T")[0];
+
+    const filtered = reviews.filter((review) => {
+      const reviewDate = new Date(review.Gathering.dateTime)
+        .toISOString()
+        .split("T")[0];
+      console.log(
+        "드롭다운 날짜:",
+        formattedSelectedDate,
+        "모임 날짜:",
+        reviewDate
+      );
+
+      return reviewDate === formattedSelectedDate;
+    });
+
+    setFilteredReviews(filtered);
+  };
+
+  useEffect(() => {
+    if (!selectedDate) {
+      setFilteredReviews(reviews);
+    }
+  }, [selectedDate, reviews]);
+
+  const filterReviews = () => {
+    let filtered = reviews;
+
+    if (selectedRegion && selectedRegion !== "지역 선택") {
+      filtered = filtered.filter(
+        (review) => review.Gathering.location === selectedRegion
+      );
+    }
+
+    if (selectedDate) {
+      const formattedSelectedDate = new Date(
+        selectedDate.getTime() - selectedDate.getTimezoneOffset() * 60000
+      )
+        .toISOString()
+        .split("T")[0];
+
+      filtered = filtered.filter((review) => {
+        const reviewDate = new Date(review.Gathering.dateTime)
+          .toISOString()
+          .split("T")[0];
+        return reviewDate === formattedSelectedDate;
+      });
+    }
+
+    setFilteredReviews(filtered);
+  };
+
+  useEffect(() => {
+    filterReviews();
+  }, [selectedRegion, selectedSort, reviews]);
 
   return (
     <div>
@@ -166,13 +239,24 @@ export default function Card({
                 onOptionSelect={handleRegionSelect}
               />
               <SortControls
-                options={dateOptions}
-                selectedOption={selectedDate}
-                onOptionSelect={(option) => setSelectedDate(option.label)}
+                options={[]}
+                selectedOption={
+                  selectedDate
+                    ? selectedDate.toLocaleDateString("ko-KR")
+                    : "날짜 선택"
+                }
+                onOptionSelect={() => {}}
+                showCalendar
+                selectedDate={selectedDate}
+                onSelectDate={setSelectedDate}
+                onApply={() => {
+                  applyDateFilter();
+                  filterReviews();
+                }}
               />
             </div>
           </div>
-          <div className="flex lg:gap-4 gap-2 items-center justify-end ">
+          <div className="flex lg:gap-4 gap-2 items-center justify-end">
             <SortControls
               options={sortOptions}
               selectedOption={
@@ -183,8 +267,8 @@ export default function Card({
           </div>
         </div>
 
-        {safeReviews.length > 0 ? (
-          safeReviews.map((review) => {
+        {filteredReviews.length > 0 ? (
+          filteredReviews.map((review) => {
             const { parentLabel, childLabel } = getLabelsFromType(
               review.Gathering.type
             );

@@ -13,6 +13,7 @@ export interface ReviewArgs {
   gatherId?: string;
   location?: string;
   sortBy?: string;
+  date?: string;
 }
 
 export interface Gathering {

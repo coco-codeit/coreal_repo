@@ -8,12 +8,14 @@ export const fetchReviews = async ({
   type,
   location,
   sortBy,
+  date,
 }: ReviewArgs) => {
   const queryParams = new URLSearchParams();
 
   if (gatherId) queryParams.append("gatheringId", gatherId);
   if (location) queryParams.append("location", location);
   if (sortBy) queryParams.append("sortBy", sortBy);
+  if (date) queryParams.append("date", date);
 
   if (Array.isArray(type)) {
     const promises = type.map((singleType) => {

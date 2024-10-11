@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-
 import Card from "../content/Card";
 import { useReviews } from "@/hooks/queries/useReviews";
 
@@ -32,18 +31,20 @@ const tabs = [
 export default function Tabs() {
   const [selectedTab, setSelectedTab] = useState(tabs[0].id);
   const [selectedSubTab, setSelectedSubTab] = useState(
-    tabs[0].subTabs ? tabs[0].subTabs[0].id : "",
+    tabs[0].subTabs ? tabs[0].subTabs[0].id : ""
   );
 
   console.log("selectedTab", selectedTab);
 
   const [selectedRegion, setSelectedRegion] = useState<string | undefined>(
-    "지역 선택",
+    "지역 선택"
   );
 
   const [selectedSort, setSelectedSort] = useState("createdAt");
 
-  const { reviews, reviewScores, isLoading, isError } = useReviews({
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>();
+
+  const { reviews, reviewScores, isError } = useReviews({
     type:
       selectedTab === "WORKATION"
         ? selectedTab
@@ -72,7 +73,7 @@ export default function Tabs() {
     console.log("!!!!!!!!!!", subTabId);
   };
 
-  if (isLoading) return <p>Loading...</p>;
+  // if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Error loading data</p>;
 
   return (
@@ -132,6 +133,8 @@ export default function Tabs() {
           setSelectedRegion={setSelectedRegion}
           selectedSort={selectedSort}
           setSelectedSort={setSelectedSort}
+          selectedDate={selectedDate}
+          setSelectedDate={setSelectedDate}
         />
       </div>
     </div>
