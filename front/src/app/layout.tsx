@@ -4,6 +4,7 @@ import "./global.css";
 import Navbar from "./components/Navbar";
 import { ReactQueryClientProvider } from "./components/ReactQueryClientProvider";
 import { Provider as SessionProvider } from "./components/SessionProvider";
+import { Toast } from "./components/Toast";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -30,6 +31,7 @@ export default function RootLayout({
           <SessionProvider>
             <main>
               <Navbar />
+              <Toast />
               {children}
             </main>
           </SessionProvider>

@@ -7,6 +7,7 @@ import {
   putCancelJoinGather,
 } from "@/libs/gatherDetail";
 import useAuthStore from "@/stores/useAuthStore";
+import { useToastStore } from "@/stores/useToastStore";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const useGatherDeatilQuery = (gatherId: string) => {
@@ -35,11 +36,14 @@ export const useGetJoinedGathers = () => {
 const useGatherMutation = (
   gatherId: string,
   mutationFn: (gatherId: string) => Promise<unknown>,
+  toastText: string,
 ) => {
   const queryClient = useQueryClient();
+  const { showToast } = useToastStore();
   return useMutation({
     mutationFn: () => mutationFn(gatherId),
     onSuccess: () => {
+      showToast(toastText, "success");
       queryClient.invalidateQueries({
         queryKey: ["gatherDetail", gatherId],
       });
@@ -50,16 +54,27 @@ const useGatherMutation = (
         queryKey: ["joined1Gather"],
       });
     },
+    onError: () => {
+      showToast("에러가 발생했습니다", "error");
+    },
   });
 };
 
 export const useGatherJoin = (gatherId: string) => {
-  return useGatherMutation(gatherId, postJoinGather);
+  return useGatherMutation(gatherId, postJoinGather, "모임에 참여하였습니다.");
 };
 export const useGatherjoinCancel = (gatherId: string) => {
-  return useGatherMutation(gatherId, putCancelJoinGather);
+  return useGatherMutation(
+    gatherId,
+    putCancelJoinGather,
+    "모임 참여를 취소하였습니다.",
+  );
 };
 
 export const useCreateCancel = (gatherId: string) => {
-  return useGatherMutation(gatherId, cancelCreateGather);
+  return useGatherMutation(
+    gatherId,
+    cancelCreateGather,
+    "모임을 삭제하였습니다",
+  );
 };

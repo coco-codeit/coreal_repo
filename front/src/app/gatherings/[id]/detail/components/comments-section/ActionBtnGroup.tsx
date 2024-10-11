@@ -10,8 +10,7 @@ import React, { useEffect, useState } from "react";
 import LoginAlertModal from "@/app/components/LoginAlertModal";
 import { useRouter } from "next/navigation";
 import useAuthStore from "@/stores/useAuthStore";
-import Toast from "@/app/(auth)/components/toast";
-
+import { useToastStore } from "@/stores/useToastStore";
 export default function ActionBtnGroup({
   pageId,
   createdBy,
@@ -19,19 +18,18 @@ export default function ActionBtnGroup({
   pageId: string;
   createdBy: number;
 }) {
+  const router = useRouter();
+
   const [isJoined, setIsJoined] = useState(false);
   const [isCreated, setIsCreated] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
-
-  const router = useRouter();
   const { isLoggedIn, userInfo } = useAuthStore();
+  const { showToast } = useToastStore();
 
   const { mutate: deleteMutation } = useCreateCancel(pageId);
   const { mutate: joinMutation } = useGatherJoin(pageId);
   const { mutate: cancelJoinMutation } = useGatherjoinCancel(pageId);
   const { data: joinedData } = useGetJoinedGathers();
-  console.log(userInfo);
   const joinedDataArr =
     joinedData?.map((item: { id: number }) => item.id) ?? [];
 
@@ -47,10 +45,8 @@ export default function ActionBtnGroup({
   const handleJoinClick = () => {
     if (isLoggedIn && !isJoined) {
       joinMutation();
-      setToastMessage("모임에 참여하였습니다.");
     } else if (isLoggedIn && isJoined) {
       cancelJoinMutation();
-      setToastMessage("모임 참여를 취소했습니다.");
     } else {
       setIsModalOpen(true);
     }
@@ -58,8 +54,6 @@ export default function ActionBtnGroup({
 
   const handleDeleteClick = () => {
     deleteMutation();
-    setToastMessage("모임이 삭제되었습니다.");
-    router.push("/");
   };
 
   const handleLoginRedirect = () => {
@@ -72,22 +66,12 @@ export default function ActionBtnGroup({
     navigator.clipboard
       .writeText(currentUrl)
       .then(() => {
-        setToastMessage("링크가 복사되었습니다.");
+        showToast("링크 복사성공", "success");
       })
       .catch(() => {
-        setToastMessage("링크 복사에 실패했습니다.");
+        showToast("에러가 발생했습니다", "error");
       });
   };
-
-  useEffect(() => {
-    if (toastMessage) {
-      const timer = setTimeout(() => {
-        setToastMessage(null);
-      }, 3000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [toastMessage]);
 
   return (
     <>
@@ -128,7 +112,6 @@ export default function ActionBtnGroup({
           </div>
         </div>
       </div>
-      {toastMessage && <Toast>{toastMessage}</Toast>}
       <LoginAlertModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
