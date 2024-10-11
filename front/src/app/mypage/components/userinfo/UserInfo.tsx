@@ -14,7 +14,6 @@ export default function UserInfo({ className }: { className?: string }) {
         <ModifyProfileBtn />
       </div>
       <div className="flex flex-row px-4 gap-2">
-        {image}
         <UserImage
           src={image}
           name={name}

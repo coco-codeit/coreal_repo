@@ -1,3 +1,5 @@
+"use client";
+
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import {
   Dialog,
@@ -6,16 +8,11 @@ import {
   DialogTitle,
 } from "@headlessui/react";
 import { IoCloseOutline } from "react-icons/io5";
-import { UserProfileInterface } from "@/types/common";
-import { getUserProfile, updateUserProfile } from "@/apis/profile";
+import { updateUserProfile } from "@/apis/profile";
 import Button from "../Button";
 import UserImage from "../UserImage";
 import useUserInfo from "@/stores/useUserInfo";
-
-interface FormDataInterface {
-  companyName: string;
-  image: string;
-}
+import { RiPencilFill } from "react-icons/ri";
 
 export default function ModifyProfileModal({
   open,
@@ -24,32 +21,55 @@ export default function ModifyProfileModal({
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
 }) {
-  const [formData, setFormData] = useState<FormDataInterface | undefined>();
   const { image, companyName, setImage, setCompanyName } = useUserInfo();
+  const [previewImage, setPreviewImage] = useState<string>("");
+  const [inputImage, setInputImage] = useState<File | string>("");
+  const [inputCompany, setInputCompany] = useState<string>("");
+  // const [formData, setFormData] = useState<FormDataInterface | undefined>({
+  //   image: "",
+  //   companyName: "",
+  // });
 
   useEffect(() => {
-    async () => {
-      const data: UserProfileInterface = await getUserProfile();
-      setFormData({ companyName: data.companyName, image: data.image });
-    };
-  }, []);
+    if (image && image !== previewImage) {
+      setPreviewImage(image);
+      setImage(image);
+    }
+    if (companyName && companyName !== inputCompany) {
+      setInputCompany(companyName);
+    }
+  }, [image, companyName]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (formData) {
-      updateUserProfile(formData);
-      setCompanyName(formData.companyName);
-      setImage(formData.image);
+    if (inputImage || inputCompany) {
+      updateUserProfile({
+        image: inputImage || "",
+        companyName: inputCompany || "",
+      }).then((res) => {
+        setCompanyName(res.companyName);
+        setImage(res.image);
+      });
     }
     closeModal();
   };
 
   const handleChangeCompany = (e: React.ChangeEvent<HTMLInputElement>) => {
-    formData && setFormData({ ...formData, companyName: e.target.value });
+    setInputCompany(e.target.value);
   };
 
   const handleChangeImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-    formData && setFormData({ ...formData, image: e.target.value });
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (event) => {
+      if (reader.readyState === 2) {
+        const imgUrl = event.target?.result as string;
+        imgUrl && setPreviewImage(imgUrl);
+        setInputImage(file);
+      }
+    };
   };
 
   const closeModal = () => setOpen(false);
@@ -73,15 +93,17 @@ export default function ModifyProfileModal({
             </button>
           </DialogTitle>
           <form onSubmit={handleSubmit}>
-            <div className="flex flex-col gap-6 text-sm">
-              <label htmlFor="image" className="block">
-                <UserImage
-                  src={image}
-                  name=""
-                  className="hover:shadow-lg cursor-pointer"
-                />
+            <div className="flex flex-col gap-6 text-sm items-start">
+              <label
+                htmlFor="image"
+                className="inline-block relative hover:drop-shadow-lg cursor-pointer"
+              >
+                <UserImage src={previewImage} name="" />
+                <span className="inline-block absolute -bottom-1 -right-1 rounded-full p-1 bg-gray-200 border-2 border-white box-border">
+                  <RiPencilFill color="#fff" size="0.75rem" />
+                </span>
               </label>
-              <div>
+              <div className="w-full">
                 <label htmlFor="company" className="font-semibold block mb-2">
                   회사
                 </label>
@@ -89,12 +111,12 @@ export default function ModifyProfileModal({
                   type="text"
                   placeholder="회사명을 입력해주세요"
                   id="company"
-                  value={companyName}
+                  value={inputCompany}
                   onChange={handleChangeCompany}
                   className="rounded-lg bg-gray-50 py-2 px-3 w-full"
                 />
               </div>
-              <div className="grid grid-cols-2 gap-2 md:gap-4 font-semibold">
+              <div className="grid grid-cols-2 gap-2 md:gap-4 font-semibold w-full">
                 <Button
                   onClick={closeModal}
                   className="border border-orange-600 text-orange-600 hover:shadow-lg"
@@ -114,7 +136,6 @@ export default function ModifyProfileModal({
       </Dialog>
       <input
         type="file"
-        name=""
         id="image"
         accept="image/jpeg,image/png"
         onChange={handleChangeImage}
