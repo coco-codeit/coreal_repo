@@ -5,6 +5,7 @@ import {
   getReviews,
   getUserProfile,
 } from "@/apis/profile";
+import useAuthStore from "@/stores/useAuthStore";
 import { useMutation, useQuery, UseQueryResult } from "@tanstack/react-query";
 
 export const useGatherJoined = (option?: {
@@ -15,9 +16,11 @@ export const useGatherJoined = (option?: {
   sortBy?: "dateTime" | "registrationEnd" | "joinedAt"; // 정렬 기준
   sortOrder?: "asc" | "desc"; // 정렬 순서
 }): UseQueryResult => {
+  const { isLoggedIn } = useAuthStore();
   return useQuery({
     queryKey: ["gatherJoined"],
     queryFn: () => getGatheringsJoined({ ...option }),
+    enabled: isLoggedIn,
   });
 };
 

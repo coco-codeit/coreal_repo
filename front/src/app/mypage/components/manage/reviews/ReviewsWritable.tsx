@@ -1,17 +1,18 @@
+import { useGatherJoined } from "@/hooks/queries/mypage";
 import { ExtendedGatheringInterface } from "@/types/common";
+import OnEmpty from "../OnEmpty";
+import OnLoading from "../OnLoading";
 import ListWrapper from "../../ListWrapper";
 import GatheringInfo from "../../GatheringInfo";
 import GatheringImage from "../../GatheringImage";
 import ReviewModalBtn from "../../ReviewModalBtn";
-import OnEmpty from "../OnEmpty";
-import { useGatherJoined } from "@/hooks/queries/mypage";
 
 export default function ReviewsWritable() {
   const { data, isLoading } = useGatherJoined({
     completed: true,
     reviewed: false,
   });
-  if (isLoading) return <>Loading...</>;
+  if (isLoading) return <OnLoading />;
 
   if (!Array.isArray(data) || data.length === 0)
     return <OnEmpty message="아직 작성 가능한 리뷰가 없어요" />;

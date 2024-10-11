@@ -6,16 +6,18 @@ import UserAvatar from "./UserAvatar";
 import ProgressBar from "@/app/gatherings/components/ProgressBar";
 import DeadLineTag from "@/app/gatherings/components/DeadLineTag";
 import GatheringInfo from "./GatheringInfo";
-
-import {
-  useGatherDeatilQuery,
-  useGatherParticipants,
-} from "@/hooks/queries/gatherDetailQuery";
+import { useGatherParticipants } from "@/hooks/queries/gatherDetailQuery";
 import GatheringSecSkeleton from "./GatheringSecSkeleton";
-
-export default function GatehringSection({ pageId }: { pageId: string }) {
-  const { data: detailData, isLoading: isDetailLoading } =
-    useGatherDeatilQuery(pageId);
+import { IGatherings } from "@/types/gatherings";
+export default function GatehringSection({
+  pageId,
+  detailData,
+  isDetailLoading,
+}: {
+  pageId: string;
+  detailData: IGatherings;
+  isDetailLoading: boolean;
+}) {
   const { data: participantData, isLoading: participantLoading } =
     useGatherParticipants(pageId);
 
@@ -30,8 +32,9 @@ export default function GatehringSection({ pageId }: { pageId: string }) {
       <div className="relative w-full md:w-1/2 h-[270px]">
         <Image
           className="relative rounded-3xl"
-          src={detailData?.image}
+          src={detailData.image || "/images/default_gathering_image.png"}
           alt="Gather Detail Img"
+          sizes="100%"
           fill
         />
         <DeadLineTag endTime={detailData?.registrationEnd} type="lg" />
@@ -40,15 +43,18 @@ export default function GatehringSection({ pageId }: { pageId: string }) {
       <div className="w-full md:w-1/2 h-[270px] py-6 rounded-[24px] border-2 border-gray-200">
         <GatheringInfo
           dateInfo={detailData?.dateTime}
-          locationInfo={detailData?.location}
-          typeInfo={detailData?.type}
+          titleInfo={detailData?.name}
         />
 
         <hr className="border-dashed border-gray-400 mt-[43px]" />
         <div className="p-6">
-          <UserAvatar participantData={participantData} />
+          <UserAvatar
+            participantData={participantData}
+            gatherCapacity={detailData.capacity}
+            participantCount={detailData.participantCount}
+          />
           <ProgressBar
-            percent={(participantData?.length / detailData?.capacity) * 100}
+            percent={(detailData.participantCount / detailData?.capacity) * 100}
           />
           <div className="flex items-center justify-between text-[12px]">
             <div>최소인원 5명</div>

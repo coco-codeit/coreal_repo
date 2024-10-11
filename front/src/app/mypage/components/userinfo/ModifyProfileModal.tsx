@@ -1,3 +1,5 @@
+"use client";
+
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import {
   Dialog,
@@ -5,13 +7,12 @@ import {
   DialogPanel,
   DialogTitle,
 } from "@headlessui/react";
-import { getUserProfile, updateUserProfile } from "@/apis/profile";
-import { UserProfileInterface } from "@/types/common";
-
-interface FormDataInterface {
-  companyName: string;
-  image: string;
-}
+import { RiPencilFill } from "react-icons/ri";
+import { IoCloseOutline } from "react-icons/io5";
+import { updateUserProfile } from "@/apis/profile";
+import Button from "../Button";
+import UserImage from "../UserImage";
+import useUserInfo from "@/stores/useUserInfo";
 
 export default function ModifyProfileModal({
   open,
@@ -20,67 +21,122 @@ export default function ModifyProfileModal({
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
 }) {
-  const [formData, setFormData] = useState<FormDataInterface | undefined>();
+  const { image, companyName, setImage, setCompanyName } = useUserInfo();
+  const [previewImage, setPreviewImage] = useState<string>("");
+  const [inputImage, setInputImage] = useState<File | string>("");
+  const [inputCompany, setInputCompany] = useState<string>("");
 
   useEffect(() => {
-    async () => {
-      const data: UserProfileInterface = await getUserProfile();
-      setFormData({ companyName: data.companyName, image: data.image });
-    };
-  }, []);
+    if (image && image !== previewImage) {
+      setPreviewImage(image);
+      setInputImage(image);
+    }
+    if (companyName && companyName !== inputCompany) {
+      setInputCompany(companyName);
+    }
+  }, [image, companyName]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    formData && updateUserProfile(formData);
+    if (inputImage || inputCompany) {
+      updateUserProfile({
+        image: inputImage || "",
+        companyName: inputCompany || "",
+      }).then((res) => {
+        setCompanyName(res.companyName);
+        setImage(res.image);
+      });
+    }
     closeModal();
   };
 
   const handleChangeCompany = (e: React.ChangeEvent<HTMLInputElement>) => {
-    formData && setFormData({ ...formData, companyName: e.target.value });
+    setInputCompany(e.target.value);
   };
 
   const handleChangeImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-    formData && setFormData({ ...formData, image: e.target.value });
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (event) => {
+      if (reader.readyState === 2) {
+        const imgUrl = event.target?.result as string;
+        imgUrl && setPreviewImage(imgUrl);
+        setInputImage(file);
+      }
+    };
   };
 
-  const closeModal = () => {
-    setOpen(false);
-  };
+  const closeModal = () => setOpen(false);
 
   return (
-    <Dialog
-      open={open}
-      onClose={closeModal}
-      className="fixed inset-0 flex flex-col justify-center items-center"
-    >
-      <DialogBackdrop className="fixed inset-0 bg-black/30" />
-      <DialogPanel className="z-50 max-w-lg space-y-4 bg-white rounded-xl p-12">
-        <button onClick={closeModal}>close</button>
-        <DialogTitle className="font-bold">프로필 수정</DialogTitle>
-        <form onSubmit={handleSubmit}>
-          <input
-            type="file"
-            name=""
-            id=""
-            accept="image/jpeg,image/png"
-            onChange={handleChangeImage}
-          />
-          <div className="flex flex-col">
-            <label htmlFor="company">회사</label>
-            <input
-              type="text"
-              name=""
-              id="company"
-              placeholder="회사명을 입력해주세요"
-              onChange={handleChangeCompany}
-            />
-          </div>
-          <div className="flex gap-4">
-            <button onClick={closeModal}>취소</button>
-            <button type="submit">수정하기</button>
-          </div>
-        </form>
-      </DialogPanel>
-    </Dialog>
+    <>
+      <Dialog
+        open={open}
+        onClose={closeModal}
+        className="fixed inset-0 flex flex-col justify-center items-center"
+      >
+        <DialogBackdrop className="fixed inset-0 bg-black/30" />
+        <DialogPanel className="z-50 space-y-4 bg-white rounded-xl p-6 w-[90vw] max-w-[400px]">
+          <DialogTitle className="font-bold relative">
+            프로필 수정
+            <button
+              onClick={closeModal}
+              className="absolute top-0 right-0 rounded-full p-1 hover:bg-gray-100 active:bg-gray-50"
+            >
+              <IoCloseOutline />
+            </button>
+          </DialogTitle>
+          <form onSubmit={handleSubmit}>
+            <div className="flex flex-col gap-6 text-sm items-start">
+              <label
+                htmlFor="image"
+                className="inline-block relative hover:drop-shadow-lg cursor-pointer"
+              >
+                <UserImage src={previewImage} />
+                <span className="inline-block absolute -bottom-1 -right-1 rounded-full p-1 bg-gray-200 border-2 border-white box-border">
+                  <RiPencilFill color="#fff" size="0.75rem" />
+                </span>
+              </label>
+              <div className="w-full">
+                <label htmlFor="company" className="font-semibold block mb-2">
+                  회사
+                </label>
+                <input
+                  type="text"
+                  placeholder="회사명을 입력해주세요"
+                  id="company"
+                  value={inputCompany}
+                  onChange={handleChangeCompany}
+                  className="rounded-lg bg-gray-50 py-2 px-3 w-full"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-2 md:gap-4 font-semibold w-full">
+                <Button
+                  onClick={closeModal}
+                  className="border border-orange-600 text-orange-600 hover:shadow-lg"
+                >
+                  취소
+                </Button>
+                <Button
+                  type="submit"
+                  className="bg-gray-400 text-white hover:bg-orange-600 hover:shadow-lg"
+                >
+                  수정하기
+                </Button>
+              </div>
+            </div>
+          </form>
+        </DialogPanel>
+      </Dialog>
+      <input
+        type="file"
+        id="image"
+        accept="image/jpeg,image/png"
+        onChange={handleChangeImage}
+        className="hidden"
+      />
+    </>
   );
 }

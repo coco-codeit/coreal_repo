@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import ModifyProfileModal from "./ModifyProfileModal";
 import { RiPencilFill } from "react-icons/ri";
+import ModifyProfileModal from "./ModifyProfileModal";
 
 export default function ModifyProfileBtn() {
   const [isOpen, setIsOpen] = useState<boolean>(false);

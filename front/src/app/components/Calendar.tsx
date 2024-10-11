@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { DayPicker } from "./CustomDayPicker";
+import { DayPicker } from "@/app/gatherings/list/components/filter/CustomDayPicker";
 import { ko } from "date-fns/locale";
 
 interface ICalendar {

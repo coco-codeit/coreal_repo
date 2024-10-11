@@ -1,17 +1,7 @@
-import Image from "next/image";
-import ModifyProfileBtn from "./ModifyProfileBtn";
+import UserImage from "../UserImage";
 import useUserInfo from "@/stores/useUserInfo";
+import ModifyProfileBtn from "./ModifyProfileBtn";
 
-// interface UserInfoProps {
-//   teamId: number;
-//   id: number;
-//   email: string;
-//   name: string;
-//   companyName: string;
-//   image: string;
-//   createdAt: string;
-//   updatedAt: string;
-// }
 export default function UserInfo({ className }: { className?: string }) {
   const { name, email, image, companyName } = useUserInfo();
 
@@ -24,7 +14,11 @@ export default function UserInfo({ className }: { className?: string }) {
         <ModifyProfileBtn />
       </div>
       <div className="flex flex-row px-4 gap-2">
-        <UserImage src={image} name={name} />
+        <UserImage
+          src={image}
+          name={name}
+          className="border-2 border-white -translate-y-3"
+        />
         <div className="pb-4 pt-3">
           <p className="text-base font-semibold mb-2">{name}</p>
           <div className="text-sm grid grid-cols-[70px,1fr] gap-x-2 gap-y-1">
@@ -35,22 +29,6 @@ export default function UserInfo({ className }: { className?: string }) {
           </div>
         </div>
       </div>
-    </div>
-  );
-}
-
-// userInfo.image !== "string" 는 서버 더미데이터 처리용으로, 추후 지워야 함
-function UserImage({ src, name }: { src?: string; name?: string }) {
-  if (!src) return <></>;
-  return (
-    <div className="flex-shrink-0 rounded-full w-14 h-14 box-content border-2 border-white -translate-y-3">
-      <Image
-        src={src !== "string" ? src : "/images/default_user_image.svg"}
-        width="100"
-        height="100"
-        alt={`${name}님의 프로필 이미지`}
-        className="box-border w-14 h-14 rounded-full border-2 border-gray-200"
-      />
     </div>
   );
 }
