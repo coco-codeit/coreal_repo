@@ -10,39 +10,56 @@ import React, { useEffect, useState } from "react";
 import LoginAlertModal from "@/app/components/LoginAlertModal";
 import { useRouter } from "next/navigation";
 import useAuthStore from "@/stores/useAuthStore";
+import Toast from "@/app/(auth)/components/toast";
 
-export default function ActionBtnGroup({ pageId }: { pageId: string }) {
+export default function ActionBtnGroup({
+  pageId,
+  createdBy,
+}: {
+  pageId: string;
+  createdBy: number;
+}) {
   const [isJoined, setIsJoined] = useState(false);
   const [isCreated, setIsCreated] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  // const [isCopied, setIsCopied] = useState(false);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
   const router = useRouter();
-  const { isLoggedIn } = useAuthStore();
+  const { isLoggedIn, userInfo } = useAuthStore();
 
   const { mutate: deleteMutation } = useCreateCancel(pageId);
   const { mutate: joinMutation } = useGatherJoin(pageId);
   const { mutate: cancelJoinMutation } = useGatherjoinCancel(pageId);
   const { data: joinedData } = useGetJoinedGathers();
-
+  console.log(userInfo);
   const joinedDataArr =
     joinedData?.map((item: { id: number }) => item.id) ?? [];
 
   const isJoinedGather = joinedDataArr.find((elem: number) => elem === +pageId);
+  const isCreatedGather = createdBy === userInfo?.id;
 
   useEffect(() => {
     setIsJoined(!!isJoinedGather);
     setIsCreated(false);
-    // userId && setIsCreated(true);
-  }, [pageId, isJoinedGather]);
+    isCreatedGather && setIsCreated(true);
+  }, [pageId, isJoinedGather, isCreatedGather]);
 
   const handleJoinClick = () => {
     if (isLoggedIn && !isJoined) {
       joinMutation();
+      setToastMessage("모임에 참여하였습니다.");
     } else if (isLoggedIn && isJoined) {
       cancelJoinMutation();
+      setToastMessage("모임 참여를 취소했습니다.");
     } else {
       setIsModalOpen(true);
     }
+  };
+
+  const handleDeleteClick = () => {
+    deleteMutation();
+    setToastMessage("모임이 삭제되었습니다.");
+    router.push("/");
   };
 
   const handleLoginRedirect = () => {
@@ -52,11 +69,25 @@ export default function ActionBtnGroup({ pageId }: { pageId: string }) {
 
   const handleShareClick = () => {
     const currentUrl = window.location.href;
-    navigator.clipboard.writeText(currentUrl).then(() => {
-      // setIsCopied(true);
-      // setTimeout(() => setIsCopied(false), 2000); // Reset after 2 seconds
-    });
+    navigator.clipboard
+      .writeText(currentUrl)
+      .then(() => {
+        setToastMessage("링크가 복사되었습니다.");
+      })
+      .catch(() => {
+        setToastMessage("링크 복사에 실패했습니다.");
+      });
   };
+
+  useEffect(() => {
+    if (toastMessage) {
+      const timer = setTimeout(() => {
+        setToastMessage(null);
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [toastMessage]);
 
   return (
     <>
@@ -75,7 +106,7 @@ export default function ActionBtnGroup({ pageId }: { pageId: string }) {
               <div className="flex">
                 <button
                   className="flex justify-center items-center w-[115px] h-11 rounded-xl text-orange-600 bg-white"
-                  onClick={() => deleteMutation()}
+                  onClick={() => handleDeleteClick()}
                 >
                   취소하기
                 </button>
@@ -97,7 +128,7 @@ export default function ActionBtnGroup({ pageId }: { pageId: string }) {
           </div>
         </div>
       </div>
-
+      {toastMessage && <Toast>{toastMessage}</Toast>}
       <LoginAlertModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

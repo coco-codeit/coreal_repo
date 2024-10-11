@@ -6,9 +6,11 @@ import GatehringSection from "./components/gathering-section/GatehringSection";
 import CommentsSection from "./components/comments-section/CommentsSection";
 import ActionBtnGroup from "./components/comments-section/ActionBtnGroup";
 import { useParams } from "next/navigation";
+import { useGatherDeatilQuery } from "@/hooks/queries/gatherDetailQuery";
 
 export default function Detail() {
   const { id }: { id: string } = useParams();
+  const { data: detailData } = useGatherDeatilQuery(id);
 
   return (
     <div className="h-screen-minus-nav bg-[#F3F4F6]">
@@ -16,7 +18,7 @@ export default function Detail() {
         <GatehringSection pageId={id} />
         <CommentsSection pageId={id} />
       </div>
-      <ActionBtnGroup pageId={id} />
+      <ActionBtnGroup pageId={id} createdBy={detailData?.createdBy} />
     </div>
   );
 }
