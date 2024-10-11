@@ -1,5 +1,5 @@
 import LikeButton from "@/app/gatherings/components/LikeButton";
-import DateTag from "@/app/gatherings/components/DateTag";
+import DateTag from "@/app/gatherings/list/components/Date";
 
 function CardHeader({
   name,

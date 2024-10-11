@@ -76,6 +76,8 @@ export const useFetchGatherings = ({
       return nextOffset;
     },
     select: (data) => data.pages.flat(),
-    refetchInterval: 3600000, // 1시간마다 refetch
+    // refetchInterval: 3600000, // 1시간마다 refetch
+    refetchOnWindowFocus: false,
+    retry: 3,
   });
 };
