@@ -3,17 +3,21 @@ import { GatheringsParticipants, GatheringsUser } from "@/types/gatherings";
 import Image from "next/image";
 import React from "react";
 
+interface UserAvatarProps {
+  participantData: GatheringsParticipants[];
+  gatherCapacity: number;
+  participantCount: number;
+}
+
 export default function UserAvatar({
   participantData,
   gatherCapacity,
-}: {
-  participantData: GatheringsParticipants[];
-  gatherCapacity: number;
-}) {
+  participantCount,
+}: UserAvatarProps) {
   const userArr = participantData?.map(
     (item: GatheringsParticipants) => item.User,
   );
-  const isMoreUser = userArr?.length > 5;
+  const isMoreUser = participantCount > 5;
 
   return (
     <div className="flex items-center justify-between">
@@ -38,7 +42,7 @@ export default function UserAvatar({
           })}
           {isMoreUser && (
             <div className="flex items-center justify-center text-[14px] h-[29px] w-[29px] rounded-full bg-gray-200 -ml-[10px] z-30">
-              +{userArr.length - 5}
+              +{participantCount - 5}
             </div>
           )}
         </div>
