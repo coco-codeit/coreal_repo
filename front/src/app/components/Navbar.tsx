@@ -54,7 +54,7 @@ export default function Navbar() {
   }, []);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 h-14 md:h-[60px] bg-[rgb(234,88,12)] text-sm md:text-base font-semibold text-[#FFF7ED] border-b-2 border-[#111827] flex justify-center z-50">
+    <nav className="fixed top-0 left-0 right-0 h-14 md:h-[60px] bg-[rgb(234,88,12)] text-sm md:text-base font-semibold text-[#FFF7ED] border-b-2 border-[#111827] flex justify-center z-20">
       <div className="w-full max-w-[1200px] mx-auto flex h-full items-center justify-between px-4 md:px-6 lg:px-0">
         <section className="flex md:gap-5 gap-3 items-center">
           <div className="hidden md:block">
