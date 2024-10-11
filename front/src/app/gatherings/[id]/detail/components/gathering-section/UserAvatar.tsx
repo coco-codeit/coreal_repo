@@ -23,7 +23,7 @@ export default function UserAvatar({
     <div className="flex items-center justify-between">
       <div className="flex items-center">
         <div className="text-[14px]">모집정원 {gatherCapacity}명</div>
-        <div className="flex ml-[22px]">
+        <div className="flex min-h-[29px] ml-[22px]">
           {userArr?.map((item: GatheringsUser) => {
             const userImgSrc = item.image || "/images/profile.svg";
             return (
