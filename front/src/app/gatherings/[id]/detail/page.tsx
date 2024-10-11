@@ -12,7 +12,6 @@ export default function Detail() {
   const { id }: { id: string } = useParams();
   const { data: detailData, isLoading: isDetailLoading } =
     useGatherDeatilQuery(id);
-  console.log(detailData);
   return (
     <div className="h-screen-minus-nav bg-[#F3F4F6]">
       <div className="mx-auto container max-w-[1200px] px-6 md:px-[102px] pt-10 bg-white">
