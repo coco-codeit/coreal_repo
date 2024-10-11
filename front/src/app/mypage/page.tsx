@@ -22,7 +22,6 @@ export default function MyPage() {
       setName(data.name);
       setEmail(data.email);
       setImage(data.image);
-      console.log(data.image);
       setCompanyName(data.companyName);
     }
   }, [

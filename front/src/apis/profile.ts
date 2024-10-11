@@ -32,13 +32,17 @@ export const getUserProfile = async (): Promise<UserProfileInterface> => {
 
 export const updateUserProfile = async (payload: {
   companyName: string;
-  image: string;
+  image: File | string;
 }) =>
   await await axiosInstance
-    .post(`${BASE_URL}/auths/user`, {
-      body: payload,
+    .put(`${BASE_URL}/auths/user`, payload, {
+      headers: { "Content-Type": "multipart/form-data" },
     })
-    .then((res) => res.data);
+    .then((res) => {
+      console.log(res);
+      return res.data;
+    })
+    .catch((err) => console.log(err));
 
 export const getGatheringsJoined = async (
   option?: GetGatheringsJoinedProps,
