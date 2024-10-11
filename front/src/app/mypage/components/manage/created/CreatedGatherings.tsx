@@ -1,20 +1,19 @@
 "use client";
 
-// import { useEffect, useState } from "react";
+import useUserInfo from "@/stores/useUserInfo";
+import { useGatherCreated } from "@/hooks/queries/mypage";
+import { ExtendedGatheringInterface } from "@/types/common";
+import OnEmpty from "../OnEmpty";
+import OnLoading from "../OnLoading";
+import ListWrapper from "../../ListWrapper";
 import GatheringInfo from "../../GatheringInfo";
 import GatheringImage from "../../GatheringImage";
-// import { getGatheringCreatedByMe } from "@/apis/profile";
-import { ExtendedGatheringInterface } from "@/types/common";
-import ListWrapper from "../../ListWrapper";
-import OnEmpty from "../OnEmpty";
-import { useGatherCreated } from "@/hooks/queries/mypage";
-import useUserInfo from "@/stores/useUserInfo";
 
 export default function CreatedGatherings() {
-  // const [data, setData] = useState<ExtendedGatheringInterface[]>();
   const { id } = useUserInfo();
-  const { data } = useGatherCreated(id);
+  const { data, isLoading } = useGatherCreated(id);
 
+  if (isLoading) return <OnLoading />;
   if (!Array.isArray(data) || data.length === 0)
     return <OnEmpty message="아직 만든 모임이 없어요" />;
 
