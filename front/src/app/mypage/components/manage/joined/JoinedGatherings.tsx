@@ -8,12 +8,13 @@ import GatheringImage from "../../GatheringImage";
 import ReviewModalBtn from "../../ReviewModalBtn";
 import { useGatherJoined, useCancelGatherJoined } from "@/hooks/queries/mypage";
 import OnEmpty from "../OnEmpty";
+import OnLoading from "../OnLoading";
 
 export default function JoinedGatherings() {
   const { data, isLoading } = useGatherJoined();
   const { mutate: cancelGatherJoined } = useCancelGatherJoined();
 
-  if (isLoading) return <>Loading...</>;
+  if (isLoading) return <OnLoading />;
 
   if (!Array.isArray(data) || data.length === 0)
     return <OnEmpty message="신청한 모임이 아직 없어요" />;
