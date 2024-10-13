@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import useFavoritesStore from "@/stores/useFavoritesStore";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
 import Card from "@/app/gatherings/list/components/card";
@@ -8,13 +8,12 @@ import { useFetchGatherings } from "@/hooks/queries/useGatheringsQuery";
 import { IGatherings } from "@/types/gatherings";
 import Tabs from "@/app/gatherings/list/components/Tabs";
 import { useGatheringsStore } from "@/stores/useGatheringsStore";
-import InfiniteScroll from "@/app/gatherings/list/components/InfiniteScroll"; // InfiniteScroll 가져오기
+import InfiniteScroll from "@/app/gatherings/list/components/InfiniteScroll";
 import Filters from "@/app/gatherings/list/components/filter";
 
 const Favorites = () => {
   const { favorites, setFavoritesFromStorage } = useFavoritesStore();
   const { tab: type, location, date, sortBy, sortOrder } = useGatheringsStore();
-  const [isFavoritesLoaded, setIsFavoritesLoaded] = useState(false);
 
   const { data, fetchNextPage, hasNextPage, isFetching, isLoading } =
     useFetchGatherings({
@@ -27,17 +26,11 @@ const Favorites = () => {
 
   useEffect(() => {
     setFavoritesFromStorage();
-    setIsFavoritesLoaded(true);
   }, [setFavoritesFromStorage]);
 
-  // 데이터를 바로 필터링하여 찜한 모임을 보여줌
   const favoriteGatherings = data?.filter((gathering: IGatherings) =>
     favorites.has(gathering.id),
   );
-
-  if (!isFavoritesLoaded || isLoading) {
-    return <LoadingSpinner />;
-  }
 
   return (
     <>
@@ -55,9 +48,9 @@ const Favorites = () => {
             <p>아직 찜한 모임이 없어요.</p>
           </div>
         ) : (
-          favoriteGatherings?.map((item: IGatherings) => (
-            <Card key={item.id} data={item} />
-          ))
+          favoriteGatherings?.map((item: IGatherings) => {
+            return <Card key={item.id} data={item} showExpiration={true} />;
+          })
         )}
       </InfiniteScroll>
     </>

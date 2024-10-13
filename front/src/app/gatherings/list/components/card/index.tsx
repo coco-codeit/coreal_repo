@@ -4,22 +4,29 @@ import { IGatherings } from "@/types/gatherings";
 import CardImage from "@/app/gatherings/list/components/card/CardImage";
 import CardHeader from "@/app/gatherings/list/components/card/CardHeader";
 import CardParticipants from "@/app/gatherings/list/components/card/CardParticipants";
+import Bye from "@/app/favorites/components/Bye";
 
 interface CardProps {
   data: IGatherings;
+  showExpiration?: boolean;
 }
 
-function Card({ data }: CardProps) {
+function Card({ data, showExpiration }: CardProps) {
   const router = useRouter();
+  const now = new Date();
+  const isExpired = new Date(data.registrationEnd) < now;
 
   const handleCardClick = (id: number) => {
+    if (showExpiration && isExpired) {
+      return;
+    }
     router.push(`/gatherings/${id}/detail`);
   };
 
   return (
     <motion.div
       key={data.id}
-      className="h-[316px] md:h-[156px] grid grid-rows-[156px_1fr] rounded-3xl border border-gray-100 md:grid-cols-[280px_1fr] cursor-pointer"
+      className={`relative h-[316px] md:h-[156px] grid grid-rows-[156px_1fr] rounded-3xl border border-gray-100 md:grid-cols-[280px_1fr] ${showExpiration && isExpired ? "" : "cursor-pointer"}`}
       onClick={() => handleCardClick(data.id)}
       whileHover={{
         boxShadow: "0px 10px 10px -5px rgba(0, 0, 0, 0.04)",
@@ -39,6 +46,7 @@ function Card({ data }: CardProps) {
           participantCount={data.participantCount}
         />
       </div>
+      {showExpiration && isExpired && <Bye gatheringId={data.id} />}
     </motion.div>
   );
 }
