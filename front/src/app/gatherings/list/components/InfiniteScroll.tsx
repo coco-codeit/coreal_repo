@@ -23,16 +23,19 @@ const InfiniteScroll = ({
     if (inView && hasNextPage && !isFetchingRef.current && !isFetching) {
       isFetchingRef.current = true;
       fetchNextPage();
-      setTimeout(() => {
-        isFetchingRef.current = false;
-      }, 1000);
     }
   }, [inView, hasNextPage, isFetching, fetchNextPage]);
+
+  useEffect(() => {
+    if (!isFetching) {
+      isFetchingRef.current = false;
+    }
+  }, [isFetching]);
 
   return (
     <div className="grid grid-cols-1 gap-6 py-4 md:py-6 w-full">
       {children}
-      <div ref={ref} className="h-[20px]" />
+      {hasNextPage && !isFetching && <div ref={ref} className="h-[20px]" />}
     </div>
   );
 };
