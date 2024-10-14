@@ -1,40 +1,73 @@
-name: Deploy to EC2
+name: 최적화된 EC2 배포
+run-name: 최적화된 EC2 배포를 실행합니다. 🚀
 on:
   push:
     branches:
       - main
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  actions: write
+  contents: read
+
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./front
     steps:
-      - name: EC2에 배포
+      - name: 코드 체크아웃
+        uses: actions/checkout@v2
+
+      - name: Node.js 설정
+        uses: actions/setup-node@v2
+        with:
+          node-version: "20"
+
+      - name: 의존성 설치 및 빌드
+        env:
+          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+          NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
+          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+        run: |
+          yarn install --frozen-lockfile
+          yarn build
+
+      - name: 파일 XZ 압축
+        run: |
+          tar -cf - \
+            --exclude='.next/cache' \
+            .next \
+            | xz -9e > next-build.tar.xz
+
+      - name: SSH 키 설정
         env:
           EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
           EC2_HOST: ${{ secrets.EC2_HOST }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$EC2_SSH_KEY" > ~/.ssh/ec2_key.pem
+          chmod 600 ~/.ssh/ec2_key.pem
+          ssh-keyscan -H $EC2_HOST >> ~/.ssh/known_hosts
+
+      - name: EC2에 압축 파일 전송 및 배포
+        env:
+          EC2_HOST: ${{ secrets.EC2_HOST }}
           EC2_USER: ${{ secrets.EC2_USER }}
         run: |
-          echo "$EC2_SSH_KEY" > ec2_key.pem
-          chmod 600 ec2_key.pem
-          ssh -i ec2_key.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST '
-            set -x
-            cd ~/coreal_repo
-            git pull origin main
-            cd front
-            yarn install
-            yarn build
-            
-            echo "PM2 프로세스 상태 확인"
-            pm2 list
-            
-            if pm2 list | grep -q "coreal_frontend"; then
-              echo "기존 프로세스 중지 및 삭제"
-              pm2 stop coreal_frontend
-              pm2 delete coreal_frontend
-            fi
-            
-            echo "새 프로세스 시작"
-            pm2 start yarn --name "coreal_frontend" -- start --port 8080
-            
-            echo "프론트엔드 배포 완료."
-          '
+          scp -i ~/.ssh/ec2_key.pem -o StrictHostKeyChecking=no \
+            next-build.tar.xz $EC2_USER@$EC2_HOST:~/front/
+          ssh -i ~/.ssh/ec2_key.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST "
+            cd ~/front && \
+            xz -d next-build.tar.xz && \
+            tar -xf next-build.tar && \
+            rm next-build.tar && \
+            yarn install --production --frozen-lockfile && \
+            pm2 stop frontend || true && \
+            pm2 delete frontend || true && \
+            pm2 start yarn --name 'frontend' -- start --port 8080
+          "
