@@ -21,6 +21,7 @@ export const useGatherParticipants = (gatherId: string, limit: number) => {
   return useQuery({
     queryKey: ["gatherParticipants", gatherId, limit],
     queryFn: () => getGatherParticipants(gatherId, limit),
+    enabled: !!limit,
   });
 };
 
