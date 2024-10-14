@@ -55,6 +55,7 @@ export default function ActionBtnGroup({
 
   const handleDeleteClick = () => {
     deleteMutation();
+    router.push("/");
   };
 
   const handleLoginRedirect = () => {
