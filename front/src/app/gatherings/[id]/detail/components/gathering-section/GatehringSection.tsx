@@ -19,7 +19,7 @@ export default function GatehringSection({
   isDetailLoading: boolean;
 }) {
   const { data: participantData = [], isLoading: participantLoading } =
-    useGatherParticipants(pageId, detailData.participantCount);
+    useGatherParticipants(pageId, detailData?.participantCount);
 
   const isDataLoading = isDetailLoading || participantLoading;
 
