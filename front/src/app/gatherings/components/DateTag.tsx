@@ -1,29 +1,31 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { format } from "date-fns";
-import { ko } from "date-fns/locale";
 
-interface DateTag {
-  dateText: string; //서버에서 주는 데이터 "2024-10-19T01:21:47.762Z" 형식
-  textColor: "white" | "orange"; // 텍스트 색상, 특정 색상만 허용
-  type: "day" | "time"; // 변경포맷의 타입 day = 날짜 , time = 시간
+interface DateTagProps {
+  dateText: string;
+  textColor: "white" | "orange";
+  type: "day" | "time";
 }
 
-export default function DateTag({ dateText, textColor, type }: DateTag) {
-  const colors = { white: "text-white", orange: "text-[#EA580C]" };
+export default function DateTag({ dateText, textColor, type }: DateTagProps) {
+  const [formattedDate, setFormattedDate] = useState<string>("");
 
-  const dateFormatter = (dateText: string, type: string) => {
-    if (type === "day") {
-      return format(dateText, "MMMM d일", { locale: ko }).replace("MMMM", "월");
-    } else if (type === "time") {
-      return format(dateText, "HH:mm");
-    }
-  };
+  useEffect(() => {
+    const date = new Date(dateText);
+
+    const formatted =
+      type === "day" ? format(date, "MM월 dd일") : format(date, "HH:mm");
+
+    setFormattedDate(formatted);
+  }, [dateText, type]);
+
+  const colors = { white: "text-white", orange: "text-[#EA580C]" };
 
   return (
     <div
       className={`flex items-center justify-center h-6 p-2 mr-2 text-[14px] font-medium leading-5 rounded-[4px] bg-[#111827] ${colors[textColor]}`}
     >
-      {dateFormatter(dateText, type)}
+      {formattedDate || dateText}
     </div>
   );
 }
