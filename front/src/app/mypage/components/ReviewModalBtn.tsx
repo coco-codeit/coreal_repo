@@ -3,9 +3,9 @@ import Button from "./Button";
 import ReviweModal from "./ReviewModal";
 
 export default function ReviewModalBtn({
-  teamId,
+  gatheringId,
 }: {
-  teamId: string | number;
+  gatheringId: string | number;
 }) {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   return (
@@ -17,7 +17,7 @@ export default function ReviewModalBtn({
         리뷰 작성하기
       </Button>
       <ReviweModal
-        gatheringId={String(teamId)}
+        gatheringId={String(gatheringId)}
         open={isModalOpen}
         setOpen={setIsModalOpen}
       />
