@@ -21,6 +21,7 @@ export default function Signin() {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm<FormData>({
     resolver: zodResolver(signinSchema),
   });
@@ -33,12 +34,16 @@ export default function Signin() {
       const timer = setTimeout(() => {
         setToastMessage(null);
       }, 3000);
-
       return () => clearTimeout(timer);
     }
   }, [toastMessage]);
 
   const router = useRouter();
+
+  const errorMessages = {
+    INVALID_CREDENTIALS: "아이디와 패스워드를 다시 확인해주세요.",
+    VALIDATION_ERROR: "유효한 이메일 주소를 입력하세요.",
+  };
 
   const onSubmit = async (data: FormData) => {
     setIsLoading(true);
@@ -49,15 +54,32 @@ export default function Signin() {
     });
 
     if (result?.error) {
-      setToastMessage(
-        "로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요.",
-      );
-      setIsLoading(false);
+      try {
+        const errorData = JSON.parse(result.error);
+
+        if (errorData.code && errorData.code in errorMessages) {
+          const errorMessage =
+            errorMessages[errorData.code as keyof typeof errorMessages];
+          if (errorData.code === "VALIDATION_ERROR") {
+            setError("email", { type: "manual", message: errorMessage });
+          } else {
+            setError("email", { type: "manual", message: errorMessage });
+            setError("password", { type: "manual", message: errorMessage });
+          }
+        } else {
+          throw new Error("Unknown error");
+        }
+      } catch (parseError) {
+        const defaultErrorMessage = "로그인에 실패했습니다.";
+        setError("email", { type: "manual", message: defaultErrorMessage });
+        setError("password", { type: "manual", message: defaultErrorMessage });
+        setToastMessage(defaultErrorMessage);
+      }
     } else {
       setToastMessage("로그인에 성공했습니다!");
-      // 로그인 성공시 페이지 이동
       setTimeout(() => router.push("/"), 2000);
     }
+    setIsLoading(false);
   };
 
   return (
