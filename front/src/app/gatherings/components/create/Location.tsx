@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
 import { locations } from "@/types/gatherings";
-import { DownIcon } from "@/app/gatherings/list/components/Icons";
+import { DownIcon } from "@/app/gatherings/components/list/Icons";
 
 export default function LocationDropdown() {
   const [selectedLocation, setSelectedLocation] = useState<string | null>(null);

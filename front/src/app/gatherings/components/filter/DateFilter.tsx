@@ -1,7 +1,7 @@
 import { Menu, MenuButton, MenuItems } from "@headlessui/react";
 import { format } from "date-fns";
 import { useGatheringsStore } from "@/stores/useGatheringsStore";
-import { DownIcon } from "@/app/gatherings/list/components/Icons";
+import { DownIcon } from "@/app/gatherings/components/list/Icons";
 import Button from "@/app/gatherings/components/Button";
 import Calendar from "@/app/components/Calendar";
 import { useRef } from "react";

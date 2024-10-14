@@ -1,5 +1,5 @@
 import Favorites from "@/app/favorites/components/Favorites";
-import Header from "../gatherings/list/components/Header";
+import Header from "@/app/components/Header";
 
 function Home() {
   return (

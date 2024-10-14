@@ -3,7 +3,7 @@ import {
   dehydrate,
   HydrationBoundary,
 } from "@tanstack/react-query";
-import Gatherings from "@/app/gatherings/list/components/Gatherings";
+import Gatherings from "@/app/gatherings/components/list/Gatherings";
 import { usePrefetchGatherings } from "@/hooks/queries/useGatheringsQuery";
 
 export default async function Home() {

@@ -15,10 +15,10 @@ import {
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
 import Button from "@/app/gatherings/components/Button";
 import Calendar from "@/app/components/Calendar";
-import TimeButton from "@/app/gatherings/list/components/create/TimeButton";
+import TimeButton from "@/app/gatherings/components/create/TimeButton";
 import { useCreateGathering } from "@/hooks/queries/useCreateGatheringQuery";
 import { createType, locations, timeSlots } from "@/types/gatherings";
-import { DownIcon, DeleteIcon } from "@/app/gatherings/list/components/Icons";
+import { DownIcon, DeleteIcon } from "@/app/gatherings/components/list/Icons";
 import { useCreateGatheringStore } from "@/stores/useCreateGatheringStore";
 
 const createSChema = z.object({

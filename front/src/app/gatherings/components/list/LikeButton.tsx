@@ -2,7 +2,7 @@
 
 import { MouseEvent, useEffect, useState } from "react";
 import useFavoritesStore from "@/stores/useFavoritesStore";
-import { HeartIcon } from "@/app/gatherings/list/components/Icons";
+import { HeartIcon } from "@/app/gatherings/components/list/Icons";
 
 function LikeButton({ gatheringId }: { gatheringId: number }) {
   const { favorites, toggleFavorite, setFavoritesFromStorage } =
