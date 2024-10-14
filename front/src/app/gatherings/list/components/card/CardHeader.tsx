@@ -1,11 +1,13 @@
-import LikeButton from "@/app/gatherings/components/LikeButton";
+import LikeButton from "@/app/gatherings/list/components/LikeButton";
 import DateTag from "@/app/gatherings/list/components/Date";
 
 function CardHeader({
+  id,
   name,
   location,
   dateTime,
 }: {
+  id: number;
   name: string;
   location: string;
   dateTime: string;
@@ -23,7 +25,7 @@ function CardHeader({
           <DateTag dateText={dateTime} textColor={"orange"} type={"time"} />
         </div>
       </div>
-      <LikeButton />
+      <LikeButton gatheringId={id} />
     </div>
   );
 }

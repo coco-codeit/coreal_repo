@@ -8,7 +8,7 @@ interface DateTagProps {
 }
 
 export default function DateTag({ dateText, textColor, type }: DateTagProps) {
-  const [formattedDate, setFormattedDate] = useState<string>("");
+  const [formattedDate, setFormattedDate] = useState<string>("Loading");
 
   useEffect(() => {
     const date = new Date(dateText);

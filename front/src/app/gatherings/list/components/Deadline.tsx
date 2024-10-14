@@ -9,10 +9,9 @@ interface IDeadLineTag {
 }
 
 export default function DeadLineTag({ endTime, type }: IDeadLineTag) {
-  const [formattedDeadline, setFormattedDeadline] = useState<string>(endTime); // 초기값으로 endTime 설정
+  const [formattedDeadline, setFormattedDeadline] = useState<string>("Loading");
 
   useEffect(() => {
-    // 클라이언트에서만 날짜 포맷팅
     const targetDate = new Date(endTime);
 
     const formatDeadline = () => {
@@ -56,7 +55,6 @@ export default function DeadLineTag({ endTime, type }: IDeadLineTag) {
         height={24}
       />
       <span className="text-[12px]">{formattedDeadline}</span>{" "}
-      {/* 포맷된 날짜 또는 원본 데이터 표시 */}
     </div>
   );
 }
