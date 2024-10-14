@@ -1,4 +1,3 @@
-import { format } from "date-fns";
 import axiosInstance from "@/libs/axiosInstance";
 import {
   IGatherings,
@@ -26,13 +25,11 @@ export const getGatheringList = async ({
   sortBy = undefined,
   sortOrder = undefined,
 }: GetGatheringListParams): Promise<IGatherings[]> => {
-  const formattedDate = date ? format(date, "yyyy-MM-dd") : undefined;
-
   const res = await axiosInstance.get(`/gatherings`, {
     params: {
       limit: 10, // limit 값 10으로 고정
       offset: pageParam,
-      date: formattedDate,
+      date,
       type,
       location,
       sortBy,

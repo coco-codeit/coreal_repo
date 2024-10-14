@@ -7,7 +7,10 @@ export const createGathering = async (data: ICreateGathering) => {
   formData.append("name", data.name);
   formData.append("location", data.location);
   formData.append("type", data.type);
-  formData.append("dateTime", data.dateTime);
+
+  const utcDateTime = new Date(data.dateTime).toISOString();
+  formData.append("dateTime", utcDateTime);
+
   formData.append("capacity", data.capacity.toString());
   formData.append("image", data.image);
 
