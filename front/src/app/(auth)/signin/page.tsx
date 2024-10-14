@@ -26,6 +26,7 @@ export default function Signin() {
   });
 
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (toastMessage) {
@@ -40,7 +41,7 @@ export default function Signin() {
   const router = useRouter();
 
   const onSubmit = async (data: FormData) => {
-    console.log(data);
+    setIsLoading(true);
     const result = await signIn("credentials", {
       email: data.email,
       password: data.password,
@@ -51,6 +52,7 @@ export default function Signin() {
       setToastMessage(
         "로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요.",
       );
+      setIsLoading(false);
     } else {
       setToastMessage("로그인에 성공했습니다!");
       // 로그인 성공시 페이지 이동
@@ -59,8 +61,8 @@ export default function Signin() {
   };
 
   return (
-    <div className="w-[343px] sm:w-[608px] md:w-[510px] md:min-w-[510px] md:h-[422px] rounded-3xl px-[16px] py-[32px] sm:px-[54px] sm:py-[32px] bg-white shadow-md">
-      <div className="w-full max-w-[311px] h-[358px] sm:max-w-[500px] sm:h-[358px] md:max-w-[402px] flex flex-col">
+    <div className="w-full max-w-[510px] md:min-w-[510px] min-h-[422px] rounded-3xl px-4 sm:px-[54px] py-8 bg-white shadow-md">
+      <div className="w-full h-full flex flex-col">
         <span className="text-2xl font-semibold text-left text-gray-800 mb-[32px]">
           로그인
         </span>
@@ -83,10 +85,15 @@ export default function Signin() {
             error={errors.password?.message}
           />
           <button
-            className="w-full bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2.5 px-4 rounded-xl focus:outline-none focus:shadow-outline mt-[16px] "
+            className={`w-full font-semibold py-2.5 px-4 rounded-xl focus:outline-none focus:shadow-outline mt-[16px] ${
+              isLoading
+                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                : "bg-gray-400 hover:bg-gray-500 text-white"
+            }`}
             type="submit"
+            disabled={isLoading}
           >
-            로그인
+            {isLoading ? "로딩중..." : "로그인"}
           </button>
         </form>
         <p className="text-[15px] font-medium text-gray-800 text-center">
