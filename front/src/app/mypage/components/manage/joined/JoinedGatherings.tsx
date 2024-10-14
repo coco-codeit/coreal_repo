@@ -39,7 +39,7 @@ export default function JoinedGatherings() {
               }}
             />
             {new Date(item.dateTime) < new Date() ? (
-              <ReviewModalBtn teamId={item.teamId} />
+              <ReviewModalBtn gatheringId={item.gatheringId} />
             ) : (
               <Button
                 className="border-2 bg-white border-orange-600 hover:border-red-500 hover:bg-red-500 text-orange-600 hover:text-white"

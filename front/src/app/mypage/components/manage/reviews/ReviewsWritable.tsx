@@ -32,7 +32,7 @@ export default function ReviewsWritable() {
                 capacity: item.capacity,
               }}
             />
-            <ReviewModalBtn teamId={item.teamId} />
+            <ReviewModalBtn gatheringId={item.id} />
           </div>
         </ListWrapper>
       ))}

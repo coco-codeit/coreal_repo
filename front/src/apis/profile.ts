@@ -70,7 +70,7 @@ export const submitReview = async (payload: {
   comment: string;
 }) =>
   await axiosInstance
-    .post(`${BASE_URL}/reviews`, {
+    .post(`${BASE_URL}/reviews?teamId`, {
       body: payload,
     })
     .then((res) => res.data);

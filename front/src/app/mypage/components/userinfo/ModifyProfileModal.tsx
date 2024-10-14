@@ -34,7 +34,7 @@ export default function ModifyProfileModal({
     if (companyName && companyName !== inputCompany) {
       setInputCompany(companyName);
     }
-  }, [image, companyName]);
+  }, [image, companyName, previewImage, inputCompany]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
