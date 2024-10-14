@@ -4,7 +4,9 @@ import api from "@/apis/index";
 
 declare module "next-auth" {
   interface Session {
-    token: string;
+    token: {
+      token: string;
+    };
     error?: string;
   }
 }
@@ -28,17 +30,16 @@ export const authOptions: NextAuthOptions = {
             password: credentials.password,
           });
 
-          if (response.data.code === "SUCCESS") {
+          if (response.status === 200) {
             return {
               id: credentials.email,
-              token: response.data.data,
+              token: response.data.token,
               email: credentials.email,
             };
           } else {
-            throw new Error(JSON.stringify({ code: response.data.code }));
+            throw new Error();
           }
         } catch (error) {
-          console.error("Login error:", error);
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const err = error as { response?: { data?: any } };
           if (err.response && err.response.data) {
@@ -57,7 +58,7 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }) {
-      session.token = token.userToken as string;
+      session.token = { token: token.userToken as string };
       return session;
     },
   },
