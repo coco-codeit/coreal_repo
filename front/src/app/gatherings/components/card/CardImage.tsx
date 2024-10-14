@@ -1,5 +1,5 @@
 import Image from "next/image";
-import DeadLineTag from "@/app/gatherings/list/components/Deadline";
+import DeadLineTag from "@/app/gatherings/components/DeadLineTag";
 
 function CardImage({
   image,

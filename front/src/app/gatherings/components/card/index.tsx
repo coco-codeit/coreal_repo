@@ -1,9 +1,9 @@
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { IGatherings } from "@/types/gatherings";
-import CardImage from "@/app/gatherings/list/components/card/CardImage";
-import CardHeader from "@/app/gatherings/list/components/card/CardHeader";
-import CardParticipants from "@/app/gatherings/list/components/card/CardParticipants";
+import CardImage from "@/app/gatherings/components/card/CardImage";
+import CardHeader from "@/app/gatherings/components/card/CardHeader";
+import CardParticipants from "@/app/gatherings/components/card/CardParticipants";
 import Bye from "@/app/favorites/components/Bye";
 
 interface CardProps {

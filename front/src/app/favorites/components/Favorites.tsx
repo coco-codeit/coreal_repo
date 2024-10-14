@@ -3,13 +3,13 @@
 import { useEffect } from "react";
 import useFavoritesStore from "@/stores/useFavoritesStore";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
-import Card from "@/app/gatherings/list/components/card";
+import Card from "@/app/gatherings/components/card";
 import { useFetchGatherings } from "@/hooks/queries/useGatheringsQuery";
 import { IGatherings } from "@/types/gatherings";
-import Tabs from "@/app/gatherings/list/components/Tabs";
+import Tabs from "@/app/gatherings/components/list/Tabs";
 import { useGatheringsStore } from "@/stores/useGatheringsStore";
-import InfiniteScroll from "@/app/gatherings/list/components/InfiniteScroll";
-import Filters from "@/app/gatherings/list/components/filter";
+import InfiniteScroll from "@/app/gatherings/components/list/InfiniteScroll";
+import Filters from "@/app/gatherings/components/filter";
 
 const Favorites = () => {
   const { favorites, setFavoritesFromStorage } = useFavoritesStore();

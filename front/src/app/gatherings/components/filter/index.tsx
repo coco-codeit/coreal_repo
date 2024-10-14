@@ -1,6 +1,6 @@
-import LocationFilter from "@/app/gatherings/list/components/filter/LocationFilter";
-import DateFilter from "@/app/gatherings/list/components/filter/DateFilter";
-import SortFilter from "@/app/gatherings/list/components/filter/SortFilter";
+import LocationFilter from "@/app/gatherings/components/filter/LocationFilter";
+import DateFilter from "@/app/gatherings/components/filter/DateFilter";
+import SortFilter from "@/app/gatherings/components/filter/SortFilter";
 
 function GatheringsFilter() {
   return (

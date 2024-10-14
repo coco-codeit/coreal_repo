@@ -4,7 +4,7 @@ import { useGatheringsStore } from "@/stores/useGatheringsStore";
 import {
   DallaemfitIcon,
   WorkationIcon,
-} from "@/app/gatherings/list/components/Icons";
+} from "@/app/gatherings/components/list/Icons";
 import CreateButton from "./CreateButton";
 
 const tabConfig = {

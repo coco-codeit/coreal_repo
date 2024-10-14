@@ -1,10 +1,10 @@
 "use client";
 
-import InfiniteScroll from "@/app/gatherings/list/components/InfiniteScroll";
-import Header from "@/app/gatherings/list/components/Header";
-import Tabs from "@/app/gatherings/list/components/Tabs";
-import Filters from "@/app/gatherings/list/components/filter";
-import Card from "@/app/gatherings/list/components/card";
+import InfiniteScroll from "@/app/gatherings/components/list/InfiniteScroll";
+import Header from "@/app/components/Header";
+import Tabs from "@/app/gatherings/components/list/Tabs";
+import Filters from "@/app/gatherings/components/filter";
+import Card from "@/app/gatherings/components/card";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
 import { useFetchGatherings } from "@/hooks/queries/useGatheringsQuery";
 import { useGatheringsStore } from "@/stores/useGatheringsStore";

@@ -1,7 +1,7 @@
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
 import { useGatheringsStore } from "@/stores/useGatheringsStore";
 import { LocationType } from "@/types/gatherings";
-import { DownIcon } from "@/app/gatherings/list/components/Icons";
+import { DownIcon } from "@/app/gatherings/components/list/Icons";
 
 function LocationFilter() {
   const { location, setLocation } = useGatheringsStore();

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { signIn, useSession } from "next-auth/react";
-import CreateGatheringModal from "@/app/gatherings/list/components/create/CreateGatheringModal";
+import CreateGatheringModal from "@/app/gatherings/components/create/CreateGatheringModal";
 import Button from "@/app/gatherings/components/Button";
 
 function CreateButton() {
