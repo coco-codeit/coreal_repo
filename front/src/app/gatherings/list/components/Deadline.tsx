@@ -14,8 +14,11 @@ export default function DeadLineTag({ endTime, type }: IDeadLineTag) {
   useEffect(() => {
     // 클라이언트에서만 날짜 포맷팅
     const targetDate = new Date(endTime);
-
+    const now = new Date();
     const formatDeadline = () => {
+      if (targetDate < now) {
+        return "마감된 모임";
+      }
       const distance = formatDistanceToNow(targetDate, {
         locale: ko,
         addSuffix: true,
@@ -46,7 +49,7 @@ export default function DeadLineTag({ endTime, type }: IDeadLineTag) {
 
   return (
     <div
-      className={`flex items-center absolute right-0 top-0 min-w-[110px] w-auto h-8 rounded-bl-lg bg-[#EA580C] text-white ${customRound[type]}`}
+      className={`flex items-center absolute right-0 top-0 pr-3 w-auto h-8 rounded-bl-lg bg-[#EA580C] text-white ${customRound[type]}`}
     >
       <Image
         className="ml-2 mr-1"
