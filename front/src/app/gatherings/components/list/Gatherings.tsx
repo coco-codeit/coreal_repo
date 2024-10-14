@@ -1,10 +1,10 @@
 "use client";
 
-import InfiniteScroll from "@/app/gatherings/list/components/InfiniteScroll";
-import Header from "@/app/gatherings/list/components/Header";
-import Tabs from "@/app/gatherings/list/components/Tabs";
-import Filters from "@/app/gatherings/list/components/filter";
-import Card from "@/app/gatherings/list/components/card";
+import InfiniteScroll from "@/app/gatherings/components/list/InfiniteScroll";
+import Header from "@/app/components/Header";
+import Tabs from "@/app/gatherings/components/list/Tabs";
+import Filters from "@/app/gatherings/components/filter";
+import Card from "@/app/gatherings/components/card";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
 import { useFetchGatherings } from "@/hooks/queries/useGatheringsQuery";
 import { useGatheringsStore } from "@/stores/useGatheringsStore";
@@ -29,8 +29,9 @@ function Gatherings() {
 
   return (
     <div className="min-w-[375px] max-w-[375px] px-4 md:max-w-[744px] md:px-[24.5px] lg:max-w-[996px] lg:min-w-[1200px] lg:px-[102px] min-h-screen mx-auto flex flex-col bg-gray-50">
-      <Header />
+      <Header type="class" />
       <Tabs />
+
       <Filters />
       <InfiniteScroll
         isFetching={isFetching}

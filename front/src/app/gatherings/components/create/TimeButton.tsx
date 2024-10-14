@@ -1,6 +1,6 @@
 interface ITimeButton {
   time: string;
-  state: "inactive" | "active" | "default"; // 상태를 하나로 관리
+  state: "inactive" | "active" | "default";
   onClick: () => void;
 }
 

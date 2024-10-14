@@ -17,10 +17,11 @@ export const useGatherDeatilQuery = (gatherId: string) => {
   });
 };
 
-export const useGatherParticipants = (gatherId: string) => {
+export const useGatherParticipants = (gatherId: string, limit: number) => {
   return useQuery({
-    queryKey: ["gatherParticipants", gatherId],
-    queryFn: () => getGatherParticipants(gatherId),
+    queryKey: ["gatherParticipants", gatherId, limit],
+    queryFn: () => getGatherParticipants(gatherId, limit),
+    enabled: !!limit,
   });
 };
 

@@ -7,12 +7,8 @@ declare module "next-auth" {
     token: {
       token: string;
     };
+    error?: string;
   }
-}
-
-interface CustomUser {
-  id: string;
-  token: string;
 }
 
 export const authOptions: NextAuthOptions = {
@@ -23,26 +19,33 @@ export const authOptions: NextAuthOptions = {
         email: { label: "Email", type: "text" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials): Promise<CustomUser | null> {
+      async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
-          throw new Error("이메일과 비밀번호를 입력해주세요.");
+          throw new Error(JSON.stringify({ code: "VALIDATION_ERROR" }));
         }
 
         try {
-          const { data: token } = await api.post<string>("/auths/signin", {
+          const response = await api.post("/auths/signin", {
             email: credentials.email,
             password: credentials.password,
           });
 
-          if (token) {
-            return { id: credentials.email, token };
+          if (response.status === 200) {
+            return {
+              id: credentials.email,
+              token: response.data.token,
+              email: credentials.email,
+            };
+          } else {
+            throw new Error();
           }
-          throw new Error(
-            "로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요.",
-          );
         } catch (error) {
-          console.error("Login error:", error);
-          return null;
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const err = error as { response?: { data?: any } };
+          if (err.response && err.response.data) {
+            throw new Error(JSON.stringify(err.response.data));
+          }
+          throw new Error(JSON.stringify({ code: "UNKNOWN_ERROR" }));
         }
       },
     }),
@@ -50,12 +53,13 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        return { ...token, userToken: (user as CustomUser).token };
+        token.userToken = (user as unknown as { token: string }).token;
       }
       return token;
     },
     async session({ session, token }) {
-      return { ...session, token: token.userToken as string };
+      session.token = { token: token.userToken as string };
+      return session;
     },
   },
   pages: {

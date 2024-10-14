@@ -1,3 +1,5 @@
+import { motion } from "framer-motion";
+
 function DallaemfitIcon({ isSelected }: { isSelected: boolean }) {
   const fillColor = isSelected ? "#111827" : "#9CA3AF"; // gray-900 or gray-400
   const strokeColor = isSelected ? "#111827" : "#9CA3AF"; // gray-900 or gray-400
@@ -161,7 +163,7 @@ function DownIcon({ inverse = false }: IconProps) {
 }
 
 interface DeleteIconProps {
-  color?: string; // 색상을 선택적으로 받는 prop
+  color?: string;
 }
 
 function DeleteIcon({ color = "#111827" }: DeleteIconProps) {
@@ -175,13 +177,13 @@ function DeleteIcon({ color = "#111827" }: DeleteIconProps) {
     >
       <path
         d="M5 5L19.5 19.5"
-        stroke={color} // prop으로 전달된 색상 사용
+        stroke={color}
         strokeWidth="1.8"
         strokeLinecap="round"
       />
       <path
         d="M19.5 5L5 19.5"
-        stroke={color} // prop으로 전달된 색상 사용
+        stroke={color}
         strokeWidth="1.8"
         strokeLinecap="round"
       />
@@ -189,6 +191,34 @@ function DeleteIcon({ color = "#111827" }: DeleteIconProps) {
   );
 }
 
-export default DeleteIcon;
+interface HeartIconProps {
+  liked: boolean;
+}
 
-export { DallaemfitIcon, WorkationIcon, DownIcon, DeleteIcon };
+function HeartIcon({ liked }: HeartIconProps) {
+  return (
+    <motion.svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      animate={{
+        scale: liked ? [1, 0.8, 1.2, 1] : [1, 1.2, 0.8, 1],
+        fill: liked ? "#EA580C" : "#E5E7EB",
+      }}
+      transition={{
+        duration: 2,
+        ease: "easeInOut",
+      }}
+      className="cursor-pointer"
+    >
+      <path
+        d="M22.1 9.1C22 5.7 19.3 3 15.9 3C14.8 3 13.1 3.8 12.4 5.1C12.3 5.4 11.9 5.4 11.8 5.1C11 3.9 9.4 3.1 8.2 3.1C4.9 3.1 2.1 5.8 2 9.1V9.3C2 11 2.7 12.6 3.9 13.8C3.9 13.8 3.9 13.8 3.9 13.9C4 14 8.8 18.2 11 20.1C11.6 20.6 12.5 20.6 13.1 20.1C15.3 18.2 20 14 20.2 13.9C20.2 13.9 20.2 13.9 20.2 13.8C21.4 12.7 22.1 11.1 22.1 9.3V9.1Z"
+        fill={liked ? "#EA580C" : "#E5E7EB"}
+      />
+    </motion.svg>
+  );
+}
+
+export { DallaemfitIcon, WorkationIcon, DownIcon, DeleteIcon, HeartIcon };

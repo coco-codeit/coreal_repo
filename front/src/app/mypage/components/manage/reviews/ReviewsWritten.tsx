@@ -5,6 +5,7 @@ import OnEmpty from "../OnEmpty";
 import OnLoading from "../OnLoading";
 import ListWrapper from "../../ListWrapper";
 import GatheringImage from "../../GatheringImage";
+import useAuthStore from "@/stores/useAuthStore";
 
 type GatherType = "OFFICE_STRETCHING" | "MINDFULNESS";
 
@@ -37,7 +38,8 @@ const gatherTypeMap: Record<GatherType, string> = {
 };
 
 export default function ReviewsWritten() {
-  const { data, isLoading } = useMyReviews();
+  const { userInfo } = useAuthStore();
+  const { data, isLoading } = useMyReviews({ userId: userInfo?.id });
   if (isLoading) return <OnLoading />;
   if (!Array.isArray(data) || data.length === 0)
     return <OnEmpty message="아직 작성한 리뷰가 없어요" />;

@@ -42,7 +42,6 @@ jobs:
           tar -cf - \
             --exclude='.next/cache' \
             .next \
-            public \
             | xz -9e > next-build.tar.xz
 
       - name: SSH 키 설정

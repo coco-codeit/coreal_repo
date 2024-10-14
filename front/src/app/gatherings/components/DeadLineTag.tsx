@@ -14,17 +14,15 @@ export default function DeadLineTag({ endTime, type }: IDeadLineTag) {
 
   const formatDeadline = () => {
     const now = new Date();
-    const hoursDiff = differenceInHours(targetDate, now);
-
-    // Check if the deadline is expired
-    if (hoursDiff < 0) {
-      return "마감";
-    } else if (hoursDiff < 24) {
-      return `오늘 ${targetDate.getHours()}시 마감`;
-    } else {
-      const daysDiff = differenceInDays(targetDate, now);
-      return `${daysDiff}일 후 마감`;
+    if (targetDate < now) {
+      return "마감된 모임";
     }
+    const hoursDiff = differenceInHours(targetDate, now);
+    if (hoursDiff < 24) {
+      return `오늘 ${targetDate.getHours()}시 마감`;
+    }
+    const daysDiff = differenceInDays(targetDate, now);
+    return `${daysDiff}일 후 마감`;
   };
 
   const formattedDeadline = formatDeadline();
@@ -45,7 +43,9 @@ export default function DeadLineTag({ endTime, type }: IDeadLineTag) {
         width={24}
         height={24}
       />
-      <span className="text-[12px]">{formattedDeadline}</span>
+      <span className="text-[12px]" suppressHydrationWarning>
+        {formattedDeadline}
+      </span>
     </div>
   );
 }
