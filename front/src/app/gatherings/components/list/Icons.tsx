@@ -162,11 +162,11 @@ function DownIcon({ inverse = false }: IconProps) {
   );
 }
 
-interface DeleteIconProps {
+interface XIconProps {
   color?: string;
 }
 
-function DeleteIcon({ color = "#111827" }: DeleteIconProps) {
+function XIcon({ color = "#111827" }: XIconProps) {
   return (
     <svg
       width="24"
@@ -205,7 +205,8 @@ function HeartIcon({ liked }: HeartIconProps) {
       xmlns="http://www.w3.org/2000/svg"
       animate={{
         scale: liked ? [1, 0.8, 1.2, 1] : [1, 1.2, 0.8, 1],
-        fill: liked ? "#EA580C" : "#E5E7EB",
+        fill: liked ? "#03FFA3" : "#FFFFFF", // liked가 true일 때는 #03FFA3, false일 때는 하트 내부가 화이트
+        stroke: liked ? "none" : "#9CA3AF", // liked가 false일 때는 회색 테두리, true일 때는 테두리 없음
       }}
       transition={{
         duration: 2,
@@ -215,10 +216,12 @@ function HeartIcon({ liked }: HeartIconProps) {
     >
       <path
         d="M22.1 9.1C22 5.7 19.3 3 15.9 3C14.8 3 13.1 3.8 12.4 5.1C12.3 5.4 11.9 5.4 11.8 5.1C11 3.9 9.4 3.1 8.2 3.1C4.9 3.1 2.1 5.8 2 9.1V9.3C2 11 2.7 12.6 3.9 13.8C3.9 13.8 3.9 13.8 3.9 13.9C4 14 8.8 18.2 11 20.1C11.6 20.6 12.5 20.6 13.1 20.1C15.3 18.2 20 14 20.2 13.9C20.2 13.9 20.2 13.9 20.2 13.8C21.4 12.7 22.1 11.1 22.1 9.3V9.1Z"
-        fill={liked ? "#EA580C" : "#E5E7EB"}
+        fill={liked ? "#03FFA3" : "#FFFFFF"} // liked가 true일 때는 내부 #03FFA3, false일 때는 내부 화이트
+        stroke={liked ? "none" : "#9CA3AF"} // liked가 true일 때는 테두리 없음, false일 때는 회색 테두리
+        strokeWidth="2" // 테두리 두께 설정
       />
     </motion.svg>
   );
 }
 
-export { DallaemfitIcon, WorkationIcon, DownIcon, DeleteIcon, HeartIcon };
+export { DallaemfitIcon, WorkationIcon, DownIcon, XIcon, HeartIcon };

@@ -37,15 +37,16 @@ function DateFilter() {
         <Calendar selectedDate={date} onSelectDate={setDate} />
         <div className="grid w-full justify-center grid-cols-2 gap-4 mt-4 text-center">
           <Button
-            style="outlined"
-            size="large"
+            style="calendarOutlined"
+            size="small"
             className="w-[118px] h-[40px] flex justify-center items-center"
             onClick={() => setDate(undefined)}
+            disabled={!date}
           >
             초기화
           </Button>
           <Button
-            style="solid"
+            style="calendarSolid"
             size="small"
             className="flex justify-center items-center"
             onClick={handleApply}

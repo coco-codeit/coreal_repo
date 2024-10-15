@@ -1,6 +1,12 @@
 interface IButton {
   className?: string;
-  style?: "solid" | "outlined" | "default" | "active";
+  style?:
+    | "solid"
+    | "outlined"
+    | "default"
+    | "active"
+    | "calendarOutlined"
+    | "calendarSolid";
   type?: "submit" | "button" | "reset";
   size: "small" | "large" | "responsive";
   disabled?: boolean;
@@ -24,22 +30,34 @@ function Button({
   };
 
   const solidClasses = `
-    bg-orange-600 text-white 
-    hover:bg-orange-700 
-    active:bg-orange-800 
+    bg-purple-2 text-white
+    hover:bg-purple-3 text-white
     disabled:bg-gray-400 disabled:text-white
   `;
 
   const outlinedClasses = `
-    bg-white border border-orange-600 text-orange-600
-    hover:border-orange-700 hover:text-orange-700 
-    active:border-orange-800 active:text-orange-800 
+    bg-white border border-purple-2 text-purple-2
+    hover:border-purple-3 hover:text-purple-3 
     disabled:border-gray-400 disabled:text-gray-400
+  `;
+
+  const calendarOutlinedClasses = `
+    bg-white text-gray-900 border border-gray-900
+    hover:border-gray-700 hover:text-gray-700
+    disabled:bg-white disabled:text-gray-400 disabled:border-gray-400
+  `;
+
+  const calendarSolidClasses = `
+    bg-gray-900 text-green-2
+    hover:bg-gray-800 hover:text-green-1
+    disabled:bg-gray-400 disabled:text-white
   `;
 
   const customStyleClasses = {
     default: "bg-gray-200 text-gray-900",
     active: "bg-gray-900 text-white",
+    calendarOutlined: calendarOutlinedClasses,
+    calendarSolid: calendarSolidClasses,
   };
 
   const styleClasses =

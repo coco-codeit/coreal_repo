@@ -27,7 +27,7 @@ export default function LocationDropdown() {
             {locations.map((loc) => (
               <MenuItem key={loc}>
                 <button
-                  className="block px-4 py-2 w-full text-left hover:bg-orange-100 rounded-xl cursor-pointer"
+                  className="block px-4 py-2 w-full text-left hover:bg-purple-1 rounded-xl cursor-pointer"
                   onClick={() => handleLocationChange(loc)}
                 >
                   {loc}
