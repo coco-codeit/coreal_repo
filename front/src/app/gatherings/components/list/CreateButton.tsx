@@ -1,24 +1,40 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { signIn, useSession } from "next-auth/react";
-import CreateGatheringModal from "@/app/gatherings/components/create/CreateGatheringModal";
+import { useToastStore } from "@/stores/useToastStore";
 import Button from "@/app/gatherings/components/Button";
+import CreateGatheringModal from "@/app/gatherings/components/create/CreateGatheringModal";
 
 function CreateButton() {
   const [isOpen, setIsOpen] = useState(false);
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+  const { showToast } = useToastStore();
 
   const openModal = () => {
     if (session) {
       setIsOpen(true);
     } else {
-      signIn();
+      showToast("로그인 후 이용이 가능합니다.", "error");
+      localStorage.setItem("shouldOpenModal", "true");
+      setTimeout(() => {
+        signIn();
+      }, 400);
     }
   };
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      const shouldOpenModal = localStorage.getItem("shouldOpenModal");
+      if (shouldOpenModal) {
+        setIsOpen(true);
+        localStorage.removeItem("shouldOpenModal");
+      }
+    }
+  }, [status]);
 
   return (
     <>
       <Button
-        className="font-semibold px-[18px] md:px-[21px] py-[10px] "
+        className="font-semibold px-[18px] md:px-[21px] py-[10px]"
         style="solid"
         size="responsive"
         onClick={openModal}
@@ -34,4 +50,5 @@ function CreateButton() {
     </>
   );
 }
+
 export default CreateButton;

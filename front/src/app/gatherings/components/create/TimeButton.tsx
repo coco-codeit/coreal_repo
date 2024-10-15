@@ -18,6 +18,7 @@ function TimeButton({ time, state, onClick }: ITimeButton) {
 
   return (
     <button
+      type="button"
       onClick={onClick}
       className={`${baseClass} ${stateClass[state]}`}
       disabled={isDisabled}
