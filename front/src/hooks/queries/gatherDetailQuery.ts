@@ -3,6 +3,7 @@ import {
   getGatherDetail,
   getGatherJoined,
   getGatherParticipants,
+  getUserReviews,
   postJoinGather,
   putCancelJoinGather,
 } from "@/libs/gatherDetail";
@@ -17,10 +18,11 @@ export const useGatherDeatilQuery = (gatherId: string) => {
   });
 };
 
-export const useGatherParticipants = (gatherId: string) => {
+export const useGatherParticipants = (gatherId: string, limit: number) => {
   return useQuery({
-    queryKey: ["gatherParticipants", gatherId],
-    queryFn: () => getGatherParticipants(gatherId),
+    queryKey: ["gatherParticipants", gatherId, limit],
+    queryFn: () => getGatherParticipants(gatherId, limit),
+    enabled: !!limit,
   });
 };
 
@@ -77,4 +79,11 @@ export const useCreateCancel = (gatherId: string) => {
     cancelCreateGather,
     "모임을 삭제하였습니다",
   );
+};
+
+export const useGatherReview = (gatherId: string, offset: number) => {
+  return useQuery({
+    queryKey: ["gatherReview", gatherId, offset],
+    queryFn: () => getUserReviews(gatherId, offset),
+  });
 };

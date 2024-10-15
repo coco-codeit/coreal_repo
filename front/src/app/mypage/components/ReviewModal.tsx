@@ -1,16 +1,18 @@
 import React, { Dispatch, SetStateAction, useRef, useState } from "react";
-import { submitReview } from "@/apis/profile";
 import {
   Dialog,
   DialogBackdrop,
   DialogPanel,
   DialogTitle,
 } from "@headlessui/react";
+import { submitReview } from "@/apis/profile";
+import { IoIosHeart } from "react-icons/io";
+import { IoCloseOutline } from "react-icons/io5";
 import Button from "./Button";
 
 interface ReviewFormInterface {
   gatheringId: string;
-  score: string;
+  score: number;
   comment: string;
 }
 export default function ReviweModal({
@@ -25,7 +27,7 @@ export default function ReviweModal({
   const initialFocusRef = useRef(null);
   const [formData, setFormData] = useState<ReviewFormInterface>({
     gatheringId,
-    score: "0",
+    score: 0,
     comment: "",
   });
   const closeModal = () => {
@@ -39,7 +41,7 @@ export default function ReviweModal({
   };
 
   const handleScoreChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, score: e.target.value });
+    setFormData({ ...formData, score: Number(e.target.value) });
   };
 
   const handleCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -54,31 +56,66 @@ export default function ReviweModal({
       className="fixed inset-0 flex flex-col justify-center items-center"
     >
       <DialogBackdrop className="fixed inset-0 bg-black/30" />
-      <DialogPanel className="z-50 max-w-lg space-y-4 bg-white rounded-xl p-12">
-        <button onClick={closeModal}>close</button>
-        <DialogTitle className="text-lg font-bold">리뷰 쓰기</DialogTitle>
+      <DialogPanel className="z-50 space-y-4 bg-white rounded-xl p-6 w-[90vw] max-w-[400px]">
+        <DialogTitle className="text-lg font-bold relative">
+          리뷰 쓰기
+          <button
+            onClick={closeModal}
+            className="absolute top-0 right-0 rounded-full p-1 hover:bg-gray-100 active:bg-gray-50"
+          >
+            <IoCloseOutline />
+          </button>
+        </DialogTitle>
         <form onSubmit={handleSubmit}>
           <input type="hidden" value={gatheringId} name="gatheringId" />
-          <Label>만족스러운 경험이었나요?</Label>
-          <input type="number" name="score" onChange={handleScoreChange} />
-          <Label htmlFor="comment">경험에 대해 남겨주세요.</Label>
-          <textarea
-            id="comment"
-            name="comment"
-            onChange={handleCommentChange}
-            ref={initialFocusRef}
-            className="w-full h-[120px]"
-          ></textarea>
-          <div className="grid grid-cols-2 gap-4">
-            <Button
-              onClick={closeModal}
-              className="border-2 border-orange-600 text-orange-600 bg-white"
-            >
-              취소
-            </Button>
-            <Button type="submit" className="bg-gray-400 text-white">
-              리뷰 등록
-            </Button>
+          <div className="flex flex-col gap-6 text-sm">
+            <div>
+              <Label>만족스러운 경험이었나요?</Label>
+              <ul className="flex flex-row gap-1">
+                {Array.from({ length: 5 })
+                  .fill(0)
+                  .map((_, i) => (
+                    <label key={`input-radio-${i}`}>
+                      <IoIosHeart
+                        className={`${formData.score >= i + 1 ? "text-[#ea580c]" : "text-[#E5E7EB]"} cursor-pointer`}
+                        size={"1.25rem"}
+                      />
+                      <input
+                        value={i + 1}
+                        type="radio"
+                        name="rating"
+                        className="hidden"
+                        onChange={handleScoreChange}
+                      />
+                    </label>
+                  ))}
+              </ul>
+            </div>
+            <div>
+              <Label htmlFor="comment">경험에 대해 남겨주세요.</Label>
+              <textarea
+                id="comment"
+                name="comment"
+                onChange={handleCommentChange}
+                ref={initialFocusRef}
+                placeholder="남겨주신 리뷰는 프로그램 운영 및 다른 회원 분들께 큰 도움이 됩니다."
+                className="w-full h-[120px] bg-gray-50 rounded-xl resize-none py-2 px-3"
+              ></textarea>
+            </div>
+            <div className="grid grid-cols-2 gap-2 md:gap-4 font-semibold">
+              <Button
+                onClick={closeModal}
+                className="border border-orange-600 text-orange-600 hover:shadow-lg"
+              >
+                취소
+              </Button>
+              <Button
+                type="submit"
+                className="bg-gray-400 text-white hover:bg-orange-600 hover:shadow-lg"
+              >
+                리뷰 등록
+              </Button>
+            </div>
           </div>
         </form>
       </DialogPanel>
@@ -94,7 +131,7 @@ function Label({
   htmlFor?: string;
 }) {
   return (
-    <label htmlFor={htmlFor} className="block text-base font-semibold">
+    <label htmlFor={htmlFor} className="block text-base font-semibold mb-2">
       {children}
     </label>
   );

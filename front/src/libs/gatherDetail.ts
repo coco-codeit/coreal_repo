@@ -24,8 +24,13 @@ export const cancelCreateGather = async (gatherId: string) => {
   return res?.data;
 };
 
-export const getGatherParticipants = async (gatherId: string) => {
-  const res = await axiosInstance.get(`/gatherings/${gatherId}/participants`);
+export const getGatherParticipants = async (
+  gatherId: string,
+  limit: number,
+) => {
+  const res = await axiosInstance.get(
+    `/gatherings/${gatherId}/participants?limit=${limit}`,
+  );
 
   return res?.data;
 };
@@ -33,6 +38,14 @@ export const getGatherParticipants = async (gatherId: string) => {
 export const getGatherJoined = async () => {
   const res = await axiosInstance.get(
     `/gatherings/joined?sortBy=dateTime&sortOrder=asc`,
+  );
+
+  return res?.data;
+};
+
+export const getUserReviews = async (pageId: string, offset: number) => {
+  const res = await axiosInstance.get(
+    `/reviews?gatheringId=${pageId}&limit=4&offset=${offset}`,
   );
 
   return res?.data;

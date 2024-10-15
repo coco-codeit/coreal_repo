@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -12,7 +12,10 @@ import Toast from "../components/toast";
 const signupSchema = z
   .object({
     name: z.string().min(1, "이름을 입력해주세요."),
-    email: z.string().min(1, "이메일을 입력해주세요."),
+    email: z
+      .string()
+      .min(1, "이메일을 입력해주세요.")
+      .email("올바른 이메일 형식이 아닙니다."),
     companyName: z.string().min(1, "회사명을 입력해 주세요."),
     password: z.string().min(8, "비밀번호가 8자 이상이 되도록 해 주세요."),
     confirmPassword: z.string().min(1, "비밀번호 확인은 필수입니다."),
@@ -29,27 +32,48 @@ export default function Signup() {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
+    clearErrors,
   } = useForm<FormData>({
     resolver: zodResolver(signupSchema),
+    mode: "all",
+    delayError: 1000,
   });
 
   const signupMutation = useSignupMutation();
   const router = useRouter();
-  const [toastMessage, setToastMessage] = React.useState<string | null>(null);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = async (data: FormData) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { confirmPassword, ...submitData } = data;
     try {
-      const result = await signupMutation.mutateAsync(submitData);
-      console.log(result);
+      setIsLoading(true);
+      await signupMutation.mutateAsync(submitData);
       setToastMessage("회원가입에 성공했습니다!");
-      // 회원가입 성공 시 로그인 페이지로 이동
       setTimeout(() => router.push("/signin"), 2000);
-    } catch (error) {
-      setToastMessage("회원가입에 실패했습니다. 다시 시도해주세요.");
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      setIsLoading(false);
+      if (
+        error.response?.status === 400 &&
+        error.response?.data?.code === "EMAIL_EXISTS"
+      ) {
+        setError("email", { type: "manual", message: "중복된 이메일입니다." });
+      } else {
+        setToastMessage("회원가입에 실패했습니다. 다시 시도해주세요.");
+      }
     }
   };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      clearErrors();
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [clearErrors]);
 
   return (
     <div className="w-full max-w-[510px] md:min-w-[510px] min-h-[710px] rounded-3xl px-4 sm:px-[54px] py-8 bg-white shadow-md mt-[-60px]">
@@ -97,10 +121,15 @@ export default function Signup() {
             error={errors.confirmPassword?.message}
           />
           <button
-            className="w-full bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2.5 px-4 rounded-xl focus:outline-none focus:shadow-outline mt-[16px]"
+            className={`w-full font-semibold py-2.5 px-4 rounded-xl focus:outline-none focus:shadow-outline mt-[16px] ${
+              isLoading
+                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                : "bg-gray-400 hover:bg-gray-500 text-white"
+            }`}
             type="submit"
+            disabled={isLoading}
           >
-            회원가입
+            {isLoading ? "로딩중..." : "회원가입"}
           </button>
         </form>
         <p className="text-[15px] font-medium text-gray-800 text-center">

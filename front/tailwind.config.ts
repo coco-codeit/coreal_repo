@@ -51,19 +51,21 @@ const config: Config = {
         black: "#000",
         white: "#FFF",
 
-        // blue scale
-        blue: {
-          0: "#E7F5FF",
-          1: "#D0EBFF",
-          2: "#A6D8FF",
-          3: "#74C0FC",
-          4: "#4DABF7",
-          5: "#339AF0",
-          6: "#238BE6",
-          7: "#1C7ED6",
-          8: "#1971C2",
-          9: "#1864AB",
-          10: "#175D9E",
+        //blue color
+        blue: "#4E40DB",
+
+        // green scale
+        green: {
+          1: "#77E2C4",
+          2: "#03FFA3",
+        },
+
+        // purple scale
+        purple: {
+          1: "#EBE2FF",
+          2: "#9589FF",
+          3: "#7B3DFF",
+          warm: "#B382E3",
         },
 
         // gray scale

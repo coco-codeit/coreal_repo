@@ -1,9 +1,11 @@
-import GatheringImage from "../../GatheringImage";
-import { FaHeart } from "react-icons/fa";
-import ListWrapper from "../../ListWrapper";
-import OnEmpty from "../OnEmpty";
-import { useMyReviews } from "@/hooks/queries/mypage";
 import { format } from "date-fns";
+import { FaHeart } from "react-icons/fa";
+import { useMyReviews } from "@/hooks/queries/mypage";
+import OnEmpty from "../OnEmpty";
+import OnLoading from "../OnLoading";
+import ListWrapper from "../../ListWrapper";
+import GatheringImage from "../../GatheringImage";
+import useAuthStore from "@/stores/useAuthStore";
 
 type GatherType = "OFFICE_STRETCHING" | "MINDFULNESS";
 
@@ -36,8 +38,9 @@ const gatherTypeMap: Record<GatherType, string> = {
 };
 
 export default function ReviewsWritten() {
-  const { data, isLoading } = useMyReviews();
-  if (isLoading) return <>Loading...</>;
+  const { userInfo } = useAuthStore();
+  const { data, isLoading } = useMyReviews({ userId: userInfo?.id });
+  if (isLoading) return <OnLoading />;
   if (!Array.isArray(data) || data.length === 0)
     return <OnEmpty message="아직 작성한 리뷰가 없어요" />;
 

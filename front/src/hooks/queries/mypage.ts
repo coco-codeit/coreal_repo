@@ -6,7 +6,12 @@ import {
   getUserProfile,
 } from "@/apis/profile";
 import useAuthStore from "@/stores/useAuthStore";
-import { useMutation, useQuery, UseQueryResult } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+  UseQueryResult,
+} from "@tanstack/react-query";
 
 export const useGatherJoined = (option?: {
   completed?: boolean; // 모임 이용 완료 여부로 필터링 (true일 경우 이용 완료한 모임만 조회)
@@ -32,10 +37,14 @@ export const useGatherCreated = (id: number | undefined): UseQueryResult => {
 };
 
 export const useCancelGatherJoined = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (id: number) => {
-      console.log("삭제 완료");
       return cancleGatheringJoined(id);
+    },
+    onSuccess: () => {
+      console.log("삭제 완료");
+      queryClient.invalidateQueries({ queryKey: ["gatherJoined"] });
     },
   });
 };
