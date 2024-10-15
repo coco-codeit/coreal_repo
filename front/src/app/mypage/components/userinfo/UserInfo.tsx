@@ -9,7 +9,7 @@ export default function UserInfo({ className }: { className?: string }) {
     <div
       className={`box-border rounded-3xl border-2 border-gray-200 overflow-hidden ${className}`}
     >
-      <div className="h-[65px] m-0 px-6 flex flex-row justify-between items-center bg-[url('/images/profile_background.svg')] bg-[#fb923c]">
+      <div className="h-[65px] m-0 px-6 flex flex-row justify-between items-center bg-purple-1">
         <h3 className="text-lg font-semibold">내 프로필</h3>
         <ModifyProfileBtn />
       </div>

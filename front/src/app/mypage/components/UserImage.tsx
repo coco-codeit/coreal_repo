@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function UserImage({
   src,
   name,
@@ -11,7 +13,7 @@ export default function UserImage({
     <div
       className={`flex-shrink-0 rounded-full w-14 h-14 box-content  ${className ? className : ""}`}
     >
-      <img
+      <Image
         src={src !== "string" && src ? src : "/images/default_user_image.svg"}
         width="100"
         height="100"
