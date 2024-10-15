@@ -143,8 +143,9 @@ const CreateGatheringModal = ({
 
       const datePart = format(selectedDate, "yyyy-MM-dd");
       const dateTimeString = `${datePart}T${time}:00`;
-      setValue("dateTime", dateTimeString);
-      setDateTime(dateTimeString);
+      const utcDateTime = new Date(dateTimeString).toISOString();
+      setValue("dateTime", utcDateTime);
+      setDateTime(utcDateTime);
     } else {
       setError("dateTime", {
         type: "manual",
