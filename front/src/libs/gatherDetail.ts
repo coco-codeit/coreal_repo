@@ -42,3 +42,11 @@ export const getGatherJoined = async () => {
 
   return res?.data;
 };
+
+export const getUserReviews = async (pageId: string, offset: number) => {
+  const res = await axiosInstance.get(
+    `/reviews?gatheringId=${pageId}&limit=4&offset=${offset}`,
+  );
+
+  return res?.data;
+};
