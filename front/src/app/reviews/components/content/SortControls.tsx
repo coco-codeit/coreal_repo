@@ -19,6 +19,8 @@ interface DropdownProps {
   iconWidth?: number;
   iconHeight?: number;
   iconPosition?: "left" | "right";
+  hideTextOnMobile?: boolean;
+  anchorPosition?: "bottom start" | "bottom end";
 }
 
 export default function SortControls({
@@ -33,18 +35,19 @@ export default function SortControls({
   iconWidth = 14,
   iconHeight = 8,
   iconPosition = "right",
+  hideTextOnMobile = false,
+  anchorPosition = "bottom start",
 }: DropdownProps) {
   return (
     <Menu as="div" className="relative inline-block text-left">
       <Menu.Button
         className={`relative border-2 border-[#F3F4F6] text-[#1F2937] inline-flex items-center rounded-xl justify-between py-2 px-3 text-sm/6 focus:outline-none data-[hover]:bg-gray-700 data-[open]:bg-[#111827] data-[open]:text-[#F9FAFB] data-[focus]:outline-1 data-[focus]:outline-white 
-        ${iconPosition === "left" ? "min-w-[90px]" : "min-w-[110px]"}
+        ${iconPosition === "left" ? "" : "min-w-[110px]"}
       `}
       >
-        {/* 아이콘: 왼쪽일 때 */}
         {iconPosition === "left" && (
           <span
-            className="flex items-center justify-center"
+            className="flex items-center justify-center md:mr-1"
             style={{ width: iconWidth, height: iconHeight }}
           >
             <Image
@@ -55,9 +58,10 @@ export default function SortControls({
             />
           </span>
         )}
-        {selectedOption || "날짜 선택"}
+        <span className={`${hideTextOnMobile ? "lg:block hidden" : ""}`}>
+          {selectedOption || "날짜 선택"}
+        </span>
 
-        {/* 아이콘: 오른쪽일 때 */}
         {iconPosition === "right" && (
           <span
             className="flex items-center justify-center"
@@ -75,7 +79,7 @@ export default function SortControls({
 
       <Menu.Items
         anchor={{
-          to: "bottom start",
+          to: anchorPosition,
           gap: "8px",
         }}
         className="absolute p-1 rounded-2xl flex flex-col items-start justify-start bg-white border border-gray-4 shadow-custom z-50"

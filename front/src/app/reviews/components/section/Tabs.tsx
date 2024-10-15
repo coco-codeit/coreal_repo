@@ -99,19 +99,6 @@ export default function Tabs({ initialReviews }: TabsProps) {
           >
             {tab.label}
             <span>
-              {/* <Image
-                src={tab.imageSrc}
-                alt={tab.alt}
-                width={32}
-                height={32}
-                className={`${
-                  selectedTab === tab.id ? "fill-current text-red-400" : "fill-current text-gray-400"
-                }`}
-                // className={`${
-                //   selectedTab === tab.id ? "" : "fill-current text-gray-400"
-                // }`}
-                // className={`${selectedTab === tab.id ? "fill-current text-red-400" : "fill-current text-gray-400"}`}
-              /> */}
               {tab.id === "DALLAEMFIT" && (
                 <DallaemfitIcon isSelected={selectedTab === "DALLAEMFIT"} />
               )}
