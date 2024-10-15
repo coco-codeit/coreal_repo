@@ -43,9 +43,10 @@ export default function GatehringSection({
         <GatheringInfo
           dateInfo={detailData?.dateTime}
           titleInfo={detailData?.name}
+          locationInfo={detailData?.location}
         />
 
-        <hr className="border-dashed border-gray-400 mt-[43px]" />
+        <hr className="border-dashed border-gray-400 mt-[23px]" />
         <div className="p-6">
           <UserAvatar
             participantData={participantData}
