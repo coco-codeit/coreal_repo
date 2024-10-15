@@ -245,6 +245,10 @@ export default function Card({
                 sortOptions.find((option) => option.id === selectedSort)?.label
               }
               onOptionSelect={(option) => setSelectedSort(option.id)}
+              iconSrc="/images/sort.svg"
+              iconWidth={24}
+              iconHeight={24}
+              iconPosition="left"
             />
           </div>
         </div>

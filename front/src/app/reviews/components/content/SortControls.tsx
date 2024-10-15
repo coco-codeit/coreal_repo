@@ -15,6 +15,10 @@ interface DropdownProps {
   selectedDate?: Date;
   onSelectDate?: (date: Date | undefined) => void;
   onApply?: () => void;
+  iconSrc?: string;
+  iconWidth?: number;
+  iconHeight?: number;
+  iconPosition?: "left" | "right";
 }
 
 export default function SortControls({
@@ -25,19 +29,48 @@ export default function SortControls({
   selectedDate,
   onSelectDate = () => {},
   onApply = () => {},
+  iconSrc = "/images/arrow-down.svg",
+  iconWidth = 14,
+  iconHeight = 8,
+  iconPosition = "right",
 }: DropdownProps) {
   return (
     <Menu as="div" className="relative inline-block text-left">
-      <Menu.Button className="min-w-[110px] relative border-2 border-[#F3F4F6] text-[#1F2937] inline-flex items-center rounded-xl justify-between py-2 px-3 text-sm/6 focus:outline-none data-[hover]:bg-gray-700 data-[open]:bg-[#111827] data-[open]:text-[#F9FAFB]  data-[focus]:outline-1 data-[focus]:outline-white">
+      <Menu.Button
+        className={`relative border-2 border-[#F3F4F6] text-[#1F2937] inline-flex items-center rounded-xl justify-between py-2 px-3 text-sm/6 focus:outline-none data-[hover]:bg-gray-700 data-[open]:bg-[#111827] data-[open]:text-[#F9FAFB] data-[focus]:outline-1 data-[focus]:outline-white 
+        ${iconPosition === "left" ? "min-w-[90px]" : "min-w-[110px]"}
+      `}
+      >
+        {/* 아이콘: 왼쪽일 때 */}
+        {iconPosition === "left" && (
+          <span
+            className="flex items-center justify-center"
+            style={{ width: iconWidth, height: iconHeight }}
+          >
+            <Image
+              src={iconSrc}
+              alt="icon"
+              width={iconWidth}
+              height={iconHeight}
+            />
+          </span>
+        )}
         {selectedOption || "날짜 선택"}
-        <span className="w-6 h-6 flex items-center justify-center">
-          <Image
-            src="/images/arrow-down.svg"
-            alt="arrow down"
-            width={14}
-            height={8}
-          />
-        </span>
+
+        {/* 아이콘: 오른쪽일 때 */}
+        {iconPosition === "right" && (
+          <span
+            className="flex items-center justify-center"
+            style={{ width: iconWidth, height: iconHeight }}
+          >
+            <Image
+              src={iconSrc}
+              alt="icon"
+              width={iconWidth}
+              height={iconHeight}
+            />
+          </span>
+        )}
       </Menu.Button>
 
       <Menu.Items

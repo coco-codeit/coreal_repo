@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import Card from "../content/Card";
 import { useReviews } from "@/hooks/queries/useReviews";
 import { Review } from "@/types/reviews";
+import { DallaemfitIcon } from "../icons/DallaemfitIcon";
+import { WorkationIcon } from "../icons/WorkationIcon";
 
 const tabs = [
   {
@@ -36,10 +37,10 @@ interface TabsProps {
 export default function Tabs({ initialReviews }: TabsProps) {
   const [selectedTab, setSelectedTab] = useState(tabs[0].id);
   const [selectedSubTab, setSelectedSubTab] = useState(
-    tabs[0].subTabs ? tabs[0].subTabs[0].id : "",
+    tabs[0].subTabs ? tabs[0].subTabs[0].id : ""
   );
   const [selectedRegion, setSelectedRegion] = useState<string | undefined>(
-    "지역 선택",
+    "지역 선택"
   );
   const [selectedSort, setSelectedSort] = useState("createdAt");
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
@@ -62,7 +63,7 @@ export default function Tabs({ initialReviews }: TabsProps) {
       location: selectedRegion === "지역 선택" ? undefined : selectedRegion,
       sortBy: selectedSort,
     },
-    initialReviews,
+    initialReviews
   );
 
   useEffect(() => {
@@ -91,20 +92,32 @@ export default function Tabs({ initialReviews }: TabsProps) {
             key={tab.id}
             className={`flex items-center gap-1 pb-1 text-lg font-semibold ${
               selectedTab === tab.id
-                ? "border-[#111827] selected-tab"
-                : "text-gray-400 border-transparent"
+                ? "selected-tab"
+                : "fill-current text-gray-400 border-transparent"
             } relative`}
             onClick={() => handleTabClick(tab.id)}
           >
             {tab.label}
             <span>
-              <Image
+              {/* <Image
                 src={tab.imageSrc}
                 alt={tab.alt}
                 width={32}
                 height={32}
-                className={`${selectedTab === tab.id ? "fill-current text-red-400" : "fill-current text-gray-400"}`}
-              />
+                className={`${
+                  selectedTab === tab.id ? "fill-current text-red-400" : "fill-current text-gray-400"
+                }`}
+                // className={`${
+                //   selectedTab === tab.id ? "" : "fill-current text-gray-400"
+                // }`}
+                // className={`${selectedTab === tab.id ? "fill-current text-red-400" : "fill-current text-gray-400"}`}
+              /> */}
+              {tab.id === "DALLAEMFIT" && (
+                <DallaemfitIcon isSelected={selectedTab === "DALLAEMFIT"} />
+              )}
+              {tab.id === "WORKATION" && (
+                <WorkationIcon isSelected={selectedTab === "WORKATION"} />
+              )}
             </span>
             {selectedTab === tab.id && (
               <span className="absolute bottom-[-2px] left-0 right-0 h-[2px] bg-[#111827] rounded-[1px]"></span>
