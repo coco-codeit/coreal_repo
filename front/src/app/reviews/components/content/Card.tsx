@@ -129,7 +129,7 @@ export default function Card({
     }
 
     const formattedSelectedDate = new Date(
-      selectedDate.getTime() - selectedDate.getTimezoneOffset() * 60000
+      selectedDate.getTime() - selectedDate.getTimezoneOffset() * 60000,
     )
       .toISOString()
       .split("T")[0];
@@ -142,7 +142,7 @@ export default function Card({
         "드롭다운 날짜:",
         formattedSelectedDate,
         "모임 날짜:",
-        reviewDate
+        reviewDate,
       );
 
       return reviewDate === formattedSelectedDate;
@@ -156,13 +156,13 @@ export default function Card({
 
     if (selectedRegion && selectedRegion !== "지역 선택") {
       filtered = filtered.filter(
-        (review) => review.Gathering.location === selectedRegion
+        (review) => review.Gathering.location === selectedRegion,
       );
     }
 
     if (selectedDate) {
       const formattedSelectedDate = new Date(
-        selectedDate.getTime() - selectedDate.getTimezoneOffset() * 60000
+        selectedDate.getTime() - selectedDate.getTimezoneOffset() * 60000,
       )
         .toISOString()
         .split("T")[0];
@@ -263,7 +263,7 @@ export default function Card({
           {filteredReviews.length > 0 ? (
             filteredReviews.map((review) => {
               const { parentLabel, childLabel } = getLabelsFromType(
-                review.Gathering.type
+                review.Gathering.type,
               );
 
               // 리뷰 카드

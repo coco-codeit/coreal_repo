@@ -41,7 +41,7 @@ export default function SortControls({
   return (
     <Menu as="div" className="relative inline-block text-left">
       <Menu.Button
-        className={`relative border-2 border-[#F3F4F6] text-[#1F2937] inline-flex items-center rounded-xl justify-between py-2 px-3 text-sm/6 focus:outline-none data-[hover]:bg-gray-700 data-[open]:bg-[#111827] data-[open]:text-[#F9FAFB] data-[focus]:outline-1 data-[focus]:outline-white 
+        className={`relative border-2 border-gray-100 text-gray-800 inline-flex items-center rounded-xl justify-between py-2 px-3 text-sm/6 focus:outline-none data-[hover]:bg-gray-700 data-[open]:bg-gray-900 data-[open]:text-gray-50 data-[focus]:outline-1 data-[focus]:outline-white 
         ${iconPosition === "left" ? "" : "min-w-[110px]"}
       `}
       >
@@ -90,7 +90,7 @@ export default function SortControls({
               <button
                 onClick={() => onOptionSelect(option)}
                 className={`${
-                  active ? "bg-[#FFEDD5]" : ""
+                  active ? "bg-[#EBE2FF]" : ""
                 } h-[38px] rounded-xl px-4 py-2 w-full text-start`}
               >
                 {option.label}
@@ -110,7 +110,7 @@ export default function SortControls({
             <div className="flex justify-center gap-3 h-10 text-sm font-semibold ">
               <button
                 onClick={() => onSelectDate && onSelectDate(undefined)}
-                className="w-[118px] rounded-xl border border-[#EA580C] text-[#EA580C]"
+                className="w-[118px] rounded-xl border border-gray-900 text-gray-900"
               >
                 초기화
               </button>
@@ -121,7 +121,7 @@ export default function SortControls({
                       onApply();
                       close();
                     }}
-                    className="w-[118px] rounded-xl bg-[#EA580C] text-white"
+                    className="w-[118px] rounded-xl bg-gray-900 text-[#03FFA3]"
                   >
                     적용
                   </button>
