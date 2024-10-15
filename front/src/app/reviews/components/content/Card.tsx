@@ -74,17 +74,6 @@ export default function Card({
     return { parentLabel: "", childLabel: "" };
   };
 
-  const safeReviews = Array.isArray(reviews) ? reviews : [];
-  console.log(safeReviews);
-
-  useEffect(() => {
-    console.log("Filtered Reviews:", reviews);
-  }, [reviews]);
-
-  useEffect(() => {
-    console.log("Selected Region for Filtering:", selectedRegion);
-  }, [selectedRegion]);
-
   const regionOptions = [
     { id: "all", label: "지역 전체" },
     { id: "건대입구", label: "건대입구" },
@@ -138,13 +127,6 @@ export default function Card({
       const reviewDate = new Date(review.Gathering.dateTime)
         .toISOString()
         .split("T")[0];
-      console.log(
-        "드롭다운 날짜:",
-        formattedSelectedDate,
-        "모임 날짜:",
-        reviewDate,
-      );
-
       return reviewDate === formattedSelectedDate;
     });
 

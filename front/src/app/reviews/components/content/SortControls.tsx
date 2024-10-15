@@ -90,7 +90,7 @@ export default function SortControls({
               <button
                 onClick={() => onOptionSelect(option)}
                 className={`${
-                  active ? "bg-[#EBE2FF]" : ""
+                  active ? "bg-purple-1" : ""
                 } h-[38px] rounded-xl px-4 py-2 w-full text-start`}
               >
                 {option.label}
@@ -121,7 +121,7 @@ export default function SortControls({
                       onApply();
                       close();
                     }}
-                    className="w-[118px] rounded-xl bg-gray-900 text-[#03FFA3]"
+                    className="w-[118px] rounded-xl bg-gray-900 text-green-2"
                   >
                     적용
                   </button>
