@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import SortControls from "./SortControls";
 import HeartRating from "./HeartScore";
@@ -170,7 +170,7 @@ export default function Card({
     }
   }, [selectedDate, reviews]);
 
-  const filterReviews = () => {
+  const filterReviews = useCallback(() => {
     let filtered = reviews;
 
     if (selectedRegion && selectedRegion !== "지역 선택") {
@@ -195,11 +195,11 @@ export default function Card({
     }
 
     setFilteredReviews(filtered);
-  };
+  }, [selectedRegion, reviews, selectedDate]);;
 
   useEffect(() => {
     filterReviews();
-  }, [selectedRegion, selectedSort, reviews]);
+  }, [selectedRegion, selectedSort, reviews, filterReviews]);
 
   return (
     <div>
