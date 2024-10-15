@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 
-function DallaemfitIcon({ isSelected }: { isSelected: boolean }) {
+export function DallaemfitIcon({ isSelected }: { isSelected: boolean }) {
   const fillColor = isSelected ? "#111827" : "#9CA3AF"; // gray-900 or gray-400
   const strokeColor = isSelected ? "#111827" : "#9CA3AF"; // gray-900 or gray-400
 
@@ -64,7 +64,7 @@ function DallaemfitIcon({ isSelected }: { isSelected: boolean }) {
   );
 }
 
-function WorkationIcon({ isSelected }: { isSelected: boolean }) {
+export function WorkationIcon({ isSelected }: { isSelected: boolean }) {
   const fillColor = isSelected ? "#111827" : "#9CA3AF"; // gray-900 or gray-400
   const strokeColor = isSelected ? "#111827" : "#9CA3AF"; // gray-900 or gray-400
 
@@ -145,7 +145,7 @@ interface IconProps {
   inverse?: boolean;
 }
 
-function DownIcon({ inverse = false }: IconProps) {
+export function DownIcon({ inverse = false }: IconProps) {
   return (
     <svg
       width="24"
@@ -166,7 +166,7 @@ interface XIconProps {
   color?: string;
 }
 
-function XIcon({ color = "#111827" }: XIconProps) {
+export function XIcon({ color = "#111827" }: XIconProps) {
   return (
     <svg
       width="24"
@@ -195,7 +195,7 @@ interface HeartIconProps {
   liked: boolean;
 }
 
-function HeartIcon({ liked }: HeartIconProps) {
+export function HeartIcon({ liked }: HeartIconProps) {
   return (
     <motion.svg
       width="24"
@@ -224,4 +224,27 @@ function HeartIcon({ liked }: HeartIconProps) {
   );
 }
 
-export { DallaemfitIcon, WorkationIcon, DownIcon, XIcon, HeartIcon };
+export function PersonIcon({ isFull }: { isFull: boolean }) {
+  const getFillColor = (isFull: boolean) => (isFull ? "#9589FF" : "#111827");
+
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <circle
+        cx="7.99998"
+        cy="5.33317"
+        r="2.66667"
+        fill={getFillColor(isFull)}
+      />
+      <path
+        d="M3.55857 11.5469C3.99929 9.68441 5.8478 8.6665 7.7617 8.6665H8.23826C10.1522 8.6665 12.0007 9.68441 12.4414 11.5469C12.5267 11.9073 12.5944 12.2844 12.6326 12.6676C12.669 13.034 12.3682 13.3332 12 13.3332H3.99998C3.63179 13.3332 3.33093 13.034 3.36738 12.6676C3.40552 12.2844 3.47329 11.9073 3.55857 11.5469Z"
+        fill={getFillColor(isFull)}
+      />
+    </svg>
+  );
+}

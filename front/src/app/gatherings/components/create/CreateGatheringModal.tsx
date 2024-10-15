@@ -2,24 +2,31 @@
 
 import { Fragment, useState } from "react";
 import Image from "next/image";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { isToday, format } from "date-fns";
 import {
   Dialog,
   DialogPanel,
   DialogTitle,
   Transition,
+  Menu,
+  MenuButton,
+  MenuItems,
+  MenuItem,
 } from "@headlessui/react";
-import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
-import Button from "@/app/gatherings/components/Button";
-import Calendar from "@/app/components/Calendar";
-import TimeButton from "@/app/gatherings/components/create/TimeButton";
 import { useCreateGathering } from "@/hooks/queries/useCreateGatheringQuery";
-import { createType, locations, timeSlots } from "@/types/gatherings";
-import { DownIcon, XIcon } from "@/app/gatherings/components/list/Icons";
 import { useCreateGatheringStore } from "@/stores/useCreateGatheringStore";
+import Calendar from "@/app/components/Calendar";
+import Button from "@/app/gatherings/components/Button";
+import TimeButton from "@/app/gatherings/components/create/TimeButton";
+import {
+  categories,
+  locations,
+  timeSlots,
+} from "@/app/gatherings/components/create/config";
+import { DownIcon, XIcon } from "@/app/gatherings/components/list/Icons";
 
 const createSChema = z.object({
   name: z.string().min(1, "이름을 입력해주세요."),
@@ -311,17 +318,17 @@ const CreateGatheringModal = ({
               <div className="flex flex-col gap-3">
                 <label className="font-semibold">선택 서비스</label>
                 <div className="flex gap-[8px] md:gap-[2px]">
-                  {createType.map((service) => (
+                  {categories.map((category) => (
                     <div
-                      key={service.id}
+                      key={category.id}
                       className={`flex flex-row items-start pl-[8px] pt-[6px] md:pl-4 md:pt-3 cursor-pointer transition-all 
                       duration-200 w-[109px] h-[76px] md:w-[160px] md:h-[70px] rounded-lg gap-[8px] 
-                      ${type === service.name ? "bg-gray-900" : "bg-gray-50"}`}
-                      onClick={() => handleTypeChange(service.name)}
+                      ${type === category.name ? "bg-gray-900" : "bg-gray-50"}`}
+                      onClick={() => handleTypeChange(category.name)}
                     >
                       <Image
                         src={
-                          type === service.name
+                          type === category.name
                             ? "/images/check_active.svg"
                             : "/images/check_default.svg"
                         }
@@ -338,23 +345,23 @@ const CreateGatheringModal = ({
 
                       <div className="flex flex-col gap-1">
                         <span
-                          className={`text-sm font-semibold ${type === service.name ? "text-white" : "text-gray-900"} `}
+                          className={`text-sm font-semibold ${type === category.name ? "text-white" : "text-gray-900"} `}
                         >
-                          {service.tab}
+                          {category.tab}
                         </span>
-                        {service.name !== "워케이션" && (
+                        {category.name !== "워케이션" && (
                           <span
-                            className={`text-xs ${type === service.name ? "text-white" : "text-gray-700"}`}
+                            className={`text-xs ${type === category.name ? "text-white" : "text-gray-700"}`}
                           >
                             <span className="block md:hidden">
-                              {service.name.split(" ").map((word, index) => (
+                              {category.name.split(" ").map((word, index) => (
                                 <span key={index} className="block">
                                   {word}
                                 </span>
                               ))}
                             </span>
                             <span className="hidden md:block">
-                              {service.name}
+                              {category.name}
                             </span>
                           </span>
                         )}
@@ -376,6 +383,7 @@ const CreateGatheringModal = ({
                   <Calendar
                     selectedDate={selectedDate}
                     onSelectDate={handleDateChange}
+                    modal={true}
                   />
                 </div>
                 <div className="text-sm text-gray-800">오전</div>

@@ -1,33 +1,15 @@
-import Button from "@/app/gatherings/components/Button";
+import { usePathname } from "next/navigation";
 import { GatheringType } from "@/types/gatherings";
 import { useGatheringsStore } from "@/stores/useGatheringsStore";
-import {
-  DallaemfitIcon,
-  WorkationIcon,
-} from "@/app/gatherings/components/list/Icons";
-import CreateButton from "./CreateButton";
-
-const tabConfig = {
-  DALLAEMFIT: {
-    label: "달램핏",
-    value: "DALLAEMFIT" as GatheringType,
-    Icon: DallaemfitIcon,
-    subTabs: [
-      { label: "전체", value: "DALLAEMFIT" as GatheringType },
-      { label: "오피스 스트레칭", value: "OFFICE_STRETCHING" as GatheringType },
-      { label: "마인드풀니스", value: "MINDFULNESS" as GatheringType },
-    ],
-  },
-  WORKATION: {
-    label: "워케이션",
-    value: "WORKATION" as GatheringType,
-    Icon: WorkationIcon,
-    subTabs: [{ label: "전체", value: "WORKATION" as GatheringType }],
-  },
-};
+import { tabConfig } from "@/app/gatherings/components/list/config";
+import Button from "@/app/gatherings/components/Button";
+import CreateButton from "@/app/gatherings/components/list/CreateButton";
 
 function Tabs() {
   const { tab, setTab } = useGatheringsStore();
+
+  const pathname = usePathname();
+  const showCreateButton = pathname !== "/favorites";
 
   const isDallaemfitActive = [
     "DALLAEMFIT",
@@ -39,47 +21,66 @@ function Tabs() {
     ? tabConfig["DALLAEMFIT"].subTabs
     : tabConfig["WORKATION"].subTabs;
 
+  const MainTabs = ({
+    label,
+    value,
+    Icon,
+  }: {
+    label: string;
+    value: GatheringType;
+    Icon: React.FC<{ isSelected: boolean }>;
+  }) => {
+    const isSelected = tab === value;
+    const isActiveDallaemfit = isDallaemfitActive && value === "DALLAEMFIT";
+
+    return (
+      <button
+        type="button"
+        key={value}
+        className={`flex items-center gap-1 border-b-2 pb-1 ${
+          isActiveDallaemfit || isSelected
+            ? "border-gray-900 text-gray-900"
+            : "border-none text-gray-400"
+        }`}
+        onClick={() => setTab(value)}
+      >
+        {label}
+        <Icon isSelected={isActiveDallaemfit} />
+      </button>
+    );
+  };
+
+  const SubTabs = ({
+    label,
+    value,
+  }: {
+    label: string;
+    value: GatheringType;
+  }) => (
+    <Button
+      type="button"
+      key={value}
+      style={tab === value ? "active" : "default"}
+      onClick={() => setTab(value)}
+      size="responsive"
+      className="px-[12px] py-[8px] md:px-4 md:py-[10px]"
+    >
+      {label}
+    </Button>
+  );
+
   return (
-    <>
-      <div className="flex flex-col gap-2">
-        <div className="flex justify-between items-start">
-          <div className="flex items-center gap-3  text-lg font-semibold ">
-            {Object.values(tabConfig).map(({ label, value, Icon }) => (
-              <button
-                key={value}
-                className={`flex items-center gap-1 border-b-2 pb-1 ${
-                  isDallaemfitActive && value === "DALLAEMFIT"
-                    ? "border-gray-900 text-gray-900"
-                    : tab === value
-                      ? "border-gray-900 text-gray-900"
-                      : "border-none text-gray-400"
-                }`}
-                onClick={() => setTab(value)}
-              >
-                {label}
-                <Icon
-                  isSelected={isDallaemfitActive && value === "DALLAEMFIT"}
-                />
-              </button>
-            ))}
-          </div>
-          <CreateButton />
+    <div className="flex flex-col gap-2">
+      <div className="flex justify-between items-start">
+        <div className="flex items-center gap-3 text-lg font-semibold">
+          {Object.values(tabConfig).map(MainTabs)}
         </div>
-        <div className="flex items-center text-sm gap-2 pb-[14px] border-b-2 border-gray-200">
-          {currentSubTabs.map(({ label, value }) => (
-            <Button
-              key={value}
-              style={tab === value ? "active" : "default"}
-              onClick={() => setTab(value)}
-              size="responsive"
-              className="px-[12px] py-[8px] md:px-4 md:py-[10px]"
-            >
-              {label}
-            </Button>
-          ))}
-        </div>
+        {showCreateButton && <CreateButton />}
       </div>
-    </>
+      <div className="flex items-center text-sm gap-2 pb-[14px] border-b-2 border-gray-200">
+        {currentSubTabs.map(SubTabs)}
+      </div>
+    </div>
   );
 }
 
