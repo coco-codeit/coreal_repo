@@ -37,6 +37,7 @@ export const useReviews = (args: ReviewArgs, initialData: Review[] = []) => {
       const totalFetchedItems = allPages.flat().length;
       return lastPage.length < limit ? null : totalFetchedItems;
     },
+    initialPageParam: 0,
     initialData: { pages: [initialData], pageParams: [0] },
   });
 

@@ -162,11 +162,11 @@ export default function Card({
 
     if (selectedDate) {
       const formattedSelectedDate = new Date(
-        selectedDate.getTime() - selectedDate.getTimezoneOffset() * 60000
+        selectedDate.getTime() - selectedDate.getTimezoneOffset() * 60000,
       )
         .toISOString()
         .split("T")[0];
-  
+
       filtered = filtered.filter((review) => {
         const reviewDate = new Date(review.Gathering.dateTime)
           .toISOString()
