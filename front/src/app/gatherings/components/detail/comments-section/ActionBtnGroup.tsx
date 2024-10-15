@@ -11,12 +11,13 @@ import LoginAlertModal from "@/app/components/LoginAlertModal";
 import { useRouter } from "next/navigation";
 import useAuthStore from "@/stores/useAuthStore";
 import { useToastStore } from "@/stores/useToastStore";
+import { IGatherings } from "@/types/gatherings";
 export default function ActionBtnGroup({
   pageId,
-  createdBy,
+  detailData,
 }: {
   pageId: string;
-  createdBy: number;
+  detailData: IGatherings;
 }) {
   const router = useRouter();
 
@@ -34,7 +35,8 @@ export default function ActionBtnGroup({
     joinedData?.map((item: { id: number }) => item.id) ?? [];
 
   const isJoinedGather = joinedDataArr.find((elem: number) => elem === +pageId);
-  const isCreatedGather = createdBy === userInfo?.id;
+  const isCreatedGather = detailData?.createdBy === userInfo?.id;
+  const isFuullCapa = detailData?.participantCount >= detailData?.capacity;
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -44,13 +46,19 @@ export default function ActionBtnGroup({
   }, [pageId, isJoinedGather, isCreatedGather, isLoggedIn]);
 
   const handleJoinClick = () => {
-    if (isLoggedIn && !isJoined) {
-      joinMutation();
-    } else if (isLoggedIn && isJoined) {
-      cancelJoinMutation();
-    } else {
-      setIsModalOpen(true);
+    if (isFuullCapa) {
+      return showToast("모임정원이 초과 되었습니다", "error");
     }
+
+    if (!isLoggedIn) {
+      return setIsModalOpen(true);
+    }
+
+    if (isJoined) {
+      return cancelJoinMutation();
+    }
+
+    joinMutation();
   };
 
   const handleDeleteClick = () => {
