@@ -44,10 +44,10 @@ function CardParticipants({
         suppressHydrationWarning
       >
         {isClosed ? (
-          <span className="text-orange-400">Closed</span>
+          <span className="text-purple-2">closed</span>
         ) : (
           <div className="flex gap-2 items-center">
-            <span className="text-orange-600">join now</span>
+            <span className="text-purple-3">join now</span>
             <Image
               src="/images/card/arrow_right.svg"
               alt="arrow"
