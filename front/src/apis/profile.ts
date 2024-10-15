@@ -12,6 +12,24 @@ interface GetGatheringsJoinedProps {
   sortOrder?: "asc" | "desc"; // 정렬 순서
 }
 
+export interface GatheringsJoinedReturn {
+  teamId: number;
+  id: number;
+  type: string;
+  name: string;
+  dateTime: string;
+  registrationEnd: string;
+  location: string;
+  participantCount: number;
+  capacity: number;
+  image: string;
+  createdBy: number;
+  canceledAt: string;
+  joinedAt: string;
+  isCompleted: true;
+  isReviewed: true;
+}
+
 interface GetReviewsProps {
   gatheringId?: number;
   userId?: number;
@@ -46,7 +64,7 @@ export const updateUserProfile = async (payload: {
 
 export const getGatheringsJoined = async (
   option?: GetGatheringsJoinedProps,
-) => {
+): Promise<GatheringsJoinedReturn[]> => {
   const params = new URLSearchParams({ ...option } as Record<string, string>);
   return await axiosInstance
     .get(`${BASE_URL}/gatherings/joined${params.size > 0 ? `?${params}` : ""}`)
