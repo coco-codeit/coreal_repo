@@ -22,7 +22,7 @@ function CardHeader({
         </div>
         <div className="flex">
           <DateTag dateText={dateTime} textColor={"white"} type={"day"} />
-          <DateTag dateText={dateTime} textColor={"orange"} type={"time"} />
+          <DateTag dateText={dateTime} textColor={"green"} type={"time"} />
         </div>
       </div>
       <LikeButton gatheringId={id} />

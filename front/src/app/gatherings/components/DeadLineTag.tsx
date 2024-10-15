@@ -34,7 +34,7 @@ export default function DeadLineTag({ endTime, type }: IDeadLineTag) {
 
   return (
     <div
-      className={`flex items-center absolute right-0 top-0 h-8 rounded-bl-lg bg-[#EA580C] text-white ${customRound[type]}`}
+      className={`flex items-center absolute right-0 top-0 h-8 rounded-bl-lg bg-gray-900 text-white ${customRound[type]}`}
     >
       <Image
         className="ml-2 mr-1"

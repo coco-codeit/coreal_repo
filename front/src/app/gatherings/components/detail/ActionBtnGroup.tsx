@@ -102,17 +102,17 @@ export default function ActionBtnGroup({
               )}
             </div>
           </div>
-          <div className="px-4 md:mt-0 mt-[10px]">
+          <div className="px-4 md:mt-0 mt-[10px] font-semibold">
             {isCreated ? (
               <div className="flex">
                 <button
-                  className="flex justify-center items-center w-[115px] h-11 rounded-xl text-orange-600 bg-white"
+                  className="flex justify-center items-center w-[115px] h-11 mr-2 rounded-xl text-gray-900 bg-white border border-gray-900"
                   onClick={() => handleDeleteClick()}
                 >
                   취소하기
                 </button>
                 <button
-                  className="flex justify-center items-center w-[115px] h-11 rounded-xl bg-orange-600 text-white"
+                  className="flex justify-center items-center w-[115px] h-11 rounded-xl bg-gray-900 text-green-2"
                   onClick={() => handleShareClick()}
                 >
                   공유하기
@@ -120,7 +120,7 @@ export default function ActionBtnGroup({
               </div>
             ) : (
               <button
-                className="flex justify-center items-center w-[115px] h-11 rounded-xl bg-orange-600 text-white"
+                className="flex justify-center items-center w-[115px] h-11 rounded-xl bg-gray-900 text-green-2"
                 onClick={handleJoinClick}
               >
                 {isJoined ? "참여 취소하기" : "참여하기"}
