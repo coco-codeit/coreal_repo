@@ -1,6 +1,7 @@
 import Image from "next/image";
 import ConfirmBadge from "@/app/gatherings/components/ConfirmBadge";
 import ProgressBar from "@/app/gatherings/components/ProgressBar";
+import { PersonIcon } from "@/app/gatherings/components/list/Icons";
 
 function CardParticipants({
   dateTime,
@@ -12,30 +13,28 @@ function CardParticipants({
   capacity: number;
 }) {
   const percent = (participantCount / capacity) * 100;
+  const isFull = participantCount >= capacity;
 
   const now = new Date();
   const endDate = new Date(dateTime);
-  const isClosed = endDate < now || participantCount >= capacity;
+  const isClosed = endDate < now || isFull;
 
   return (
     <div className="flex justify-between md:pr-2 items-end mt-2">
-      <div className="grid w-full max-w-[197px] md:max-w-[255px] lg:max-w-[556px] ">
+      <div className="grid w-full max-w-[197px] md:max-w-[255px] lg:max-w-[556px]">
         <div className="flex flex-row gap-2 items-center h-6">
           <div className="flex flex-row gap-[2px] py-[2px] h-[20px] items-center">
-            <Image
-              src="/images/card/person.svg"
-              alt="person"
-              width={16}
-              height={16}
-            />
-            <span className="text-sm text-gray-700">
+            <PersonIcon isFull={isFull} />
+            <span
+              className={`text-sm ${isFull ? "text-purple-2" : "text-gray-700"}`}
+            >
               {participantCount}/{capacity}
             </span>
           </div>
-          {participantCount >= 5 && <ConfirmBadge />}
+          {!isFull && participantCount >= 5 && <ConfirmBadge />}
         </div>
 
-        <div className="flex items-start -mt-1 -mb-2">
+        <div className="flex items-start -mt-2 -mb-2">
           <ProgressBar percent={percent} />
         </div>
       </div>

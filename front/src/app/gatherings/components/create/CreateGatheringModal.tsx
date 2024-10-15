@@ -2,24 +2,28 @@
 
 import { Fragment, useState } from "react";
 import Image from "next/image";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { isToday, format } from "date-fns";
 import {
   Dialog,
   DialogPanel,
   DialogTitle,
   Transition,
+  Menu,
+  MenuButton,
+  MenuItems,
+  MenuItem,
 } from "@headlessui/react";
-import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
-import Button from "@/app/gatherings/components/Button";
-import Calendar from "@/app/components/Calendar";
-import TimeButton from "@/app/gatherings/components/create/TimeButton";
 import { useCreateGathering } from "@/hooks/queries/useCreateGatheringQuery";
+import { useCreateGatheringStore } from "@/stores/useCreateGatheringStore";
+import Calendar from "@/app/components/Calendar";
+import Button from "@/app/gatherings/components/Button";
+import TimeButton from "@/app/gatherings/components/create/TimeButton";
+
 import { createType, locations, timeSlots } from "@/types/gatherings";
 import { DownIcon, XIcon } from "@/app/gatherings/components/list/Icons";
-import { useCreateGatheringStore } from "@/stores/useCreateGatheringStore";
 
 const createSChema = z.object({
   name: z.string().min(1, "이름을 입력해주세요."),
@@ -376,6 +380,7 @@ const CreateGatheringModal = ({
                   <Calendar
                     selectedDate={selectedDate}
                     onSelectDate={handleDateChange}
+                    modal={true}
                   />
                 </div>
                 <div className="text-sm text-gray-800">오전</div>
