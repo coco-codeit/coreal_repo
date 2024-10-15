@@ -3,7 +3,7 @@
 import React from "react";
 
 import GatehringSection from "../../components/detail/gathering-section/GatehringSection";
-import ActionBtnGroup from "../../components/detail/comments-section/ActionBtnGroup";
+import ActionBtnGroup from "../../components/detail/ActionBtnGroup";
 import {
   useGatherDeatilQuery,
   useGatherParticipants,

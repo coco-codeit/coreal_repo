@@ -64,6 +64,7 @@ const config: Config = {
         purple: {
           1: "#EBE2FF",
           2: "#9589FF",
+          3: "#7B3DFF",
           warm: "#B382E3",
         },
 
