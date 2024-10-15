@@ -36,10 +36,10 @@ interface TabsProps {
 export default function Tabs({ initialReviews }: TabsProps) {
   const [selectedTab, setSelectedTab] = useState(tabs[0].id);
   const [selectedSubTab, setSelectedSubTab] = useState(
-    tabs[0].subTabs ? tabs[0].subTabs[0].id : ""
+    tabs[0].subTabs ? tabs[0].subTabs[0].id : "",
   );
   const [selectedRegion, setSelectedRegion] = useState<string | undefined>(
-    "지역 선택"
+    "지역 선택",
   );
   const [selectedSort, setSelectedSort] = useState("createdAt");
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
@@ -62,7 +62,7 @@ export default function Tabs({ initialReviews }: TabsProps) {
       location: selectedRegion === "지역 선택" ? undefined : selectedRegion,
       sortBy: selectedSort,
     },
-    initialReviews
+    initialReviews,
   );
 
   useEffect(() => {
