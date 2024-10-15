@@ -26,9 +26,11 @@ export default function UserAvatar({
   return (
     <div className="flex items-center justify-between">
       <div className="flex items-center">
-        <div className="text-[14px]">모집정원 {gatherCapacity}명</div>
+        <div className="min-w-[80px] text-[14px]">
+          모집정원 {gatherCapacity}명
+        </div>
         <div
-          className="flex min-h-[29px] ml-[22px]"
+          className="flex flex-wrap min-h-[29px] ml-[22px]"
           onMouseEnter={() => setIsDisplayUser(false)}
           onMouseLeave={() => setIsDisplayUser(isMoreUser)}
         >
@@ -38,7 +40,7 @@ export default function UserAvatar({
               <div
                 key={item.id}
                 className={`relative h-[29px] w-[29px] rounded-full bg-gray-300 transition-all duration-300 ${
-                  displayUser ? "-ml-[10px]" : ""
+                  displayUser || !isMoreUser ? "-ml-[10px]" : ""
                 }`}
               >
                 <Image
@@ -57,7 +59,11 @@ export default function UserAvatar({
           )}
         </div>
       </div>
-      {isMoreUser && <ConfirmBadge />}
+      {isMoreUser && (
+        <div className="min-w-[80px]">
+          <ConfirmBadge />
+        </div>
+      )}
     </div>
   );
 }

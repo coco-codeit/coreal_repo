@@ -6,21 +6,20 @@ import UserAvatar from "./UserAvatar";
 import ProgressBar from "@/app/gatherings/components/ProgressBar";
 import DeadLineTag from "@/app/gatherings/components/DeadLineTag";
 import GatheringInfo from "./GatheringInfo";
-import { useGatherParticipants } from "@/hooks/queries/gatherDetailQuery";
 import GatheringSecSkeleton from "./GatheringSecSkeleton";
-import { IGatherings } from "@/types/gatherings";
+import { GatheringsParticipants, IGatherings } from "@/types/gatherings";
 export default function GatehringSection({
-  pageId,
   detailData,
   isDetailLoading,
+  participantData,
+  participantLoading,
 }: {
   pageId: string;
   detailData: IGatherings;
   isDetailLoading: boolean;
+  participantData: GatheringsParticipants[];
+  participantLoading: boolean;
 }) {
-  const { data: participantData = [], isLoading: participantLoading } =
-    useGatherParticipants(pageId, detailData?.participantCount);
-
   const isDataLoading = isDetailLoading || participantLoading;
 
   if (isDataLoading) {
