@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Card from "../content/Card";
 import { useReviews } from "@/hooks/queries/useReviews";
+import { Review } from "@/types/reviews";
 
 const tabs = [
   {
@@ -28,32 +29,41 @@ const tabs = [
   },
 ];
 
-export default function Tabs() {
+interface TabsProps {
+  initialReviews: Review[];
+}
+
+export default function Tabs({ initialReviews }: TabsProps) {
   const [selectedTab, setSelectedTab] = useState(tabs[0].id);
   const [selectedSubTab, setSelectedSubTab] = useState(
     tabs[0].subTabs ? tabs[0].subTabs[0].id : ""
   );
-
-  console.log("selectedTab", selectedTab);
-
   const [selectedRegion, setSelectedRegion] = useState<string | undefined>(
     "지역 선택"
   );
-
   const [selectedSort, setSelectedSort] = useState("createdAt");
-
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
 
-  const { reviews, reviewScores, isError } = useReviews({
-    type:
-      selectedTab === "WORKATION"
-        ? selectedTab
-        : selectedSubTab === "ALL"
-          ? ["OFFICE_STRETCHING", "MINDFULNESS"]
-          : selectedSubTab,
-    location: selectedRegion === "지역 선택" ? undefined : selectedRegion,
-    sortBy: selectedSort,
-  });
+  const {
+    reviews,
+    reviewScores,
+    isError,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+  } = useReviews(
+    {
+      type:
+        selectedTab === "WORKATION"
+          ? selectedTab
+          : selectedSubTab === "ALL"
+            ? ["OFFICE_STRETCHING", "MINDFULNESS"]
+            : selectedSubTab,
+      location: selectedRegion === "지역 선택" ? undefined : selectedRegion,
+      sortBy: selectedSort,
+    },
+    initialReviews
+  );
 
   useEffect(() => {
     const currentTab = tabs.find((tab) => tab.id === selectedTab);
@@ -66,14 +76,11 @@ export default function Tabs() {
 
   const handleTabClick = (tabId: string) => {
     setSelectedTab(tabId);
-    console.log("!!!!!!!!!!", tabId);
   };
   const handleSubTabClick = (subTabId: string) => {
     setSelectedSubTab(subTabId);
-    console.log("!!!!!!!!!!", subTabId);
   };
 
-  // if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Error loading data</p>;
 
   return (
@@ -135,6 +142,9 @@ export default function Tabs() {
           setSelectedSort={setSelectedSort}
           selectedDate={selectedDate}
           setSelectedDate={setSelectedDate}
+          fetchNextPage={fetchNextPage}
+          hasNextPage={hasNextPage}
+          isFetching={isFetching}
         />
       </div>
     </div>

@@ -1,29 +1,15 @@
-import React, { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import SortControls from "./SortControls";
 import HeartRating from "./HeartScore";
 import ProgressBar from "./ProgressBar";
+import InfiniteScroll from "./InfiniteScroll";
+import { Review } from "@/types/reviews";
 
 interface Tab {
   id: string;
   label: string;
   subTabs?: { id: string; label: string }[];
-}
-
-interface Review {
-  Gathering: {
-    dateTime: string;
-    location: string;
-    image: string;
-    type: string;
-  };
-  User: {
-    name: string;
-  };
-  id: number;
-  comment: string;
-  score: number;
-  createdAt: string;
 }
 
 interface ReviewScores {
@@ -48,6 +34,10 @@ interface CardProps {
   setSelectedSort: (sort: string) => void;
   selectedDate: Date | undefined;
   setSelectedDate: (date: Date | undefined) => void;
+
+  fetchNextPage: () => void;
+  hasNextPage: boolean;
+  isFetching: boolean;
 }
 
 export default function Card({
@@ -60,12 +50,9 @@ export default function Card({
   setSelectedSort,
   selectedDate,
   setSelectedDate,
+  fetchNextPage,
+  hasNextPage,
 }: CardProps) {
-  useEffect(() => {
-    console.log("리뷰 리스트 출력", reviews);
-    console.log("리뷰 평점 분포 출력", reviewScores);
-  }, [reviews, reviewScores]);
-
   const scoreData = reviewScores[0] || { averageScore: 0 };
   const [filteredReviews, setFilteredReviews] = useState<Review[]>([]);
 
@@ -164,13 +151,7 @@ export default function Card({
     setFilteredReviews(filtered);
   };
 
-  useEffect(() => {
-    if (!selectedDate) {
-      setFilteredReviews(reviews);
-    }
-  }, [selectedDate, reviews]);
-
-  const filterReviews = () => {
+  const filterReviews = useCallback(() => {
     let filtered = reviews;
 
     if (selectedRegion && selectedRegion !== "지역 선택") {
@@ -179,27 +160,16 @@ export default function Card({
       );
     }
 
-    if (selectedDate) {
-      const formattedSelectedDate = new Date(
-        selectedDate.getTime() - selectedDate.getTimezoneOffset() * 60000
-      )
-        .toISOString()
-        .split("T")[0];
-
-      filtered = filtered.filter((review) => {
-        const reviewDate = new Date(review.Gathering.dateTime)
-          .toISOString()
-          .split("T")[0];
-        return reviewDate === formattedSelectedDate;
-      });
-    }
-
     setFilteredReviews(filtered);
-  };
+  }, [reviews, selectedRegion, selectedDate]);
 
   useEffect(() => {
     filterReviews();
-  }, [selectedRegion, selectedSort, reviews]);
+  }, [selectedRegion, selectedSort, reviews, filterReviews]);
+
+  const handleApplyFilter = () => {
+    applyDateFilter();
+  };
 
   return (
     <div>
@@ -249,10 +219,7 @@ export default function Card({
                 showCalendar
                 selectedDate={selectedDate}
                 onSelectDate={setSelectedDate}
-                onApply={() => {
-                  applyDateFilter();
-                  filterReviews();
-                }}
+                onApply={handleApplyFilter}
               />
             </div>
           </div>
@@ -266,75 +233,80 @@ export default function Card({
             />
           </div>
         </div>
+        <InfiniteScroll
+          fetchNextPage={fetchNextPage}
+          hasNextPage={hasNextPage}
+          isFetching={false}
+        >
+          {filteredReviews.length > 0 ? (
+            filteredReviews.map((review) => {
+              const { parentLabel, childLabel } = getLabelsFromType(
+                review.Gathering.type
+              );
 
-        {filteredReviews.length > 0 ? (
-          filteredReviews.map((review) => {
-            const { parentLabel, childLabel } = getLabelsFromType(
-              review.Gathering.type
-            );
+              // 리뷰 카드
+              return (
+                <div key={review.id} className="flex gap-6 w-full mb-6">
+                  <div className="w-[280px] h-[156px] relative">
+                    <Image
+                      src={review.Gathering.image}
+                      alt="Review Image"
+                      className="object-cover rounded-3xl"
+                      fill
+                    />
+                  </div>
 
-            // 리뷰 카드
-            return (
-              <div key={review.id} className="flex gap-6 w-full mb-6">
-                <div className="w-[280px] h-[156px] relative">
-                  <Image
-                    src={review.Gathering.image}
-                    alt="Review Image"
-                    className="object-cover rounded-3xl"
-                    fill
-                  />
-                </div>
+                  <div className="border-b-2 border-dashed border-[#E5E7EB] w-[644px]">
+                    <div className="flex flex-col gap-[10px] text-[#374151]">
+                      <div className="flex flex-row">
+                        {Array.from({ length: 5 }).map((_, index) => (
+                          <Image
+                            key={`${review.id}-${index}`}
+                            src={
+                              index < review.score
+                                ? "/images/active-heart.svg"
+                                : "/images/heart.svg"
+                            }
+                            alt="heart"
+                            width={24}
+                            height={24}
+                          />
+                        ))}
+                      </div>
 
-                <div className="border-b-2 border-dashed border-[#E5E7EB] w-[644px]">
-                  <div className="flex flex-col gap-[10px] text-[#374151]">
-                    <div className="flex flex-row">
-                      {Array.from({ length: 5 }).map((_, index) => (
-                        <Image
-                          key={`${review.id}-${index}`}
-                          src={
-                            index < review.score
-                              ? "/images/active-heart.svg"
-                              : "/images/heart.svg"
-                          }
-                          alt="heart"
-                          width={24}
-                          height={24}
-                        />
-                      ))}
+                      <p>{review.comment}</p>
+                      <p>
+                        {`${parentLabel} ${childLabel} 이용`}
+                        <span className="before:content-['·'] before:mx-1">
+                          {review.Gathering.location}
+                        </span>
+                      </p>
                     </div>
 
-                    <p>{review.comment}</p>
-                    <p>
-                      {`${parentLabel} ${childLabel} 이용`}
-                      <span className="before:content-['·'] before:mx-1">
-                        {review.Gathering.location}
+                    <div className="flex flex-row items-center gap-2 mt-2">
+                      <Image
+                        src="/images/profile.svg"
+                        alt="profile"
+                        width={32}
+                        height={32}
+                      />
+                      <span className="after:content-['|'] after:ml-2 text-[#374151]">
+                        {review.User.name}
                       </span>
-                    </p>
-                  </div>
-
-                  <div className="flex flex-row items-center gap-2 mt-2">
-                    <Image
-                      src="/images/profile.svg"
-                      alt="profile"
-                      width={32}
-                      height={32}
-                    />
-                    <span className="after:content-['|'] after:ml-2 text-[#374151]">
-                      {review.User.name}
-                    </span>
-                    <span className="ml-1 text-[#374151]">
-                      {`${new Date(review.createdAt).getFullYear()}.${String(new Date(review.createdAt).getMonth() + 1).padStart(2, "0")}.${String(new Date(review.createdAt).getDate()).padStart(2, "0")}`}
-                    </span>
+                      <span className="ml-1 text-[#374151]">
+                        {`${new Date(review.createdAt).getFullYear()}.${String(new Date(review.createdAt).getMonth() + 1).padStart(2, "0")}.${String(new Date(review.createdAt).getDate()).padStart(2, "0")}`}
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            );
-          })
-        ) : (
-          <p className="flex justify-center items-center h-full text-[#6B7280]">
-            아직 리뷰가 없어요
-          </p>
-        )}
+              );
+            })
+          ) : (
+            <p className="flex justify-center items-center h-full text-[#6B7280]">
+              아직 리뷰가 없어요
+            </p>
+          )}
+        </InfiniteScroll>
       </div>
     </div>
   );
