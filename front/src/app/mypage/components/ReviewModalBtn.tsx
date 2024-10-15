@@ -11,7 +11,7 @@ export default function ReviewModalBtn({
   return (
     <>
       <Button
-        className="bg-orange-600 hover:bg-orange-500 active:bg-orange-700 text-white"
+        className="border-2 bg-white border-gray-900 hover:border-gray-900 hover:bg-gray-900 text-gray-900 hover:text-green-2"
         onClick={() => setIsModalOpen(true)}
       >
         리뷰 작성하기

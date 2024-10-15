@@ -24,7 +24,7 @@ function LikeButton({ gatheringId }: { gatheringId: number }) {
   return (
     <div
       className={`flex justify-center items-center w-12 h-12 cursor-pointer rounded-full focus:outline-none border-2 border-gray-200 
-        ${isLiked ? "bg-orange-50 border-none" : "bg-white"}`}
+        ${isLiked ? "bg-gray-900 border-none" : "bg-white"}`}
       onClick={handleFavoriteToggle}
     >
       <HeartIcon liked={isClientReady ? isLiked : false} />

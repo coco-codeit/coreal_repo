@@ -18,7 +18,7 @@ import Calendar from "@/app/components/Calendar";
 import TimeButton from "@/app/gatherings/components/create/TimeButton";
 import { useCreateGathering } from "@/hooks/queries/useCreateGatheringQuery";
 import { createType, locations, timeSlots } from "@/types/gatherings";
-import { DownIcon, DeleteIcon } from "@/app/gatherings/components/list/Icons";
+import { DownIcon, XIcon } from "@/app/gatherings/components/list/Icons";
 import { useCreateGatheringStore } from "@/stores/useCreateGatheringStore";
 
 const createSChema = z.object({
@@ -199,7 +199,7 @@ const CreateGatheringModal = ({
                   resetModal();
                 }}
               >
-                <DeleteIcon color="#64748B" />
+                <XIcon color="#64748B" />
               </div>
             </div>
 
@@ -213,7 +213,7 @@ const CreateGatheringModal = ({
                   {...register("name")}
                   type="text"
                   placeholder="이름을 입력해주세요."
-                  className="py-[10px] px-4 rounded-xl bg-gray-50 focus:ring-orange-500 focus:ring-2 focus:outline-none"
+                  className="py-[10px] px-4 rounded-xl bg-gray-50 focus:ring-purple-3 focus:ring-2 focus:outline-none"
                 />
                 {errors.name && (
                   <span className="text-red-500 text-sm">
@@ -228,7 +228,7 @@ const CreateGatheringModal = ({
                   <Menu as="div" className="relative inline-block w-full">
                     <MenuButton
                       className={`w-full h-10 rounded-xl bg-gray-50 border-gray-50 inline-flex items-center justify-between 
-                    py-2 px-3 border-2 focus:ring-orange-500 focus:ring-2 focus:outline-none ${location ? " text-gray-800" : " text-gray-400"} `}
+                    py-2 px-3 border-2 focus:ring-purple-3 focus:ring-2 focus:outline-none ${location ? " text-gray-800" : " text-gray-400"} `}
                     >
                       <span>{location || "장소를 선택해주세요."}</span>
                       <DownIcon />
@@ -239,7 +239,7 @@ const CreateGatheringModal = ({
                         {locations.map((loc) => (
                           <MenuItem key={loc}>
                             <button
-                              className="block px-4 py-2 w-full text-left hover:bg-orange-100 rounded-xl cursor-pointer"
+                              className="block px-4 py-2 w-full text-left hover:bg-purple-1 rounded-xl cursor-pointer"
                               onClick={() => handleLocationChange(loc)}
                             >
                               {loc}
@@ -280,7 +280,7 @@ const CreateGatheringModal = ({
                   <Button
                     type="button"
                     className="px-[14px] md:px-[20px] py-[10px] focus:ring-none focus:outline-none "
-                    style="outlined"
+                    style="calendarOutlined"
                     size="responsive"
                     onClick={() =>
                       document.getElementById("fileInput")?.click()
@@ -418,7 +418,7 @@ const CreateGatheringModal = ({
                     required: "모집 정원을 입력해주세요.",
                   })}
                   placeholder="최소 5인 이상 입력해주세요."
-                  className="py-[10px] px-4 rounded-xl bg-gray-50 focus:ring-orange-500 focus:ring-2 focus:outline-none"
+                  className="py-[10px] px-4 rounded-xl bg-gray-50 focus:ring-purple-3 focus:ring-2 focus:outline-none"
                   min={5}
                 />
                 {errors.capacity && (

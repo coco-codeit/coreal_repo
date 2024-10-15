@@ -37,7 +37,7 @@ function SortFilter() {
           {sorts.map((sort) => (
             <MenuItem key={sort.value}>
               <div
-                className="block px-[8px] py-[6px] rounded-xl cursor-pointer active:bg-orange-100 focus:bg-orange-100 hover:bg-orange-100 "
+                className="block px-[8px] py-[6px] rounded-xl cursor-pointer active:bg-purple-1 focus:bg-purple-1 hover:bg-purple-1 "
                 onClick={() => handleSortSelect(sort.value as SortByType)}
               >
                 <span className="text-gray-800 font-sm">{sort.label}</span>

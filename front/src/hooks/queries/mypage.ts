@@ -1,5 +1,6 @@
 import {
   cancleGatheringJoined,
+  GatheringsJoinedReturn,
   getGatheringCreatedByMe,
   getGatheringsJoined,
   getReviews,
@@ -24,7 +25,8 @@ export const useGatherJoined = (option?: {
   const { isLoggedIn } = useAuthStore();
   return useQuery({
     queryKey: ["gatherJoined"],
-    queryFn: () => getGatheringsJoined({ ...option }),
+    queryFn: (): Promise<GatheringsJoinedReturn[]> =>
+      getGatheringsJoined({ ...option }),
     enabled: isLoggedIn,
   });
 };

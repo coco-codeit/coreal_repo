@@ -41,7 +41,7 @@ function LocationFilter() {
           {locations.map((loc) => (
             <MenuItem key={loc}>
               <button
-                className="block px-[8px] py-[6px] w-full text-left active:bg-orange-100 focus:bg-orange-100 hover:bg-orange-100 rounded-xl cursor-pointer"
+                className="block px-[8px] py-[6px] w-full text-left active:bg-purple-1 focus:bg-purple-1 hover:bg-purple-1 rounded-xl cursor-pointer"
                 onClick={() => handleLocationChange(loc)}
               >
                 {loc}

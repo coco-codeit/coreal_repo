@@ -27,7 +27,7 @@ export default function GatheringInfo({
       </div>
       <div className="flex mt-3">
         <DateTag type="day" dateText={dateInfo} textColor="white" />
-        <DateTag type="time" dateText={dateInfo} textColor="orange" />
+        <DateTag type="time" dateText={dateInfo} textColor="green" />
       </div>
     </div>
   );
