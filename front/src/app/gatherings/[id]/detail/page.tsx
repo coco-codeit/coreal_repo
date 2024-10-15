@@ -2,9 +2,9 @@
 
 import React from "react";
 
-import GatehringSection from "./components/gathering-section/GatehringSection";
-import CommentsSection from "./components/comments-section/CommentsSection";
-import ActionBtnGroup from "./components/comments-section/ActionBtnGroup";
+import GatehringSection from "../../components/detail/gathering-section/GatehringSection";
+import CommentsSection from "../../components/detail/comments-section/CommentsSection";
+import ActionBtnGroup from "../../components/detail/comments-section/ActionBtnGroup";
 import { useParams } from "next/navigation";
 import { useGatherDeatilQuery } from "@/hooks/queries/gatherDetailQuery";
 
