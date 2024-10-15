@@ -9,7 +9,7 @@ export default function GatheringSecSkeleton() {
         <div className="w-1/2 h-4 bg-gray-200 rounded mb-4"></div>
         <div className="absolute top-5 right-10 w-10 h-10 bg-gray-200 rounded-full mb-4"></div>
 
-        <hr className="border-dashed border-gray-400 mt-[43px]" />
+        <hr className="border-dashed border-gray-400 mt-[23px]" />
         <div className="py-6 ">
           <div className="flex items-center">
             <div className="w-20 h-5 mr-2 bg-gray-200 rounded-xl animate-pulse"></div>

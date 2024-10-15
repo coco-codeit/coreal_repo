@@ -77,7 +77,7 @@ export default function Signin() {
       }
     } else {
       setToastMessage("로그인에 성공했습니다!");
-      setTimeout(() => router.push("/"), 2000);
+      router.push("/");
     }
     setIsLoading(false);
   };
