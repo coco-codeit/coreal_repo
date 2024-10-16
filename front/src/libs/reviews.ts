@@ -9,8 +9,6 @@ export const fetchReviews = async ({
   location,
   sortBy,
   date,
-  limit,
-  offset = 0,
 }: ReviewArgs) => {
   const queryParams = new URLSearchParams();
 
@@ -18,8 +16,6 @@ export const fetchReviews = async ({
   if (location) queryParams.append("location", location);
   if (sortBy) queryParams.append("sortBy", sortBy);
   if (date) queryParams.append("date", date);
-  if (limit) queryParams.append("limit", limit.toString());
-  if (offset) queryParams.append("offset", offset.toString());
 
   if (Array.isArray(type)) {
     const promises = type.map((singleType) => {
@@ -33,11 +29,9 @@ export const fetchReviews = async ({
     return await addParticipantCountToReviews(combinedData);
   }
 
-  if (typeof type === "string" && type !== "ALL") {
+  if (typeof type === "string") {
     queryParams.append("type", type);
   }
-
-  console.log("Request URL:", `/reviews?${queryParams.toString()}`);
 
   const res = await axiosInstance.get(`/reviews?${queryParams.toString()}`);
   return await addParticipantCountToReviews(res.data);
@@ -48,7 +42,7 @@ const addParticipantCountToReviews = async (reviews: Review[]) => {
     reviews.map(async (review) => {
       try {
         const gatheringData = await getGatherDetail(
-          review.Gathering.id.toString()
+          review.Gathering.id.toString(),
         );
         return {
           ...review,
@@ -61,7 +55,7 @@ const addParticipantCountToReviews = async (reviews: Review[]) => {
           participantCount: 0,
         };
       }
-    })
+    }),
   );
 
   return reviewsWithParticipantCount;
