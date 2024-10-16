@@ -1,9 +1,11 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import Image from "next/image";
+import { useEffect, useState } from "react";
 import Card from "../content/Card";
 import { useReviews } from "@/hooks/queries/useReviews";
+import { Review } from "@/types/reviews";
+import { DallaemfitIcon } from "../icons/DallaemfitIcon";
+import { WorkationIcon } from "../icons/WorkationIcon";
 
 const tabs = [
   {
@@ -28,32 +30,41 @@ const tabs = [
   },
 ];
 
-export default function Tabs() {
+interface TabsProps {
+  initialReviews: Review[];
+}
+
+export default function Tabs({ initialReviews }: TabsProps) {
   const [selectedTab, setSelectedTab] = useState(tabs[0].id);
   const [selectedSubTab, setSelectedSubTab] = useState(
-    tabs[0].subTabs ? tabs[0].subTabs[0].id : ""
+    tabs[0].subTabs ? tabs[0].subTabs[0].id : "",
   );
-
-  console.log("selectedTab", selectedTab);
-
   const [selectedRegion, setSelectedRegion] = useState<string | undefined>(
-    "지역 선택"
+    "지역 선택",
   );
-
   const [selectedSort, setSelectedSort] = useState("createdAt");
-
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
 
-  const { reviews, reviewScores, isError } = useReviews({
-    type:
-      selectedTab === "WORKATION"
-        ? selectedTab
-        : selectedSubTab === "ALL"
-          ? ["OFFICE_STRETCHING", "MINDFULNESS"]
-          : selectedSubTab,
-    location: selectedRegion === "지역 선택" ? undefined : selectedRegion,
-    sortBy: selectedSort,
-  });
+  const {
+    reviews,
+    reviewScores,
+    isError,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+  } = useReviews(
+    {
+      type:
+        selectedTab === "WORKATION"
+          ? selectedTab
+          : selectedSubTab === "ALL"
+            ? ["OFFICE_STRETCHING", "MINDFULNESS"]
+            : selectedSubTab,
+      location: selectedRegion === "지역 선택" ? undefined : selectedRegion,
+      sortBy: selectedSort,
+    },
+    initialReviews,
+  );
 
   useEffect(() => {
     const currentTab = tabs.find((tab) => tab.id === selectedTab);
@@ -66,14 +77,11 @@ export default function Tabs() {
 
   const handleTabClick = (tabId: string) => {
     setSelectedTab(tabId);
-    console.log("!!!!!!!!!!", tabId);
   };
   const handleSubTabClick = (subTabId: string) => {
     setSelectedSubTab(subTabId);
-    console.log("!!!!!!!!!!", subTabId);
   };
 
-  // if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Error loading data</p>;
 
   return (
@@ -84,20 +92,19 @@ export default function Tabs() {
             key={tab.id}
             className={`flex items-center gap-1 pb-1 text-lg font-semibold ${
               selectedTab === tab.id
-                ? "border-[#111827] selected-tab"
-                : "text-gray-400 border-transparent"
+                ? "selected-tab"
+                : "fill-current text-gray-400 border-transparent"
             } relative`}
             onClick={() => handleTabClick(tab.id)}
           >
             {tab.label}
             <span>
-              <Image
-                src={tab.imageSrc}
-                alt={tab.alt}
-                width={32}
-                height={32}
-                className={`${selectedTab === tab.id ? "fill-current text-red-400" : "fill-current text-gray-400"}`}
-              />
+              {tab.id === "DALLAEMFIT" && (
+                <DallaemfitIcon isSelected={selectedTab === "DALLAEMFIT"} />
+              )}
+              {tab.id === "WORKATION" && (
+                <WorkationIcon isSelected={selectedTab === "WORKATION"} />
+              )}
             </span>
             {selectedTab === tab.id && (
               <span className="absolute bottom-[-2px] left-0 right-0 h-[2px] bg-[#111827] rounded-[1px]"></span>
@@ -135,6 +142,9 @@ export default function Tabs() {
           setSelectedSort={setSelectedSort}
           selectedDate={selectedDate}
           setSelectedDate={setSelectedDate}
+          fetchNextPage={fetchNextPage}
+          hasNextPage={hasNextPage}
+          isFetching={isFetching}
         />
       </div>
     </div>

@@ -15,6 +15,12 @@ interface DropdownProps {
   selectedDate?: Date;
   onSelectDate?: (date: Date | undefined) => void;
   onApply?: () => void;
+  iconSrc?: string;
+  iconWidth?: number;
+  iconHeight?: number;
+  iconPosition?: "left" | "right";
+  hideTextOnMobile?: boolean;
+  anchorPosition?: "bottom start" | "bottom end";
 }
 
 export default function SortControls({
@@ -25,24 +31,55 @@ export default function SortControls({
   selectedDate,
   onSelectDate = () => {},
   onApply = () => {},
+  iconSrc = "/images/arrow-down.svg",
+  iconWidth = 14,
+  iconHeight = 8,
+  iconPosition = "right",
+  hideTextOnMobile = false,
+  anchorPosition = "bottom start",
 }: DropdownProps) {
   return (
     <Menu as="div" className="relative inline-block text-left">
-      <Menu.Button className="min-w-[110px] relative border-2 border-[#F3F4F6] text-[#1F2937] inline-flex items-center rounded-xl justify-between py-2 px-3 text-sm/6 focus:outline-none data-[hover]:bg-gray-700 data-[open]:bg-[#111827] data-[open]:text-[#F9FAFB]  data-[focus]:outline-1 data-[focus]:outline-white">
-        {selectedOption || "날짜 선택"}
-        <span className="w-6 h-6 flex items-center justify-center">
-          <Image
-            src="/images/arrow-down.svg"
-            alt="arrow down"
-            width={14}
-            height={8}
-          />
+      <Menu.Button
+        className={`relative border-2 border-gray-100 text-gray-800 inline-flex items-center rounded-xl justify-between py-2 px-3 text-sm/6 focus:outline-none data-[hover]:bg-gray-700 data-[open]:bg-gray-900 data-[open]:text-gray-50 data-[focus]:outline-1 data-[focus]:outline-white 
+        ${iconPosition === "left" ? "" : "min-w-[110px]"}
+      `}
+      >
+        {iconPosition === "left" && (
+          <span
+            className="flex items-center justify-center md:mr-1"
+            style={{ width: iconWidth, height: iconHeight }}
+          >
+            <Image
+              src={iconSrc}
+              alt="icon"
+              width={iconWidth}
+              height={iconHeight}
+            />
+          </span>
+        )}
+        <span className={`${hideTextOnMobile ? "lg:block hidden" : ""}`}>
+          {selectedOption || "날짜 선택"}
         </span>
+
+        {iconPosition === "right" && (
+          <span
+            className="flex items-center justify-center"
+            style={{ width: iconWidth, height: iconHeight }}
+          >
+            <Image
+              src={iconSrc}
+              alt="icon"
+              width={iconWidth}
+              height={iconHeight}
+            />
+          </span>
+        )}
       </Menu.Button>
 
       <Menu.Items
         anchor={{
-          to: "bottom start",
+          to: anchorPosition,
           gap: "8px",
         }}
         className="absolute p-1 rounded-2xl flex flex-col items-start justify-start bg-white border border-gray-4 shadow-custom z-50"
@@ -53,7 +90,7 @@ export default function SortControls({
               <button
                 onClick={() => onOptionSelect(option)}
                 className={`${
-                  active ? "bg-[#FFEDD5]" : ""
+                  active ? "bg-purple-1" : ""
                 } h-[38px] rounded-xl px-4 py-2 w-full text-start`}
               >
                 {option.label}
@@ -73,7 +110,7 @@ export default function SortControls({
             <div className="flex justify-center gap-3 h-10 text-sm font-semibold ">
               <button
                 onClick={() => onSelectDate && onSelectDate(undefined)}
-                className="w-[118px] rounded-xl border border-[#EA580C] text-[#EA580C]"
+                className="w-[118px] rounded-xl border border-gray-900 text-gray-900"
               >
                 초기화
               </button>
@@ -84,7 +121,7 @@ export default function SortControls({
                       onApply();
                       close();
                     }}
-                    className="w-[118px] rounded-xl bg-[#EA580C] text-white"
+                    className="w-[118px] rounded-xl bg-gray-900 text-green-2"
                   >
                     적용
                   </button>
