@@ -77,7 +77,7 @@ export default function Signin() {
       }
     } else {
       setToastMessage("로그인에 성공했습니다!");
-      setTimeout(() => router.push("/"), 2000);
+      router.push("/");
     }
     setIsLoading(false);
   };
@@ -121,7 +121,7 @@ export default function Signin() {
         <p className="text-[15px] font-medium text-gray-800 text-center">
           같이 달램이 처음이신가요?{" "}
           <button
-            className="text-orange-600 underline"
+            className="text-purple-3 underline"
             onClick={() => {
               router.push("/signup");
             }}
