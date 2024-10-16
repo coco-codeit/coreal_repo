@@ -29,6 +29,7 @@ jobs:
           node-version: ${{ matrix.node }}
 
       - name: 의존성 설치 및 빌드
+        working-directory: ./front
         env:
           NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
           NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
