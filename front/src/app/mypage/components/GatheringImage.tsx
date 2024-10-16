@@ -10,7 +10,7 @@ export default function GatheringImage({ src }: { src?: string }) {
       alt=""
       width="280"
       height="157"
-      className="rounded-3xl aspect-[5/3] sm:aspect-video w-full sm:w-[280px]"
+      className="rounded-3xl aspect-[5/3] sm:aspect-video w-full sm:w-[280px] object-cover"
     />
   );
 }
