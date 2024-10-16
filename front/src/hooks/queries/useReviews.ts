@@ -3,6 +3,12 @@ import { fetchReviews } from "@/libs/reviews";
 import { fetchReviewScores } from "@/libs/reviewScores";
 import { Review, ReviewArgs } from "@/types/reviews";
 
+const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL;
+
+if (!apiBaseUrl) {
+  throw new Error("API Base URL is not defined.");
+}
+
 export const useReviews = (args: ReviewArgs, initialData: Review[] = []) => {
   const { gatherId, type, location, sortBy, date, limit = 10 } = args;
 
@@ -12,18 +18,19 @@ export const useReviews = (args: ReviewArgs, initialData: Review[] = []) => {
       const allReviews = await fetchReviews({
         ...args,
         type,
+        apiBaseUrl,
       });
 
       if (sortBy === "score") {
         allReviews.sort((a, b) => b.score - a.score);
       } else if (sortBy === "participantCount") {
         allReviews.sort(
-          (a, b) => (b.participantCount || 0) - (a.participantCount || 0),
+          (a, b) => (b.participantCount || 0) - (a.participantCount || 0)
         );
       } else {
         allReviews.sort(
           (a, b) =>
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
         );
       }
 
@@ -51,7 +58,11 @@ export const useReviews = (args: ReviewArgs, initialData: Review[] = []) => {
 
   const reviewScoresQuery = useQuery({
     queryKey: ["reviewScores", type],
-    queryFn: () => (type ? fetchReviewScores(type) : Promise.resolve([])),
+
+    queryFn: () =>
+      type && apiBaseUrl
+        ? fetchReviewScores(type, apiBaseUrl)
+        : Promise.resolve([]),
   });
 
   return {

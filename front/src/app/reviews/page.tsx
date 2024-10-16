@@ -4,12 +4,26 @@ import { Review } from "@/types/reviews";
 import { fetchReviews } from "@/libs/reviews";
 
 export default async function ReviewsPage() {
-  const initialReviews: Review[] = await fetchReviews({
-    type: "DALLAEMFIT",
-    location: undefined,
-    sortBy: "createdAt",
-    limit: 10,
-  });
+  const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL;
+
+  if (!apiBaseUrl) {
+    console.error("API Base URL is not defined.");
+    return <p>Error: API Base URL is not defined</p>;
+  }
+
+  let initialReviews: Review[] = [];
+  try {
+    initialReviews = await fetchReviews({
+      type: "DALLAEMFIT",
+      location: undefined,
+      sortBy: "createdAt",
+      limit: 10,
+      apiBaseUrl,
+    });
+  } catch (error) {
+    console.error("Error fetching initial reviews:", error);
+    return <p>Error loading reviews</p>;
+  }
 
   return (
     <div className="min-w-[375px] max-w-[375px] md:max-w-[744px] lg:max-w-[1200px] bg-gray-50 m-auto px-4 md:px-[24.5] lg:px-[102px] min-h-screen md:py-10">

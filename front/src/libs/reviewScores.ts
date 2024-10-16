@@ -1,12 +1,17 @@
 import axiosInstance from "./axiosInstance";
 
-const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL;
+export const fetchReviewScores = async (
+  type: string | string[],
+  apiBaseUrl: string
+) => {
+  if (!apiBaseUrl) {
+    throw new Error("API Base URL is not defined.");
+  }
 
-export const fetchReviewScores = async (type: string | string[]) => {
   try {
     if (Array.isArray(type)) {
       const promises = type.map((type) =>
-        axiosInstance.get(`/reviews/scores`, { params: { type } }),
+        axiosInstance.get(`${apiBaseUrl}/reviews/scores`, { params: { type } })
       );
       const responses = await Promise.all(promises);
       return responses.flatMap((res) => res.data);
@@ -17,6 +22,6 @@ export const fetchReviewScores = async (type: string | string[]) => {
       return res.data;
     }
   } catch (error) {
-    throw new Error("Failed to fetch review scores");
+    throw new Error("Error fetching review scores: " + error);
   }
 };

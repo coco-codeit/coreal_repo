@@ -124,7 +124,7 @@ export default function Card({
     }
 
     const formattedSelectedDate = new Date(
-      selectedDate.getTime() - selectedDate.getTimezoneOffset() * 60000,
+      selectedDate.getTime() - selectedDate.getTimezoneOffset() * 60000
     )
       .toISOString()
       .split("T")[0];
@@ -152,13 +152,13 @@ export default function Card({
 
     if (selectedRegion && selectedRegion !== "지역 선택") {
       filtered = filtered.filter(
-        (review) => review.Gathering.location === selectedRegion,
+        (review) => review.Gathering.location === selectedRegion
       );
     }
 
     if (selectedDate) {
       const formattedSelectedDate = new Date(
-        selectedDate.getTime() - selectedDate.getTimezoneOffset() * 60000,
+        selectedDate.getTime() - selectedDate.getTimezoneOffset() * 60000
       )
         .toISOString()
         .split("T")[0];
@@ -259,7 +259,7 @@ export default function Card({
           {filteredReviews.length > 0 ? (
             filteredReviews.map((review) => {
               const { parentLabel, childLabel } = getLabelsFromType(
-                review.Gathering.type,
+                review.Gathering.type
               );
 
               // 리뷰 카드
@@ -270,7 +270,9 @@ export default function Card({
                 >
                   <div className="w-[311px] md:w-[280px] h-[156px] relative flex-shrink-0">
                     <Image
-                      src={review.Gathering.image}
+                      src={
+                        review.Gathering.image || "/images/default-image.svg"
+                      }
                       alt="Review Image"
                       className="object-cover rounded-3xl"
                       sizes="(max-width: 768px) 311px, 280px"

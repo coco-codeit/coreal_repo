@@ -3,8 +3,6 @@ import { ReviewArgs } from "@/types/reviews";
 import { getGatherDetail } from "./gatherDetail";
 import { Review } from "@/types/reviews";
 
-const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL;
-
 export const fetchReviews = async ({
   gatherId,
   type,
@@ -13,7 +11,12 @@ export const fetchReviews = async ({
   date,
   limit,
   offset = 0,
-}: ReviewArgs) => {
+  apiBaseUrl,
+}: ReviewArgs & { apiBaseUrl?: string }) => {
+  if (!apiBaseUrl) {
+    throw new Error("API Base URL is not defined.");
+  }
+
   const queryParams = new URLSearchParams();
   if (gatherId) queryParams.append("gatheringId", gatherId);
   if (location) queryParams.append("location", location);
@@ -30,18 +33,15 @@ export const fetchReviews = async ({
   }
 
   if (!apiBaseUrl) {
-    throw new Error(
-      "API Base URL is not defined. Please check NEXT_PUBLIC_API_URL in your .env file.",
-    );
+    throw new Error("API Base URL is not defined.");
   }
 
   try {
     const res = await axiosInstance.get(
-      `${apiBaseUrl}/reviews?${queryParams.toString()}`,
+      `${apiBaseUrl}/reviews?${queryParams.toString()}`
     );
     return await addParticipantCountToReviews(res.data);
   } catch (error) {
-    console.error("Error fetching reviews:", error);
     throw error;
   }
 };
@@ -56,13 +56,12 @@ const addParticipantCountToReviews = async (reviews: Review[]) => {
           participantCount: gatheringData.participantCount,
         };
       } catch (error) {
-        console.error("Error fetching gathering data:", error);
         return {
           ...review,
           participantCount: 0,
         };
       }
-    }),
+    })
   );
 
   return reviewsWithParticipantCount;
