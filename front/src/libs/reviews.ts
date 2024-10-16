@@ -36,13 +36,14 @@ export const fetchReviews = async ({
   }
 
   try {
-    const res = await axiosInstance.get(`${apiBaseUrl}/reviews?${queryParams.toString()}`);
+    const res = await axiosInstance.get(
+      `${apiBaseUrl}/reviews?${queryParams.toString()}`,
+    );
     return await addParticipantCountToReviews(res.data);
-} catch (error) {
+  } catch (error) {
     console.error("Error fetching reviews:", error);
     throw error;
-}
-
+  }
 };
 
 const addParticipantCountToReviews = async (reviews: Review[]) => {
@@ -65,6 +66,6 @@ const addParticipantCountToReviews = async (reviews: Review[]) => {
       }
     }),
   );
-  
+
   return reviewsWithParticipantCount;
 };
