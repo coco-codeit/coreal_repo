@@ -17,7 +17,7 @@ export default function ActionBtnGroup({
   pageId,
   detailData,
 }: {
-  pageId: string;
+  pageId: number;
   detailData: IGatherings;
 }) {
   const { createdBy, participantCount, capacity, registrationEnd } = detailData;
