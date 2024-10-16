@@ -18,7 +18,7 @@ export default function UserImage({
         width="100"
         height="100"
         alt={`${name}님의 프로필 이미지`}
-        className="box-border w-14 h-14 rounded-full border-2 border-gray-200 object-cover"
+        className="box-border w-14 h-14 rounded-full border-2 border-gray-200 object-cover bg-white"
       />
     </div>
   );
