@@ -9,32 +9,41 @@ export const fetchReviews = async ({
   location,
   sortBy,
   date,
-}: ReviewArgs) => {
-  const queryParams = new URLSearchParams();
+  limit,
+  offset = 0,
+  apiBaseUrl,
+}: ReviewArgs & { apiBaseUrl?: string }) => {
+  if (!apiBaseUrl) {
+    throw new Error("API Base URL is not defined.");
+  }
 
+  const queryParams = new URLSearchParams();
   if (gatherId) queryParams.append("gatheringId", gatherId);
   if (location) queryParams.append("location", location);
   if (sortBy) queryParams.append("sortBy", sortBy);
   if (date) queryParams.append("date", date);
-
-  if (Array.isArray(type)) {
-    const promises = type.map((singleType) => {
-      const queryCopy = new URLSearchParams(queryParams);
-      queryCopy.append("type", singleType);
-      return axiosInstance.get(`/reviews?${queryCopy.toString()}`);
-    });
-
-    const responses = await Promise.all(promises);
-    const combinedData = responses.flatMap((res) => res.data);
-    return await addParticipantCountToReviews(combinedData);
+  if (limit) queryParams.append("limit", limit.toString());
+  if (offset) queryParams.append("offset", offset.toString());
+  if (type) {
+    if (Array.isArray(type)) {
+      queryParams.append("type", type.join(","));
+    } else {
+      queryParams.append("type", type);
+    }
   }
 
-  if (typeof type === "string") {
-    queryParams.append("type", type);
+  if (!apiBaseUrl) {
+    throw new Error("API Base URL is not defined.");
   }
 
-  const res = await axiosInstance.get(`/reviews?${queryParams.toString()}`);
-  return await addParticipantCountToReviews(res.data);
+  try {
+    const res = await axiosInstance.get(
+      `${apiBaseUrl}/reviews?${queryParams.toString()}`
+    );
+    return await addParticipantCountToReviews(res.data);
+  } catch (error) {
+    throw error;
+  }
 };
 
 const addParticipantCountToReviews = async (reviews: Review[]) => {
@@ -47,13 +56,12 @@ const addParticipantCountToReviews = async (reviews: Review[]) => {
           participantCount: gatheringData.participantCount,
         };
       } catch (error) {
-        console.error("Error fetching gathering data:", error);
         return {
           ...review,
           participantCount: 0,
         };
       }
-    }),
+    })
   );
 
   return reviewsWithParticipantCount;
