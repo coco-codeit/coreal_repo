@@ -10,20 +10,16 @@ import GatheringSecSkeleton from "./GatheringSecSkeleton";
 import { GatheringsParticipants, IGatherings } from "@/types/gatherings";
 export default function GatehringSection({
   detailData,
-  isDetailLoading,
   participantData,
-  participantLoading,
   pageId,
+  isGatherLoading,
 }: {
   pageId: number;
   detailData: IGatherings;
-  isDetailLoading: boolean;
   participantData: GatheringsParticipants[];
-  participantLoading: boolean;
+  isGatherLoading: boolean;
 }) {
-  const isDataLoading = isDetailLoading || participantLoading;
-
-  if (isDataLoading) {
+  if (isGatherLoading) {
     return <GatheringSecSkeleton />;
   }
 
