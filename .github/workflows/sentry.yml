@@ -28,13 +28,15 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
 
-      - name: Install dependencies
-        working-directory: ./front
-        run: yarn ci
-
-      - name: ▶️ Run build
-        working-directory: ./front
-        run: yarn build
+      - name: 의존성 설치 및 빌드
+        env:
+          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+          NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
+          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+        run: |
+          yarn install --frozen-lockfile
+          yarn build
 
       - name: Install sentry-cli
         working-directory: ./front
