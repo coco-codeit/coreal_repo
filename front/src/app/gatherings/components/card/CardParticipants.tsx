@@ -4,11 +4,11 @@ import ProgressBar from "@/app/gatherings/components/ProgressBar";
 import { PersonIcon } from "@/app/gatherings/components/list/Icons";
 
 function CardParticipants({
-  dateTime,
+  registrationEnd,
   participantCount,
   capacity,
 }: {
-  dateTime: string;
+  registrationEnd: string;
   participantCount: number;
   capacity: number;
 }) {
@@ -16,7 +16,7 @@ function CardParticipants({
   const isFull = participantCount >= capacity;
 
   const now = new Date();
-  const endDate = new Date(dateTime);
+  const endDate = new Date(registrationEnd);
   const isClosed = endDate < now || isFull;
 
   return (
