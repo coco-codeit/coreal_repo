@@ -1,3 +1,5 @@
+import React from "react";
+
 interface HeartScoreProps {
   averageScore: number;
 }
@@ -22,7 +24,7 @@ export default function HeartScore({ averageScore }: HeartScoreProps) {
           }}
         >
           <div
-            className="absolute top-0 left-0 bg-green-2 h-full"
+            className="absolute top-0 left-0 bg-[#EA580C] h-full"
             style={{
               width: calculateFill(index),
             }}

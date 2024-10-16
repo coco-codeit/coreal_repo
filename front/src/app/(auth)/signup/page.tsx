@@ -135,7 +135,7 @@ export default function Signup() {
         <p className="text-[15px] font-medium text-gray-800 text-center">
           이미 계정이 있으신가요?{" "}
           <button
-            className="text-orange-600 underline"
+            className="text-purple-3 underline"
             onClick={() => {
               router.push("/signin");
             }}

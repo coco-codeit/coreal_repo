@@ -14,8 +14,6 @@ export interface ReviewArgs {
   location?: string;
   sortBy?: string;
   date?: string;
-  limit?: number;
-  offset?: number;
 }
 
 export interface Gathering {
