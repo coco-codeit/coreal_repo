@@ -115,13 +115,13 @@ export default function ModifyProfileModal({
               <div className="grid grid-cols-2 gap-2 md:gap-4 font-semibold w-full">
                 <Button
                   onClick={closeModal}
-                  className="border border-orange-600 text-orange-600 hover:shadow-lg"
+                  className="border border-gray-900 text-gray-900 hover:border-red-600 hover:bg-red-50  hover:text-red-600"
                 >
                   취소
                 </Button>
                 <Button
                   type="submit"
-                  className="bg-gray-400 text-white hover:bg-orange-600 hover:shadow-lg"
+                  className="bg-gray-400 text-white hover:bg-gray-900 hover:text-green-2"
                 >
                   수정하기
                 </Button>

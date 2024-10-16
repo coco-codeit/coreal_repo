@@ -10,9 +10,9 @@ export default function ModifyProfileBtn() {
     <>
       <button
         onClick={() => setIsOpen(true)}
-        className="w-8 h-8 rounded-full bg-gray-200 grid justify-center items-center hover:bg-white hover:drop-shadow-md active:bg-gray-300"
+        className="w-8 h-8 rounded-full bg-gray-800 grid justify-center items-center hover:bg-gray-700 hover:drop-shadow-md active:bg-gray-900"
       >
-        <RiPencilFill className="text-gray-400" />
+        <RiPencilFill className="text-gray-200" />
       </button>
       <ModifyProfileModal open={isOpen} setOpen={setIsOpen} />
     </>

@@ -3,11 +3,13 @@ import {
   getGatherDetail,
   getGatherJoined,
   getGatherParticipants,
+  getUserReviews,
   postJoinGather,
   putCancelJoinGather,
 } from "@/libs/gatherDetail";
 import useAuthStore from "@/stores/useAuthStore";
 import { useToastStore } from "@/stores/useToastStore";
+import { UserRiveiw } from "@/types/gatherings";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const useGatherDeatilQuery = (gatherId: string) => {
@@ -78,4 +80,11 @@ export const useCreateCancel = (gatherId: string) => {
     cancelCreateGather,
     "모임을 삭제하였습니다",
   );
+};
+
+export const useGatherReview = ({ pageId, offset, limit }: UserRiveiw) => {
+  return useQuery({
+    queryKey: ["gatherReview", pageId, offset, limit],
+    queryFn: () => getUserReviews({ pageId, offset, limit }),
+  });
 };

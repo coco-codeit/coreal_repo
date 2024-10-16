@@ -1,14 +1,15 @@
 "use client";
 import React from "react";
-import { DayPicker } from "@/app/gatherings/components/filter/CustomDayPicker";
 import { ko } from "date-fns/locale";
+import { DayPicker } from "@/app/gatherings/components/filter/CustomDayPicker";
 
 interface ICalendar {
   selectedDate: Date | undefined;
   onSelectDate: (date: Date | undefined) => void;
+  modal?: boolean;
 }
 
-function Calendar({ selectedDate, onSelectDate }: ICalendar) {
+function Calendar({ selectedDate, onSelectDate, modal }: ICalendar) {
   return (
     <DayPicker
       locale={ko}
@@ -16,6 +17,7 @@ function Calendar({ selectedDate, onSelectDate }: ICalendar) {
       selected={selectedDate}
       onSelect={onSelectDate}
       showOutsideDays
+      isModal={modal}
     />
   );
 }

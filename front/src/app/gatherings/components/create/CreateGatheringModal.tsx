@@ -2,24 +2,31 @@
 
 import { Fragment, useState } from "react";
 import Image from "next/image";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { isToday, format } from "date-fns";
 import {
   Dialog,
   DialogPanel,
   DialogTitle,
   Transition,
+  Menu,
+  MenuButton,
+  MenuItems,
+  MenuItem,
 } from "@headlessui/react";
-import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
-import Button from "@/app/gatherings/components/Button";
-import Calendar from "@/app/components/Calendar";
-import TimeButton from "@/app/gatherings/components/create/TimeButton";
 import { useCreateGathering } from "@/hooks/queries/useCreateGatheringQuery";
-import { createType, locations, timeSlots } from "@/types/gatherings";
-import { DownIcon, DeleteIcon } from "@/app/gatherings/components/list/Icons";
 import { useCreateGatheringStore } from "@/stores/useCreateGatheringStore";
+import Calendar from "@/app/components/Calendar";
+import Button from "@/app/gatherings/components/Button";
+import TimeButton from "@/app/gatherings/components/create/TimeButton";
+import {
+  categories,
+  locations,
+  timeSlots,
+} from "@/app/gatherings/components/create/config";
+import { DownIcon, XIcon } from "@/app/gatherings/components/list/Icons";
 
 const createSChema = z.object({
   name: z.string().min(1, "이름을 입력해주세요."),
@@ -53,13 +60,31 @@ const CreateGatheringModal = ({
     setValue,
     clearErrors,
     setError,
-    trigger,
     formState: { errors, isSubmitting },
   } = useForm<createData>({
     resolver: zodResolver(createSChema),
+    mode: "all",
+    reValidateMode: "onSubmit",
   });
 
   const { mutate, isPending } = useCreateGathering();
+
+  const {
+    location,
+    setLocation,
+    image,
+    setImage,
+    type,
+    setType,
+    dateTime,
+    setDateTime,
+    resetModal,
+  } = useCreateGatheringStore();
+
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+  const [selectedTime, setSelectedTime] = useState<string | undefined>(
+    undefined,
+  );
 
   const onSubmit = (data: createData) => {
     if (!selectedDate || !selectedTime) {
@@ -70,18 +95,14 @@ const CreateGatheringModal = ({
       return;
     }
 
+    setValue("dateTime", dateTime);
+
     const imageFile = data.image as File;
-
-    const datePart = selectedDate ? format(selectedDate, "yyyy-MM-dd") : "";
-    const dateTimeString = `${datePart}T${selectedTime}:00`;
-    setValue("dateTime", dateTimeString);
-
     if (data.location === "을지로 3가") data.location = "을지로3가";
     if (data.type === "오피스 스트레칭") data.type = "OFFICE_STRETCHING";
     if (data.type === "워케이션") data.type = "WORKATION";
     if (data.type === "마인드풀니스") data.type = "MINDFULNESS";
 
-    console.log(data);
     const gatheringData = {
       ...data,
       image: imageFile,
@@ -94,42 +115,6 @@ const CreateGatheringModal = ({
       },
     });
   };
-
-  const handleDateChange = (selectedDate: Date | undefined) => {
-    setSelectedDate(selectedDate);
-    setSelectedTime(undefined);
-    setValue("dateTime", "");
-  };
-
-  const handleTimeClick = async (time: string) => {
-    if (selectedDate) {
-      setSelectedTime(time);
-
-      const datePart = selectedDate ? format(selectedDate, "yyyy-MM-dd") : "";
-      const dateTimeString = `${datePart}T${time}:00`;
-
-      setValue("dateTime", dateTimeString, {
-        shouldValidate: false,
-        shouldDirty: true,
-      });
-
-      await trigger("dateTime", { shouldFocus: false }); // dateTime 필드만 검증
-      clearErrors("dateTime");
-    } else {
-      setError("dateTime", {
-        type: "manual",
-        message: "날짜를 먼저 선택해주세요.",
-      });
-    }
-  };
-
-  const { location, setLocation, image, setImage, type, setType, resetModal } =
-    useCreateGatheringStore();
-
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
-  const [selectedTime, setSelectedTime] = useState<string | undefined>(
-    undefined,
-  );
 
   const handleTypeChange = (type: string) => {
     setType(type);
@@ -149,6 +134,30 @@ const CreateGatheringModal = ({
       const file = files[0];
       setImage(file);
       setValue("image", file);
+    }
+  };
+
+  const handleDateChange = (selectedDate: Date | undefined) => {
+    setSelectedDate(selectedDate);
+    setSelectedTime(undefined);
+    setValue("dateTime", "");
+  };
+
+  const handleTimeChange = (time: string) => {
+    if (selectedDate) {
+      setSelectedTime(time);
+      clearErrors("dateTime");
+
+      const datePart = format(selectedDate, "yyyy-MM-dd");
+      const dateTimeString = `${datePart}T${time}:00`;
+      const utcDateTime = new Date(dateTimeString).toISOString();
+      setValue("dateTime", utcDateTime);
+      setDateTime(utcDateTime);
+    } else {
+      setError("dateTime", {
+        type: "manual",
+        message: "날짜를 먼저 선택해주세요.",
+      });
     }
   };
 
@@ -185,7 +194,7 @@ const CreateGatheringModal = ({
       >
         <div className="fixed inset-0 bg-black bg-opacity-30 z-50" />
         <div className="fixed inset-0 flex items-center justify-center z-50">
-          <DialogPanel className="max-h-[90vh] overflow-y-auto bg-white px-[16px] py-[24px] md:px-[24px] md:py-[24px] w-[375px] md:w-[520px] rounded-xl flex flex-col gap-6">
+          <DialogPanel className="max-h-[90vh] overflow-y-auto bg-white min-w-[375px] w-[375px] px-[16px] py-[24px] md:px-[24px] md:py-[24px] md:w-[520px] rounded-xl flex flex-col gap-6">
             <div className="flex justify-between">
               <DialogTitle className="text-lg font-semibold">
                 모임 만들기
@@ -197,7 +206,7 @@ const CreateGatheringModal = ({
                   resetModal();
                 }}
               >
-                <DeleteIcon color="#64748B" />
+                <XIcon color="#64748B" />
               </div>
             </div>
 
@@ -211,7 +220,7 @@ const CreateGatheringModal = ({
                   {...register("name")}
                   type="text"
                   placeholder="이름을 입력해주세요."
-                  className="py-[10px] px-4 rounded-xl bg-gray-50 focus:ring-orange-500 focus:ring-2 focus:outline-none"
+                  className="py-[10px] px-4 rounded-xl bg-gray-50 focus:ring-purple-3 focus:ring-2 focus:outline-none"
                 />
                 {errors.name && (
                   <span className="text-red-500 text-sm">
@@ -226,7 +235,7 @@ const CreateGatheringModal = ({
                   <Menu as="div" className="relative inline-block w-full">
                     <MenuButton
                       className={`w-full h-10 rounded-xl bg-gray-50 border-gray-50 inline-flex items-center justify-between 
-                        py-2 px-3 border-2 focus:ring-orange-500 focus:ring-2 focus:outline-none ${location ? " text-gray-800" : " text-gray-400"} `}
+                    py-2 px-3 border-2 focus:ring-purple-3 focus:ring-2 focus:outline-none ${location ? " text-gray-800" : " text-gray-400"} `}
                     >
                       <span>{location || "장소를 선택해주세요."}</span>
                       <DownIcon />
@@ -237,7 +246,7 @@ const CreateGatheringModal = ({
                         {locations.map((loc) => (
                           <MenuItem key={loc}>
                             <button
-                              className="block px-4 py-2 w-full text-left hover:bg-orange-100 rounded-xl cursor-pointer"
+                              className="block px-4 py-2 w-full text-left hover:bg-purple-1 rounded-xl cursor-pointer"
                               onClick={() => handleLocationChange(loc)}
                             >
                               {loc}
@@ -277,8 +286,8 @@ const CreateGatheringModal = ({
 
                   <Button
                     type="button"
-                    className="px-[14px] md:px-[20px] py-[10px] focus:ring-orange-500 focus:ring-2 focus:outline-none "
-                    style="outlined"
+                    className="px-[14px] md:px-[20px] py-[10px] focus:ring-none focus:outline-none "
+                    style="calendarOutlined"
                     size="responsive"
                     onClick={() =>
                       document.getElementById("fileInput")?.click()
@@ -309,17 +318,17 @@ const CreateGatheringModal = ({
               <div className="flex flex-col gap-3">
                 <label className="font-semibold">선택 서비스</label>
                 <div className="flex gap-[8px] md:gap-[2px]">
-                  {createType.map((service) => (
+                  {categories.map((category) => (
                     <div
-                      key={service.id}
+                      key={category.id}
                       className={`flex flex-row items-start pl-[8px] pt-[6px] md:pl-4 md:pt-3 cursor-pointer transition-all 
-                        duration-200 w-[109px] h-[76px] md:w-[160px] md:h-[70px] rounded-lg gap-[8px] 
-                        ${type === service.name ? "bg-gray-900" : "bg-gray-50"}`}
-                      onClick={() => handleTypeChange(service.name)}
+                      duration-200 w-[109px] h-[76px] md:w-[160px] md:h-[70px] rounded-lg gap-[8px] 
+                      ${type === category.name ? "bg-gray-900" : "bg-gray-50"}`}
+                      onClick={() => handleTypeChange(category.name)}
                     >
                       <Image
                         src={
-                          type === service.name
+                          type === category.name
                             ? "/images/check_active.svg"
                             : "/images/check_default.svg"
                         }
@@ -336,23 +345,23 @@ const CreateGatheringModal = ({
 
                       <div className="flex flex-col gap-1">
                         <span
-                          className={`text-sm font-semibold ${type === service.name ? "text-white" : "text-gray-900"} `}
+                          className={`text-sm font-semibold ${type === category.name ? "text-white" : "text-gray-900"} `}
                         >
-                          {service.tab}
+                          {category.tab}
                         </span>
-                        {service.name !== "워케이션" && (
+                        {category.name !== "워케이션" && (
                           <span
-                            className={`text-xs ${type === service.name ? "text-white" : "text-gray-700"}`}
+                            className={`text-xs ${type === category.name ? "text-white" : "text-gray-700"}`}
                           >
                             <span className="block md:hidden">
-                              {service.name.split(" ").map((word, index) => (
+                              {category.name.split(" ").map((word, index) => (
                                 <span key={index} className="block">
                                   {word}
                                 </span>
                               ))}
                             </span>
                             <span className="hidden md:block">
-                              {service.name}
+                              {category.name}
                             </span>
                           </span>
                         )}
@@ -360,6 +369,7 @@ const CreateGatheringModal = ({
                     </div>
                   ))}
                 </div>
+
                 {errors.type && (
                   <span className="text-red-500 text-sm">
                     {errors.type.message}
@@ -373,6 +383,7 @@ const CreateGatheringModal = ({
                   <Calendar
                     selectedDate={selectedDate}
                     onSelectDate={handleDateChange}
+                    modal={true}
                   />
                 </div>
                 <div className="text-sm text-gray-800">오전</div>
@@ -382,7 +393,7 @@ const CreateGatheringModal = ({
                       key={time}
                       time={time}
                       state={getTimeState(time)}
-                      onClick={() => handleTimeClick(time)}
+                      onClick={() => handleTimeChange(time)}
                     />
                   ))}
                 </div>
@@ -393,12 +404,13 @@ const CreateGatheringModal = ({
                       key={time}
                       time={time}
                       state={getTimeState(time)}
-                      onClick={() => handleTimeClick(time)}
+                      onClick={() => handleTimeChange(time)}
                     />
                   ))}
                 </div>
 
                 <input type="hidden" {...register("dateTime")} />
+
                 {errors.dateTime && (
                   <span className="text-red-500 text-sm">
                     {errors.dateTime.message}
@@ -414,7 +426,7 @@ const CreateGatheringModal = ({
                     required: "모집 정원을 입력해주세요.",
                   })}
                   placeholder="최소 5인 이상 입력해주세요."
-                  className="py-[10px] px-4 rounded-xl bg-gray-50 focus:ring-orange-500 focus:ring-2 focus:outline-none"
+                  className="py-[10px] px-4 rounded-xl bg-gray-50 focus:ring-purple-3 focus:ring-2 focus:outline-none"
                   min={5}
                 />
                 {errors.capacity && (

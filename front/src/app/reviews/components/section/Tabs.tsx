@@ -31,13 +31,13 @@ const tabs = [
 export default function Tabs() {
   const [selectedTab, setSelectedTab] = useState(tabs[0].id);
   const [selectedSubTab, setSelectedSubTab] = useState(
-    tabs[0].subTabs ? tabs[0].subTabs[0].id : ""
+    tabs[0].subTabs ? tabs[0].subTabs[0].id : "",
   );
 
   console.log("selectedTab", selectedTab);
 
   const [selectedRegion, setSelectedRegion] = useState<string | undefined>(
-    "지역 선택"
+    "지역 선택",
   );
 
   const [selectedSort, setSelectedSort] = useState("createdAt");
@@ -100,7 +100,7 @@ export default function Tabs() {
               />
             </span>
             {selectedTab === tab.id && (
-              <span className="absolute bottom-[-2px] left-0 right-0 h-[2px] bg-[#111827] rounded-[1px]"></span>
+              <span className="absolute bottom-[-2px] left-0 right-0 h-[2px] bg-gray-900 rounded-[1px]"></span>
             )}
           </button>
         ))}

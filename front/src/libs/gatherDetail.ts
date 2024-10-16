@@ -1,3 +1,4 @@
+import { UserRiveiw } from "@/types/gatherings";
 import axiosInstance from "./axiosInstance";
 
 export const getGatherDetail = async (gatherId: string) => {
@@ -14,7 +15,6 @@ export const postJoinGather = async (gatherId: string) => {
 
 export const putCancelJoinGather = async (gatherId: string) => {
   const res = await axiosInstance.delete(`/gatherings/${gatherId}/leave`);
-  console.log(res);
   return res?.data;
 };
 
@@ -40,5 +40,17 @@ export const getGatherJoined = async () => {
     `/gatherings/joined?sortBy=dateTime&sortOrder=asc`,
   );
 
+  return res?.data;
+};
+
+export const getUserReviews = async ({ pageId, offset, limit }: UserRiveiw) => {
+  const limitQuery = () => {
+    return limit !== 0 ? `&limit=${limit}` : "";
+  };
+
+  const res = await axiosInstance.get(
+    `/reviews?gatheringId=${pageId}${limitQuery()}&offset=${offset}`,
+  );
+  console.log(res?.data);
   return res?.data;
 };

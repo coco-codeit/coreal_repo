@@ -3,34 +3,38 @@
 import React, { useState } from "react";
 import CommentsCard from "./CommentsCard";
 import Pagination from "./Pagination";
-import { useReviews } from "@/hooks/queries/useReviews";
 import { Review } from "@/types/reviews";
-import CommentSecSkeleton from "./CommentSecSkeleton";
+import { useGatherReview } from "@/hooks/queries/gatherDetailQuery";
 
-export default function CommentsSection({ pageId }: { pageId: string }) {
+export default function CommentsSection({
+  pageId,
+  initialReviews,
+}: {
+  pageId: string;
+  initialReviews: Review[];
+}) {
   const [currentPage, setCurrentPage] = useState(1);
   const reviewsPerPage = 4;
 
-  const { reviews: reviewData = [], isLoading: isReviewLoading } = useReviews({
-    gatherId: pageId,
+  const { data: reviewData = [] } = useGatherReview({
+    pageId,
+    offset: 0,
+    limit: 0,
   });
 
-  const totalPages = Math.ceil(reviewData.length / reviewsPerPage);
+  const totalReviews = reviewData.length;
+  const totalPages = Math.ceil(totalReviews / reviewsPerPage);
 
   const indexOfLastReview = currentPage * reviewsPerPage;
   const indexOfFirstReview = indexOfLastReview - reviewsPerPage;
-  const currentReviews = reviewData.slice(
-    indexOfFirstReview,
-    indexOfLastReview,
-  );
+  const currentReviews =
+    currentPage === 1
+      ? initialReviews
+      : reviewData.slice(indexOfFirstReview, indexOfLastReview);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
-
-  if (isReviewLoading) {
-    return <CommentSecSkeleton />;
-  }
 
   return (
     <section className="flex flex-col sm:min-h-360px min-h-[487px] mt-6 p-6 border-t-2 border-[#E5E7EB]">
@@ -38,7 +42,7 @@ export default function CommentsSection({ pageId }: { pageId: string }) {
         이용자들은 이 프로그램을 이렇게 느꼈어요!
       </h2>
 
-      {currentReviews && currentReviews.length > 0 ? (
+      {currentReviews.length > 0 ? (
         <>
           <div className="min-h-[500px]">
             {currentReviews.map((review: Review) => (
@@ -46,7 +50,7 @@ export default function CommentsSection({ pageId }: { pageId: string }) {
             ))}
           </div>
 
-          {reviewData.length > reviewsPerPage && (
+          {totalPages > 1 && (
             <div className="mt-2 md:pb-[86px] pb-[134px]">
               <Pagination
                 currentPage={currentPage}

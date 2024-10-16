@@ -42,6 +42,7 @@ function Card({ data, showExpiration }: CardProps) {
           dateTime={data.dateTime}
         />
         <CardParticipants
+          dateTime={data.dateTime}
           capacity={data.capacity}
           participantCount={data.participantCount}
         />

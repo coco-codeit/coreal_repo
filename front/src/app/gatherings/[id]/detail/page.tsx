@@ -1,29 +1,22 @@
-"use client";
+import { getUserReviews } from "@/libs/gatherDetail";
+import CommentsSection from "../../components/detail/comments-section/CommentsSection";
+import ClientGather from "./ClientGather";
+import { Review } from "@/types/reviews";
 
-import React from "react";
+export default async function Detail({ params }: { params: { id: string } }) {
+  const { id } = params;
+  const initialReviews: Review[] = await getUserReviews({
+    pageId: id,
+    offset: 0,
+    limit: 4,
+  });
 
-import GatehringSection from "./components/gathering-section/GatehringSection";
-import CommentsSection from "./components/comments-section/CommentsSection";
-import ActionBtnGroup from "./components/comments-section/ActionBtnGroup";
-import { useParams } from "next/navigation";
-import { useGatherDeatilQuery } from "@/hooks/queries/gatherDetailQuery";
-
-export default function Detail() {
-  const { id }: { id: string } = useParams();
-  const { data: detailData = [], isLoading: isDetailLoading } =
-    useGatherDeatilQuery(id);
-  console.log(detailData);
   return (
     <div className="h-screen-minus-nav bg-[#F3F4F6]">
       <div className="mx-auto container max-w-[1200px] px-6 md:px-[102px] pt-10 bg-white">
-        <GatehringSection
-          pageId={id}
-          detailData={detailData}
-          isDetailLoading={isDetailLoading}
-        />
-        <CommentsSection pageId={id} />
+        <ClientGather pageId={id} />
+        <CommentsSection pageId={id} initialReviews={initialReviews} />
       </div>
-      <ActionBtnGroup pageId={id} createdBy={detailData?.createdBy} />
     </div>
   );
 }
