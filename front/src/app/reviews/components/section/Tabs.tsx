@@ -107,7 +107,7 @@ export default function Tabs({ initialReviews }: TabsProps) {
               )}
             </span>
             {selectedTab === tab.id && (
-              <span className="absolute bottom-[-2px] left-0 right-0 h-[2px] bg-[#111827] rounded-[1px]"></span>
+              <span className="absolute bottom-[-2px] left-0 right-0 h-[2px] bg-gray-900 rounded-[1px]"></span>
             )}
           </button>
         ))}
