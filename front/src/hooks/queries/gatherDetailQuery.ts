@@ -9,6 +9,7 @@ import {
 } from "@/libs/gatherDetail";
 import useAuthStore from "@/stores/useAuthStore";
 import { useToastStore } from "@/stores/useToastStore";
+import { UserRiveiw } from "@/types/gatherings";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const useGatherDeatilQuery = (gatherId: string) => {
@@ -81,9 +82,9 @@ export const useCreateCancel = (gatherId: string) => {
   );
 };
 
-export const useGatherReview = (gatherId: string, offset: number) => {
+export const useGatherReview = ({ pageId, offset, limit }: UserRiveiw) => {
   return useQuery({
-    queryKey: ["gatherReview", gatherId, offset],
-    queryFn: () => getUserReviews(gatherId, offset),
+    queryKey: ["gatherReview", pageId, offset, limit],
+    queryFn: () => getUserReviews({ pageId, offset, limit }),
   });
 };

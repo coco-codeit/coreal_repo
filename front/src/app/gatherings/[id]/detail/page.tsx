@@ -5,7 +5,11 @@ import { Review } from "@/types/reviews";
 
 export default async function Detail({ params }: { params: { id: string } }) {
   const { id } = params;
-  const initialReviews: Review[] = await getUserReviews(id, 0);
+  const initialReviews: Review[] = await getUserReviews({
+    pageId: id,
+    offset: 0,
+    limit: 4,
+  });
 
   return (
     <div className="h-screen-minus-nav bg-[#F3F4F6]">

@@ -35,7 +35,7 @@ function CreateButton() {
     <>
       <Button
         className="font-semibold px-[18px] md:px-[21px] py-[10px]"
-        style="solid"
+        style="outlined"
         size="responsive"
         onClick={openModal}
       >
