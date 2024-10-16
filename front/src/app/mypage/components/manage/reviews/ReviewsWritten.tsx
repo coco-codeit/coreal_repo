@@ -1,6 +1,6 @@
 import { format } from "date-fns";
-import { FaHeart } from "react-icons/fa";
 import { useMyReviews } from "@/hooks/queries/mypage";
+import Image from "next/image";
 import OnEmpty from "../OnEmpty";
 import OnLoading from "../OnLoading";
 import ListWrapper from "../../ListWrapper";
@@ -40,6 +40,7 @@ const gatherTypeMap: Record<GatherType, string> = {
 export default function ReviewsWritten() {
   const { userInfo } = useAuthStore();
   const { data, isLoading } = useMyReviews({ userId: userInfo?.id });
+
   if (isLoading) return <OnLoading />;
   if (!Array.isArray(data) || data.length === 0)
     return <OnEmpty message="아직 작성한 리뷰가 없어요" />;
@@ -54,7 +55,13 @@ export default function ReviewsWritten() {
           <div className="flex flex-col items-start gap-3 ml-2 text-gray-700">
             <div className="flex flex-row gap-1">
               {Array.from({ length: item?.score }).map((_, index) => (
-                <FaHeart key={index} color="#EA580C" size="1.25rem" />
+                <Image
+                  key={index}
+                  src="/images/heart_green.svg"
+                  width="24"
+                  height="24"
+                  alt="하트"
+                />
               ))}
             </div>
             <p>{item?.comment}</p>

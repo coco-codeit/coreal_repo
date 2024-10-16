@@ -1,38 +1,60 @@
-import { BsPersonFill } from "react-icons/bs";
-import { LuArrowRight } from "react-icons/lu";
+import Image from "next/image";
 import ConfirmBadge from "@/app/gatherings/components/ConfirmBadge";
 import ProgressBar from "@/app/gatherings/components/ProgressBar";
+import { PersonIcon } from "@/app/gatherings/components/list/Icons";
 
 function CardParticipants({
+  dateTime,
   participantCount,
   capacity,
 }: {
+  dateTime: string;
   participantCount: number;
   capacity: number;
 }) {
   const percent = (participantCount / capacity) * 100;
+  const isFull = participantCount >= capacity;
+
+  const now = new Date();
+  const endDate = new Date(dateTime);
+  const isClosed = endDate < now || isFull;
+
   return (
     <div className="flex justify-between md:pr-2 items-end mt-2">
-      <div className="grid w-full max-w-[197px] md:max-w-[255px] lg:max-w-[556px] ">
-        <div className="flex flex-row gap-2 items-center">
-          <div className="flex flex-row gap-[2px] py-[2px] h-[20px]">
-            <BsPersonFill className="w-4 h-4 text-gray-700" />
-            <span className="text-body-1 leading-[18px] text-gray-700">
+      <div className="grid w-full max-w-[197px] md:max-w-[255px] lg:max-w-[556px]">
+        <div className="flex flex-row gap-2 items-center h-6">
+          <div className="flex flex-row gap-[2px] py-[2px] h-[20px] items-center">
+            <PersonIcon isFull={isFull} />
+            <span
+              className={`text-sm ${isFull ? "text-purple-2" : "text-gray-700"}`}
+            >
               {participantCount}/{capacity}
             </span>
           </div>
-          {participantCount >= 5 && <ConfirmBadge />}
+          {!isFull && participantCount >= 5 && <ConfirmBadge />}
         </div>
 
-        <div className="flex items-start -mt-1 -mb-2">
+        <div className="flex items-start -mt-2 -mb-2">
           <ProgressBar percent={percent} />
         </div>
       </div>
-      <div className="flex gap-2 items-center">
-        <span className="font-semibold text-base text-orange-600">
-          join now
-        </span>
-        <LuArrowRight className="text-orange-600 w-[18px] h-[18px]" />
+      <div
+        className="flex gap-2 items-center font-semibold"
+        suppressHydrationWarning
+      >
+        {isClosed ? (
+          <span className="text-purple-2">closed</span>
+        ) : (
+          <div className="flex gap-2 items-center">
+            <span className="text-purple-3">join now</span>
+            <Image
+              src="/images/card/arrow_right.svg"
+              alt="arrow"
+              width={18}
+              height={18}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

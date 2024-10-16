@@ -77,7 +77,7 @@ export default function ReviweModal({
                   .map((_, i) => (
                     <label key={`input-radio-${i}`}>
                       <IoIosHeart
-                        className={`${formData.score >= i + 1 ? "text-[#ea580c]" : "text-[#E5E7EB]"} cursor-pointer`}
+                        className={`cursor-pointer ${formData.score >= i + 1 ? "text-red-600" : "text-[#E5E7EB]"}`}
                         size={"1.25rem"}
                       />
                       <input
@@ -105,13 +105,13 @@ export default function ReviweModal({
             <div className="grid grid-cols-2 gap-2 md:gap-4 font-semibold">
               <Button
                 onClick={closeModal}
-                className="border border-orange-600 text-orange-600 hover:shadow-lg"
+                className="border border-gray-900 text-gray-900 hover:border-red-600 hover:bg-red-50  hover:text-red-600"
               >
                 취소
               </Button>
               <Button
                 type="submit"
-                className="bg-gray-400 text-white hover:bg-orange-600 hover:shadow-lg"
+                className="bg-gray-400 text-white hover:bg-gray-900 hover:text-green-2"
               >
                 리뷰 등록
               </Button>

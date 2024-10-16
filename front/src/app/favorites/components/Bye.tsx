@@ -22,17 +22,17 @@ function Bye({ gatheringId }: ByeProps) {
         </div>
         <button
           onClick={handleRemoveFavorite}
-          className="md:hidden px-3 py-[6px] rounded-xl h-9 bg-orange-50 flex flex-row gap-[2px] justify-center items-center"
+          className="md:hidden px-3 py-[6px] rounded-xl h-9 bg-gray-900 flex flex-row gap-[2px] justify-center items-center"
         >
           <Image src="/images/bye.svg" alt="bye" height={24} width={24} />
-          <span className="text-orange-600 text-xs">모임 보내주기</span>
+          <span className="text-white text-xs">모임 보내주기</span>
         </button>
       </div>
       <div
         onClick={handleRemoveFavorite}
         className="absolute top-4 right-4 hidden md:flex cursor-pointer"
       >
-        <div className="w-12 h-12 rounded-full flex items-center justify-center bg-orange-50">
+        <div className="w-12 h-12 rounded-full flex items-center justify-center bg-gray-900">
           <Image src="/images/bye.svg" alt="bye" height={24} width={24} />
         </div>
       </div>
