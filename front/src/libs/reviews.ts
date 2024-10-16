@@ -31,8 +31,12 @@ export const fetchReviews = async ({
     }
   }
 
+  if (!apiBaseUrl) {
+    throw new Error("API Base URL is not defined. Please check NEXT_PUBLIC_API_URL in your .env file.");
+  }
+
   const res = await axiosInstance.get(
-    `${apiBaseUrl}/reviews?${queryParams.toString()}`
+    `${apiBaseUrl}/reviews?${queryParams.toString()}`,
   );
 
   return await addParticipantCountToReviews(res.data);
@@ -43,7 +47,7 @@ const addParticipantCountToReviews = async (reviews: Review[]) => {
     reviews.map(async (review) => {
       try {
         const gatheringData = await getGatherDetail(
-          review.Gathering.id.toString()
+          review.Gathering.id.toString(),
         );
         return {
           ...review,
@@ -56,7 +60,7 @@ const addParticipantCountToReviews = async (reviews: Review[]) => {
           participantCount: 0,
         };
       }
-    })
+    }),
   );
 
   return reviewsWithParticipantCount;

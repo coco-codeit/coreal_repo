@@ -1,5 +1,7 @@
 import axiosInstance from "./axiosInstance";
 
+const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL;
+
 export const fetchReviewScores = async (type: string | string[]) => {
   try {
     if (Array.isArray(type)) {
@@ -9,7 +11,7 @@ export const fetchReviewScores = async (type: string | string[]) => {
       const responses = await Promise.all(promises);
       return responses.flatMap((res) => res.data);
     } else {
-      const res = await axiosInstance.get(`/reviews/scores`, {
+      const res = await axiosInstance.get(`${apiBaseUrl}/reviews/scores`, {
         params: { type },
       });
       return res.data;
