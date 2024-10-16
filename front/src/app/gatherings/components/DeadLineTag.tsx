@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import React, { useMemo } from "react";
-import { differenceInHours, differenceInDays } from "date-fns";
+import { differenceInHours, differenceInDays, isToday } from "date-fns";
 
 interface IDeadLineTag {
   endTime: string;
@@ -18,9 +18,14 @@ export default function DeadLineTag({ endTime, type }: IDeadLineTag) {
       return "마감된 모임";
     }
     const hoursDiff = differenceInHours(targetDate, now);
-    if (hoursDiff < 24) {
+    if (hoursDiff < 24 && isToday(targetDate)) {
       return `오늘 ${targetDate.getHours()}시 마감`;
     }
+
+    if (hoursDiff < 24 && !isToday(targetDate)) {
+      return `내일 ${targetDate.getHours()}시 마감`;
+    }
+
     const daysDiff = differenceInDays(targetDate, now);
     return `${daysDiff}일 후 마감`;
   };
