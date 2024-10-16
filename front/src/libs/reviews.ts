@@ -21,25 +21,16 @@ export const fetchReviews = async ({
   if (limit) queryParams.append("limit", limit.toString());
   if (offset) queryParams.append("offset", offset.toString());
 
-  if (Array.isArray(type)) {
-    const promises = type.map((singleType) => {
-      const queryCopy = new URLSearchParams(queryParams);
-      queryCopy.append("type", singleType);
-      return axiosInstance.get(`/reviews?${queryCopy.toString()}`);
-    });
-
-    const responses = await Promise.all(promises);
-    const combinedData = responses.flatMap((res) => res.data);
-    return await addParticipantCountToReviews(combinedData);
+  if (type) {
+    if (Array.isArray(type)) {
+      queryParams.append("type", type.join(","));
+    } else {
+      queryParams.append("type", type);
+    }
   }
-
-  if (typeof type === "string" && type !== "ALL") {
-    queryParams.append("type", type);
-  }
-
-  console.log("Request URL:", `/reviews?${queryParams.toString()}`);
 
   const res = await axiosInstance.get(`/reviews?${queryParams.toString()}`);
+
   return await addParticipantCountToReviews(res.data);
 };
 
@@ -48,7 +39,7 @@ const addParticipantCountToReviews = async (reviews: Review[]) => {
     reviews.map(async (review) => {
       try {
         const gatheringData = await getGatherDetail(
-          review.Gathering.id.toString(),
+          review.Gathering.id.toString()
         );
         return {
           ...review,
@@ -61,7 +52,7 @@ const addParticipantCountToReviews = async (reviews: Review[]) => {
           participantCount: 0,
         };
       }
-    }),
+    })
   );
 
   return reviewsWithParticipantCount;

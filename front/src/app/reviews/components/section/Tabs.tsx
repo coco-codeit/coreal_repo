@@ -37,10 +37,10 @@ interface TabsProps {
 export default function Tabs({ initialReviews }: TabsProps) {
   const [selectedTab, setSelectedTab] = useState(tabs[0].id);
   const [selectedSubTab, setSelectedSubTab] = useState(
-    tabs[0].subTabs ? tabs[0].subTabs[0].id : "",
+    tabs[0].subTabs ? tabs[0].subTabs[0].id : ""
   );
   const [selectedRegion, setSelectedRegion] = useState<string | undefined>(
-    "지역 선택",
+    "지역 선택"
   );
   const [selectedSort, setSelectedSort] = useState("createdAt");
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
@@ -54,16 +54,11 @@ export default function Tabs({ initialReviews }: TabsProps) {
     isFetching,
   } = useReviews(
     {
-      type:
-        selectedTab === "WORKATION"
-          ? selectedTab
-          : selectedSubTab === "ALL"
-            ? ["OFFICE_STRETCHING", "MINDFULNESS"]
-            : selectedSubTab,
+      type: selectedTab,
       location: selectedRegion === "지역 선택" ? undefined : selectedRegion,
       sortBy: selectedSort,
     },
-    initialReviews,
+    initialReviews
   );
 
   useEffect(() => {
@@ -83,6 +78,11 @@ export default function Tabs({ initialReviews }: TabsProps) {
   };
 
   if (isError) return <p>Error loading data</p>;
+
+  const filteredReviews =
+    selectedSubTab === "ALL"
+      ? reviews
+      : reviews.filter((review) => review.Gathering?.type === selectedSubTab);
 
   return (
     <div>
@@ -133,7 +133,7 @@ export default function Tabs({ initialReviews }: TabsProps) {
 
       <div>
         <Card
-          reviews={reviews || []}
+          reviews={filteredReviews || []}
           reviewScores={reviewScores || []}
           tabs={tabs}
           selectedRegion={selectedRegion}
@@ -142,6 +142,7 @@ export default function Tabs({ initialReviews }: TabsProps) {
           setSelectedSort={setSelectedSort}
           selectedDate={selectedDate}
           setSelectedDate={setSelectedDate}
+          selectedSubTab={selectedSubTab}
           fetchNextPage={fetchNextPage}
           hasNextPage={hasNextPage}
           isFetching={isFetching}

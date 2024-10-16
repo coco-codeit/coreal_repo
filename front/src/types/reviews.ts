@@ -6,6 +6,7 @@ export interface Review {
   createdAt: string;
   Gathering: Gathering;
   User: User;
+  type?: string | string[];
 }
 
 export interface ReviewArgs {

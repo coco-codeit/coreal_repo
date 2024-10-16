@@ -34,7 +34,7 @@ interface CardProps {
   setSelectedSort: (sort: string) => void;
   selectedDate: Date | undefined;
   setSelectedDate: (date: Date | undefined) => void;
-
+  selectedSubTab: string;
   fetchNextPage: () => void;
   hasNextPage: boolean;
   isFetching: boolean;
@@ -50,6 +50,7 @@ export default function Card({
   setSelectedSort,
   selectedDate,
   setSelectedDate,
+  selectedSubTab,
   fetchNextPage,
   hasNextPage,
 }: CardProps) {
@@ -66,6 +67,10 @@ export default function Card({
 
   const getLabelsFromType = (type: string) => {
     for (const tab of tabs) {
+      if (tab.id === type) {
+        return { parentLabel: tab.label, childLabel: "" };
+      }
+
       const subTab = tab.subTabs?.find((sub) => sub.id === type);
       if (subTab) {
         return { parentLabel: tab.label, childLabel: subTab.label };
@@ -73,17 +78,6 @@ export default function Card({
     }
     return { parentLabel: "", childLabel: "" };
   };
-
-  const safeReviews = Array.isArray(reviews) ? reviews : [];
-  console.log(safeReviews);
-
-  useEffect(() => {
-    console.log("Filtered Reviews:", reviews);
-  }, [reviews]);
-
-  useEffect(() => {
-    console.log("Selected Region for Filtering:", selectedRegion);
-  }, [selectedRegion]);
 
   const regionOptions = [
     { id: "all", label: "지역 전체" },
@@ -129,7 +123,7 @@ export default function Card({
     }
 
     const formattedSelectedDate = new Date(
-      selectedDate.getTime() - selectedDate.getTimezoneOffset() * 60000,
+      selectedDate.getTime() - selectedDate.getTimezoneOffset() * 60000
     )
       .toISOString()
       .split("T")[0];
@@ -138,12 +132,6 @@ export default function Card({
       const reviewDate = new Date(review.Gathering.dateTime)
         .toISOString()
         .split("T")[0];
-      console.log(
-        "드롭다운 날짜:",
-        formattedSelectedDate,
-        "모임 날짜:",
-        reviewDate,
-      );
 
       return reviewDate === formattedSelectedDate;
     });
@@ -154,15 +142,22 @@ export default function Card({
   const filterReviews = useCallback(() => {
     let filtered = reviews;
 
+    if (selectedSubTab && selectedSubTab !== "ALL") {
+      filtered = filtered.filter((review) => {
+        const reviewType = review.Gathering?.type || "";
+        return reviewType === selectedSubTab;
+      });
+    }
+
     if (selectedRegion && selectedRegion !== "지역 선택") {
       filtered = filtered.filter(
-        (review) => review.Gathering.location === selectedRegion,
+        (review) => review.Gathering.location === selectedRegion
       );
     }
 
     if (selectedDate) {
       const formattedSelectedDate = new Date(
-        selectedDate.getTime() - selectedDate.getTimezoneOffset() * 60000,
+        selectedDate.getTime() - selectedDate.getTimezoneOffset() * 60000
       )
         .toISOString()
         .split("T")[0];
@@ -176,7 +171,7 @@ export default function Card({
     }
 
     setFilteredReviews(filtered);
-  }, [reviews, selectedRegion, selectedDate]);
+  }, [reviews, selectedRegion, selectedDate, selectedSubTab]);
 
   useEffect(() => {
     filterReviews();
@@ -185,7 +180,7 @@ export default function Card({
   const handleApplyFilter = () => {
     applyDateFilter();
   };
-
+  
   return (
     <div>
       {/* 리뷰 평점 평균 */}
@@ -263,7 +258,7 @@ export default function Card({
           {filteredReviews.length > 0 ? (
             filteredReviews.map((review) => {
               const { parentLabel, childLabel } = getLabelsFromType(
-                review.Gathering.type,
+                review.Gathering.type
               );
 
               // 리뷰 카드

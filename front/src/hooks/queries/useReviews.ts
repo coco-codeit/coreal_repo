@@ -9,23 +9,21 @@ export const useReviews = (args: ReviewArgs, initialData: Review[] = []) => {
   const reviewsQuery = useInfiniteQuery({
     queryKey: ["reviews", gatherId, type, location, sortBy, date],
     queryFn: async ({ pageParam = 0 }) => {
-      const typeParam =
-        type === "ALL" ? ["OFFICE_STRETCHING", "MINDFULNESS"] : type;
-
       const allReviews = await fetchReviews({
         ...args,
-        type: typeParam,
+        type,
       });
+
       if (sortBy === "score") {
         allReviews.sort((a, b) => b.score - a.score);
       } else if (sortBy === "participantCount") {
         allReviews.sort(
-          (a, b) => (b.participantCount || 0) - (a.participantCount || 0),
+          (a, b) => (b.participantCount || 0) - (a.participantCount || 0)
         );
       } else {
         allReviews.sort(
           (a, b) =>
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
         );
       }
 
@@ -41,6 +39,16 @@ export const useReviews = (args: ReviewArgs, initialData: Review[] = []) => {
     initialData: { pages: [initialData], pageParams: [0] },
   });
 
+  const officeStretchingReviews =
+    reviewsQuery.data?.pages
+      .flat()
+      .filter((review) => review.type === "OFFICE_STRETCHING") || [];
+
+  const mindfulnessReviews =
+    reviewsQuery.data?.pages
+      .flat()
+      .filter((review) => review.type === "MINDFULNESS") || [];
+
   const reviewScoresQuery = useQuery({
     queryKey: ["reviewScores", type],
     queryFn: () => (type ? fetchReviewScores(type) : Promise.resolve([])),
@@ -48,6 +56,8 @@ export const useReviews = (args: ReviewArgs, initialData: Review[] = []) => {
 
   return {
     reviews: reviewsQuery.data?.pages.flat() || [],
+    officeStretchingReviews,
+    mindfulnessReviews,
     reviewScores: reviewScoresQuery.data || [],
     fetchNextPage: reviewsQuery.fetchNextPage,
     hasNextPage: reviewsQuery.hasNextPage,
