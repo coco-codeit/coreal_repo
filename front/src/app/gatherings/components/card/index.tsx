@@ -2,6 +2,9 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { IGatherings } from "@/types/gatherings";
 import CardImage from "@/app/gatherings/components/card/CardImage";
+import CardHeader from "@/app/gatherings/components/card/CardHeader";
+import CardParticipants from "@/app/gatherings/components/card/CardParticipants";
+import Bye from "@/app/favorites/components/Bye";
 
 interface CardProps {
   data: IGatherings;
@@ -31,6 +34,20 @@ function Card({ data, showExpiration }: CardProps) {
       transition={{ type: "spring", stiffness: 300 }}
     >
       <CardImage image={data.image} name={data.name} endTime={data.dateTime} />
+      <div className="flex flex-col border-2 border-gray-100 py-4 px-4 md:pl-6 rounded-b-3xl md:rounded-b-none md:rounded-tr-3xl md:rounded-br-3xl">
+        <CardHeader
+          id={data.id}
+          name={data.name}
+          location={data.location}
+          dateTime={data.dateTime}
+        />
+        <CardParticipants
+          dateTime={data.dateTime}
+          capacity={data.capacity}
+          participantCount={data.participantCount}
+        />
+      </div>
+      {showExpiration && isExpired && <Bye gatheringId={data.id} />}
     </motion.div>
   );
 }
