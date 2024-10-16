@@ -4,7 +4,7 @@ import {
   HydrationBoundary,
 } from "@tanstack/react-query";
 import Gatherings from "@/app/gatherings/components/list/Gatherings";
-import { usePrefetchGatherings } from "@/hooks/queries/useGatheringsQuery";
+import { prefetchGatherings } from "@/libs/prefetchGatherings";
 
 export default async function Home() {
   const queryClient = new QueryClient();
@@ -15,7 +15,7 @@ export default async function Home() {
   const sortBy = "dateTime";
   const sortOrder = "asc";
 
-  await usePrefetchGatherings({
+  await prefetchGatherings({
     queryClient,
     type,
     location,
