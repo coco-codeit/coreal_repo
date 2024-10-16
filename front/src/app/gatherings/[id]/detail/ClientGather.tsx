@@ -9,22 +9,27 @@ import {
   useGatherParticipants,
 } from "@/hooks/queries/gatherDetailQuery";
 
-export default function ClientGather({ pageId }: { pageId: string }) {
+export default function ClientGather({ pageId }: { pageId: number }) {
   const { data: detailData = [], isLoading: isDetailLoading } =
     useGatherDeatilQuery(pageId);
   const { data: participantData = [], isLoading: participantLoading } =
     useGatherParticipants(pageId, detailData?.participantCount);
+
+  const isGatherLoading = isDetailLoading || participantLoading;
 
   return (
     <div>
       <GatehringSection
         pageId={pageId}
         detailData={detailData}
-        isDetailLoading={isDetailLoading}
         participantData={participantData}
-        participantLoading={participantLoading}
+        isGatherLoading={isGatherLoading}
       />
-      <ActionBtnGroup pageId={pageId} detailData={detailData} />
+      <ActionBtnGroup
+        pageId={pageId}
+        detailData={detailData}
+        isGatherLoading={isGatherLoading}
+      />
     </div>
   );
 }
