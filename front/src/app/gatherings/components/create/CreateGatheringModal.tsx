@@ -194,7 +194,12 @@ const CreateGatheringModal = ({
       >
         <div className="fixed inset-0 bg-black bg-opacity-30 z-50" />
         <div className="fixed inset-0 flex items-center justify-center z-50">
-          <DialogPanel className="max-h-[90vh] overflow-y-auto bg-white min-w-[375px] w-[375px] px-[16px] py-[24px] md:px-[24px] md:py-[24px] md:w-[520px] rounded-xl flex flex-col gap-6">
+          <DialogPanel
+            className="max-h-[90vh] overflow-y-auto bg-white min-w-[375px] w-[375px] px-[16px] py-[24px] md:px-[24px] md:py-[24px] md:w-[520px] rounded-xl flex flex-col gap-6"
+            style={{
+              scrollbarWidth: "none",
+            }}
+          >
             <div className="flex justify-between">
               <DialogTitle className="text-lg font-semibold">
                 모임 만들기
