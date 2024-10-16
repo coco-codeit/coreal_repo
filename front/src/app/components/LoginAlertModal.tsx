@@ -38,7 +38,7 @@ const LoginAlertModal: React.FC<LoginALertModalProps> = ({
           <div className="flex justify-end w-full mt-4">
             <button
               onClick={onConfirm}
-              className="w-[120px] h-11 rounded-md bg-orange-600 text-white"
+              className="w-[120px] h-11 rounded-md bg-gray-900 text-green-2"
             >
               로그인하기
             </button>

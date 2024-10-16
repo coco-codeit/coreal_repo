@@ -1,4 +1,4 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { QueryClient } from "@tanstack/react-query";
 import { getGatheringList } from "@/libs/gatheringsApi";
 import {
   IGatherings,
@@ -8,27 +8,27 @@ import {
   SortOrderType,
 } from "@/types/gatherings";
 
-export const useFetchGatherings = ({
+export async function prefetchGatherings({
+  queryClient,
   type,
   location,
-  sortBy,
   date,
+  sortBy,
   sortOrder,
-  pageSize = 10,
 }: {
+  queryClient: QueryClient;
   type?: GatheringType;
   location?: LocationType;
   date?: Date;
   sortBy?: SortByType;
   sortOrder?: SortOrderType;
-  pageSize?: number;
-}) => {
-  return useInfiniteQuery({
-    queryKey: ["gatherings", type, location, date, sortBy, sortOrder],
+}) {
+  await queryClient.prefetchInfiniteQuery<IGatherings[]>({
     initialPageParam: 0,
-    queryFn: ({ pageParam = 0 }: { pageParam: number }) =>
+    queryKey: ["gatherings", type, location, date, sortBy, sortOrder],
+    queryFn: ({ pageParam = 0 }) =>
       getGatheringList({
-        pageParam,
+        pageParam: pageParam as number,
         type,
         location,
         date,
@@ -36,13 +36,9 @@ export const useFetchGatherings = ({
         sortOrder,
       }),
     getNextPageParam: (lastPage: IGatherings[], allPages: IGatherings[][]) => {
-      if (lastPage.length < pageSize) return null;
+      if (lastPage.length < 10) return null;
       const nextOffset = allPages.flat().length;
       return nextOffset;
     },
-    select: (data) => data.pages.flat(),
-    // refetchInterval: 3600000, // 1시간마다 refetch
-    refetchOnWindowFocus: false,
-    retry: 3,
   });
-};
+}
