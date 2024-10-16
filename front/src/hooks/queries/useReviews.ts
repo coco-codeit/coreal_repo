@@ -18,12 +18,12 @@ export const useReviews = (args: ReviewArgs, initialData: Review[] = []) => {
         allReviews.sort((a, b) => b.score - a.score);
       } else if (sortBy === "participantCount") {
         allReviews.sort(
-          (a, b) => (b.participantCount || 0) - (a.participantCount || 0)
+          (a, b) => (b.participantCount || 0) - (a.participantCount || 0),
         );
       } else {
         allReviews.sort(
           (a, b) =>
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
         );
       }
 

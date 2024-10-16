@@ -180,7 +180,7 @@ export default function Card({
   const handleApplyFilter = () => {
     applyDateFilter();
   };
-  
+
   return (
     <div>
       {/* 리뷰 평점 평균 */}
@@ -272,7 +272,9 @@ export default function Card({
                       src={review.Gathering.image}
                       alt="Review Image"
                       className="object-cover rounded-3xl"
+                      sizes="(max-width: 768px) 311px, 280px"
                       fill
+                      priority
                     />
                   </div>
 
