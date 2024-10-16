@@ -55,6 +55,7 @@ export default function Card({
   hasNextPage,
 }: CardProps) {
   const scoreData = reviewScores[0] || { averageScore: 0 };
+
   const [filteredReviews, setFilteredReviews] = useState<Review[]>([]);
 
   const scoreBars = [

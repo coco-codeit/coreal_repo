@@ -32,14 +32,19 @@ export const fetchReviews = async ({
   }
 
   if (!apiBaseUrl) {
-    throw new Error("API Base URL is not defined. Please check NEXT_PUBLIC_API_URL in your .env file.");
+    throw new Error(
+      "API Base URL is not defined. Please check NEXT_PUBLIC_API_URL in your .env file.",
+    );
   }
 
-  const res = await axiosInstance.get(
-    `${apiBaseUrl}/reviews?${queryParams.toString()}`,
-  );
+  try {
+    const res = await axiosInstance.get(`${apiBaseUrl}/reviews?${queryParams.toString()}`);
+    return await addParticipantCountToReviews(res.data);
+} catch (error) {
+    console.error("Error fetching reviews:", error);
+    throw error;
+}
 
-  return await addParticipantCountToReviews(res.data);
 };
 
 const addParticipantCountToReviews = async (reviews: Review[]) => {

@@ -5,10 +5,10 @@ import { fetchReviews } from "@/libs/reviews";
 
 export default async function ReviewsPage() {
   const initialReviews: Review[] = await fetchReviews({
-    type: "OFFICE_STRETCHING",
+    type: "DALLAEMFIT",
     location: undefined,
     sortBy: "createdAt",
-    limit: 4,
+    limit: 10,
   });
 
   return (
