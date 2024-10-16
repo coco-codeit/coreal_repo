@@ -3,7 +3,7 @@ import CommentsSection from "../../components/detail/comments-section/CommentsSe
 import ClientGather from "./ClientGather";
 import { Review } from "@/types/reviews";
 
-export default async function Detail({ params }: { params: { id: string } }) {
+export default async function Detail({ params }: { params: { id: number } }) {
   const { id } = params;
   const initialReviews: Review[] = await getUserReviews({
     pageId: id,
