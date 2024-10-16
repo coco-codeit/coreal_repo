@@ -1,31 +1,31 @@
 import { UserRiveiw } from "@/types/gatherings";
 import axiosInstance from "./axiosInstance";
 
-export const getGatherDetail = async (gatherId: string) => {
+export const getGatherDetail = async (gatherId: number) => {
   const res = await axiosInstance.get(`/gatherings/${gatherId}`);
 
   return res?.data;
 };
 
-export const postJoinGather = async (gatherId: string) => {
+export const postJoinGather = async (gatherId: number) => {
   const res = await axiosInstance.post(`/gatherings/${gatherId}/join`);
 
   return res?.data;
 };
 
-export const putCancelJoinGather = async (gatherId: string) => {
+export const putCancelJoinGather = async (gatherId: number) => {
   const res = await axiosInstance.delete(`/gatherings/${gatherId}/leave`);
   return res?.data;
 };
 
-export const cancelCreateGather = async (gatherId: string) => {
+export const cancelCreateGather = async (gatherId: number) => {
   const res = await axiosInstance.put(`/gatherings/${gatherId}/cancel`);
 
   return res?.data;
 };
 
 export const getGatherParticipants = async (
-  gatherId: string,
+  gatherId: number,
   limit: number,
 ) => {
   const res = await axiosInstance.get(
