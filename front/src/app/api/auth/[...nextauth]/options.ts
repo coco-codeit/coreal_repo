@@ -1,6 +1,6 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import api from "@/apis/index";
+import axiosInstance from "@/libs/axiosInstance";
 
 declare module "next-auth" {
   interface Session {
@@ -25,7 +25,7 @@ export const authOptions: NextAuthOptions = {
         }
 
         try {
-          const response = await api.post("/auths/signin", {
+          const response = await axiosInstance.post("/auths/signin", {
             email: credentials.email,
             password: credentials.password,
           });

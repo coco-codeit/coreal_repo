@@ -4,7 +4,7 @@ import { MouseEvent, useEffect, useState } from "react";
 import useFavoritesStore from "@/stores/useFavoritesStore";
 import { HeartIcon } from "@/app/gatherings/components/list/Icons";
 
-function LikeButton({ gatheringId }: { gatheringId: number }) {
+function FavoriteButton({ gatheringId }: { gatheringId: number }) {
   const { favorites, toggleFavorite, setFavoritesFromStorage } =
     useFavoritesStore();
   const [isClientReady, setIsClientReady] = useState(false);
@@ -40,4 +40,4 @@ function LikeButton({ gatheringId }: { gatheringId: number }) {
   );
 }
 
-export default LikeButton;
+export default FavoriteButton;

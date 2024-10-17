@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Card from "../content/Card";
 import { useReviews } from "@/hooks/queries/useReviews";
 import { Review } from "@/types/reviews";
@@ -37,13 +37,17 @@ interface TabsProps {
 export default function Tabs({ initialReviews }: TabsProps) {
   const [selectedTab, setSelectedTab] = useState(tabs[0].id);
   const [selectedSubTab, setSelectedSubTab] = useState(
-    tabs[0].subTabs ? tabs[0].subTabs[0].id : "",
+    tabs[0].subTabs ? tabs[0].subTabs[0].id : ""
   );
   const [selectedRegion, setSelectedRegion] = useState<string | undefined>(
-    "지역 선택",
+    "지역 선택"
   );
   const [selectedSort, setSelectedSort] = useState("createdAt");
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
+
+  const [underlineWidth, setUnderlineWidth] = useState(0);
+  const [underlineLeft, setUnderlineLeft] = useState(0);
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   const {
     reviews,
@@ -52,6 +56,7 @@ export default function Tabs({ initialReviews }: TabsProps) {
     fetchNextPage,
     hasNextPage,
     isFetching,
+    isLoading,
   } = useReviews(
     {
       type: selectedTab,
@@ -70,9 +75,24 @@ export default function Tabs({ initialReviews }: TabsProps) {
     }
   }, [selectedTab]);
 
-  const handleTabClick = (tabId: string) => {
+  const handleTabClick = (tabId: string, index: number) => {
     setSelectedTab(tabId);
+    const currentTab = tabRefs.current[index];
+    if (currentTab) {
+      setUnderlineWidth(currentTab.offsetWidth);
+      setUnderlineLeft(currentTab.offsetLeft);
+    }
   };
+
+  useEffect(() => {
+    // 초기 탭 크기와 위치 설정
+    const initialTab = tabRefs.current[0];
+    if (initialTab) {
+      setUnderlineWidth(initialTab.offsetWidth);
+      setUnderlineLeft(initialTab.offsetLeft);
+    }
+  }, []);
+
   const handleSubTabClick = (subTabId: string) => {
     setSelectedSubTab(subTabId);
   };
@@ -86,16 +106,18 @@ export default function Tabs({ initialReviews }: TabsProps) {
 
   return (
     <div>
-      <div className="flex gap-3">
-        {tabs.map((tab) => (
+      <div className="inline-flex gap-3 relative">
+        {tabs.map((tab, index) => (
           <button
             key={tab.id}
-            className={`flex items-center gap-1 pb-1 text-lg font-semibold ${
-              selectedTab === tab.id
-                ? "selected-tab"
-                : "fill-current text-gray-400 border-transparent"
-            } relative`}
-            onClick={() => handleTabClick(tab.id)}
+            ref={(el) => {
+              tabRefs.current[index] = el;
+            }}
+            className={`flex items-center gap-1 pb-1 text-lg font-semibold relative transition-colors duration-300 ease-in-out
+              ${selectedTab === tab.id ? "text-black" : "text-gray-400"}
+            
+            relative`}
+            onClick={() => handleTabClick(tab.id, index)}
           >
             {tab.label}
             <span>
@@ -106,23 +128,27 @@ export default function Tabs({ initialReviews }: TabsProps) {
                 <WorkationIcon isSelected={selectedTab === "WORKATION"} />
               )}
             </span>
-            {selectedTab === tab.id && (
-              <span className="absolute bottom-[-2px] left-0 right-0 h-[2px] bg-[#111827] rounded-[1px]"></span>
-            )}
           </button>
         ))}
+        <span
+          className="absolute bottom-0 h-[2px] bg-gray-900 rounded-[1px] transition-all duration-300 ease-linear"
+          style={{
+            width: underlineWidth,
+            left: underlineLeft,
+          }}
+        ></span>
       </div>
 
       <div className="">
         {tabs.find((tab) => tab.id === selectedTab)?.hasSubTabs && (
-          <div className="space-x-2 border-b-2 border-[#E5E7EB]">
+          <div className="space-x-2 border-b-2 border-gray-200">
             {tabs
               .find((tab) => tab.id === selectedTab)
               ?.subTabs?.map((subTab) => (
                 <button
                   key={subTab.id}
                   onClick={() => handleSubTabClick(subTab.id)}
-                  className={`${selectedSubTab === subTab.id ? "selected-subtab bg-black text-white" : "bg-[#E5E7EB]"} h-10 appearance-none px-4 rounded-xl my-4 text-center text-sm font-medium`}
+                  className={`${selectedSubTab === subTab.id ? "selected-subtab bg-black text-white" : "bg-gray-200"} h-10 appearance-none px-4 rounded-xl my-4 text-center text-sm font-medium`}
                 >
                   {subTab.label}
                 </button>
@@ -146,6 +172,7 @@ export default function Tabs({ initialReviews }: TabsProps) {
           fetchNextPage={fetchNextPage}
           hasNextPage={hasNextPage}
           isFetching={isFetching}
+          isLoading={isLoading}
         />
       </div>
     </div>
