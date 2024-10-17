@@ -46,7 +46,7 @@ function Gatherings() {
   }, [pathname, resetState]);
 
   return (
-    <div className="min-w-[375px] max-w-[375px] px-4 md:max-w-[744px] md:px-[24.5px] lg:max-w-[996px] lg:min-w-[1200px] lg:px-[102px] min-h-screen mx-auto flex flex-col bg-gray-50">
+    <div className="min-w-[375px] max-w-[375px] px-4 md:max-w-[744px] pb-4 md:px-[24.5px] lg:max-w-[996px] lg:min-w-[1200px] lg:px-[102px] min-h-screen mx-auto flex flex-col bg-gray-50">
       <Header type="class" />
       <Tabs />
       <Filters />
@@ -69,7 +69,7 @@ function Gatherings() {
               ))}
             </div>
 
-            <div className="absolute bottom-0 left-0 right-0 h-36 pointer-events-none bg-gradient-to-t from-[#F9FAFB] to-transparent z-10"></div>
+            <div className="absolute bottom-0 left-0 right-0 h-24 pointer-events-none bg-gradient-to-t from-[#F9FAFB] to-transparent z-10"></div>
           </div>
         )}
       </InfiniteScroll>
