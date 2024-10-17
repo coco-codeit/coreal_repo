@@ -5,6 +5,7 @@ import HeartRating from "./HeartScore";
 import ProgressBar from "./ProgressBar";
 import InfiniteScroll from "./InfiniteScroll";
 import { Review } from "@/types/reviews";
+import LoadingSpinner from "@/app/components/LoadingSpinner";
 
 interface Tab {
   id: string;
@@ -38,6 +39,7 @@ interface CardProps {
   fetchNextPage: () => void;
   hasNextPage: boolean;
   isFetching: boolean;
+  isLoading: boolean;
 }
 
 export default function Card({
@@ -53,6 +55,8 @@ export default function Card({
   selectedSubTab,
   fetchNextPage,
   hasNextPage,
+  isFetching,
+  isLoading,
 }: CardProps) {
   const scoreData = reviewScores[0] || { averageScore: 0 };
 
@@ -124,7 +128,7 @@ export default function Card({
     }
 
     const formattedSelectedDate = new Date(
-      selectedDate.getTime() - selectedDate.getTimezoneOffset() * 60000,
+      selectedDate.getTime() - selectedDate.getTimezoneOffset() * 60000
     )
       .toISOString()
       .split("T")[0];
@@ -152,13 +156,13 @@ export default function Card({
 
     if (selectedRegion && selectedRegion !== "지역 선택") {
       filtered = filtered.filter(
-        (review) => review.Gathering.location === selectedRegion,
+        (review) => review.Gathering.location === selectedRegion
       );
     }
 
     if (selectedDate) {
       const formattedSelectedDate = new Date(
-        selectedDate.getTime() - selectedDate.getTimezoneOffset() * 60000,
+        selectedDate.getTime() - selectedDate.getTimezoneOffset() * 60000
       )
         .toISOString()
         .split("T")[0];
@@ -254,88 +258,95 @@ export default function Card({
             />
           </div>
         </div>
-        <InfiniteScroll
-          fetchNextPage={fetchNextPage}
-          hasNextPage={hasNextPage}
-          isFetching={false}
-        >
-          {filteredReviews.length > 0 ? (
-            filteredReviews.map((review) => {
-              const { parentLabel, childLabel } = getLabelsFromType(
-                review.Gathering.type,
-              );
 
-              // 리뷰 카드
-              return (
-                <div
-                  key={review.id}
-                  className="flex md:flex-row flex-col gap-6 w-full mb-6 bg-white"
-                >
-                  <div className="w-[311px] md:w-[280px] h-[156px] relative flex-shrink-0">
-                    <Image
-                      src={
-                        review.Gathering.image || "/images/default-image.svg"
-                      }
-                      alt="Review Image"
-                      className="object-cover rounded-3xl"
-                      sizes="(max-width: 768px) 311px, 280px"
-                      fill
-                      priority
-                    />
-                  </div>
+        {isLoading ? (
+          <div className="flex justify-center items-center h-40">
+            <LoadingSpinner />
+          </div>
+        ) : (
+          <InfiniteScroll
+            fetchNextPage={fetchNextPage}
+            hasNextPage={hasNextPage}
+            isFetching={isFetching}
+          >
+            {filteredReviews.length > 0 ? (
+              filteredReviews.map((review) => {
+                const { parentLabel, childLabel } = getLabelsFromType(
+                  review.Gathering.type
+                );
 
-                  <div className="border-b-2 border-dashed border-gray-200 w-full">
-                    <div className="flex flex-col gap-[10px] text-gray-700">
-                      <div className="flex flex-row">
-                        {Array.from({ length: 5 }).map((_, index) => (
-                          <Image
-                            key={`${review.id}-${index}`}
-                            src={
-                              index < review.score
-                                ? "/images/active-heart.svg"
-                                : "/images/heart.svg"
-                            }
-                            alt="heart"
-                            width={24}
-                            height={24}
-                          />
-                        ))}
+                // 리뷰 카드
+                return (
+                  <div
+                    key={review.id}
+                    className="flex md:flex-row flex-col gap-6 w-full mb-6 bg-white"
+                  >
+                    <div className="w-[311px] md:w-[280px] h-[156px] relative flex-shrink-0">
+                      <Image
+                        src={
+                          review.Gathering.image || "/images/default-image.svg"
+                        }
+                        alt="Review Image"
+                        className="object-cover rounded-3xl"
+                        sizes="(max-width: 768px) 311px, 280px"
+                        fill
+                        priority
+                      />
+                    </div>
+
+                    <div className="border-b-2 border-dashed border-gray-200 w-full">
+                      <div className="flex flex-col gap-[10px] text-gray-700">
+                        <div className="flex flex-row">
+                          {Array.from({ length: 5 }).map((_, index) => (
+                            <Image
+                              key={`${review.id}-${index}`}
+                              src={
+                                index < review.score
+                                  ? "/images/active-heart.svg"
+                                  : "/images/heart.svg"
+                              }
+                              alt="heart"
+                              width={24}
+                              height={24}
+                            />
+                          ))}
+                        </div>
+
+                        <p>{review.comment}</p>
+                        <p className="text-xs">
+                          {`${parentLabel} ${childLabel} 이용`}
+                          <span className="before:content-['·'] before:mx-1">
+                            {review.Gathering.location}
+                          </span>
+                        </p>
                       </div>
 
-                      <p>{review.comment}</p>
-                      <p className="text-xs">
-                        {`${parentLabel} ${childLabel} 이용`}
-                        <span className="before:content-['·'] before:mx-1">
-                          {review.Gathering.location}
+                      <div className="flex flex-row items-center gap-2 mt-2 mb-4 md:mb-0 text-xs">
+                        <Image
+                          src={review.User.image || "/images/profile.svg"}
+                          alt={`${review.User.name} profile`}
+                          width={24}
+                          height={24}
+                          className="w-6 h-6 rounded-full object-cover"
+                        />
+                        <span className="after:content-['|'] after:ml-2 text-gray-700">
+                          {review.User.name}
                         </span>
-                      </p>
-                    </div>
-
-                    <div className="flex flex-row items-center gap-2 mt-2 mb-4 md:mb-0 text-xs">
-                      <Image
-                        src={review.User.image || "/images/profile.svg"}
-                        alt={`${review.User.name} profile`}
-                        width={24}
-                        height={24}
-                        className="w-6 h-6 rounded-full object-cover"
-                      />
-                      <span className="after:content-['|'] after:ml-2 text-gray-700">
-                        {review.User.name}
-                      </span>
-                      <span className="ml-1 text-gray-500">
-                        {`${new Date(review.createdAt).getFullYear()}.${String(new Date(review.createdAt).getMonth() + 1).padStart(2, "0")}.${String(new Date(review.createdAt).getDate()).padStart(2, "0")}`}
-                      </span>
+                        <span className="ml-1 text-gray-500">
+                          {`${new Date(review.createdAt).getFullYear()}.${String(new Date(review.createdAt).getMonth() + 1).padStart(2, "0")}.${String(new Date(review.createdAt).getDate()).padStart(2, "0")}`}
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            })
-          ) : (
-            <p className="flex justify-center items-center h-full text-gray-500">
-              아직 리뷰가 없어요
-            </p>
-          )}
-        </InfiniteScroll>
+                );
+              })
+            ) : (
+              <p className="flex justify-center items-center h-full text-gray-500">
+                아직 리뷰가 없어요
+              </p>
+            )}
+          </InfiniteScroll>
+        )}
       </div>
     </div>
   );

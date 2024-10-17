@@ -56,6 +56,7 @@ export default function Tabs({ initialReviews }: TabsProps) {
     fetchNextPage,
     hasNextPage,
     isFetching,
+    isLoading,
   } = useReviews(
     {
       type: selectedTab,
@@ -171,6 +172,7 @@ export default function Tabs({ initialReviews }: TabsProps) {
           fetchNextPage={fetchNextPage}
           hasNextPage={hasNextPage}
           isFetching={isFetching}
+          isLoading={isLoading}
         />
       </div>
     </div>
