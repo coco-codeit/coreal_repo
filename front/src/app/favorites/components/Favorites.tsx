@@ -55,14 +55,18 @@ function Favorites() {
         hasNextPage={hasNextPage}
         isFetching={isFetching}
       >
-        {isLoading ? null : favoriteGatherings?.length === 0 && !hasNextPage ? (
+        {isLoading ? null : favoriteGatherings?.length === 0 &&
+          !hasNextPage &&
+          !isFetching ? (
           <div className="text-sm text-gray-500 pt-[224px] md:pt-[355px] lg:pt-[335px] w-full text-center">
             <p>아직 찜한 모임이 없어요.</p>
           </div>
         ) : (
-          favoriteGatherings?.map((item: IGatherings) => {
-            return <Card key={item.id} data={item} showExpiration={true} />;
-          })
+          <div className="relative z-0 grid grid-cols-1 gap-6 py-4 md:py-6 w-full">
+            {favoriteGatherings?.map((item: IGatherings) => {
+              return <Card key={item.id} data={item} showExpiration={true} />;
+            })}
+          </div>
         )}
       </InfiniteScroll>
     </>

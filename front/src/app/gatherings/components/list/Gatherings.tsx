@@ -61,9 +61,16 @@ function Gatherings() {
             <p>지금 바로 모임을 만들어보세요.</p>
           </div>
         ) : (
-          gatherings.map((item: IGatherings) => (
-            <Card key={item.id} data={item} />
-          ))
+          <div className="relative overflow-hidden">
+            <div className="absolute top-0 left-0 right-0 h-24 pointer-events-none bg-gradient-to-b from-[#F9FAFB] to-transparent z-10"></div>
+            <div className="grid grid-cols-1 gap-6 py-4 md:py-6 w-full">
+              {gatherings.map((item: IGatherings) => (
+                <Card key={item.id} data={item} />
+              ))}
+            </div>
+
+            <div className="absolute bottom-0 left-0 right-0 h-36 pointer-events-none bg-gradient-to-t from-[#F9FAFB] to-transparent z-10"></div>
+          </div>
         )}
       </InfiniteScroll>
     </div>
