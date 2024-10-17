@@ -33,7 +33,7 @@ const InfiniteScroll = ({
   return (
     <div className="w-full">
       {children}
-      {hasNextPage && <div ref={ref}>{isFetching && <p>Loading...</p>}</div>}
+      {hasNextPage && <div ref={ref}>{isFetching}</div>}
     </div>
   );
 };

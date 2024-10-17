@@ -12,7 +12,7 @@ export default async function Detail({ params }: { params: { id: number } }) {
   });
 
   return (
-    <div className="h-screen-minus-nav bg-[#F3F4F6]">
+    <div className="h-screen-minus-nav bg-gray-100">
       <div className="h-screen-minus-nav mx-auto container max-w-[1200px] px-6 md:px-[102px] pt-10 bg-white">
         <ClientGather pageId={id} />
         <CommentsSection pageId={id} initialReviews={initialReviews} />

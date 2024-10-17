@@ -19,6 +19,7 @@ interface DropdownProps {
   iconPosition?: "left" | "right";
   hideTextOnMobile?: boolean;
   anchorPosition?: "bottom start" | "bottom end";
+  excludeOptions?: string[];
 }
 
 export default function SortControls({
@@ -35,13 +36,19 @@ export default function SortControls({
   iconPosition = "right",
   hideTextOnMobile = false,
   anchorPosition = "bottom start",
+  excludeOptions = [],
 }: DropdownProps) {
   return (
     <Menu as="div" className="relative inline-block text-left">
       <Menu.Button
-        className={`relative border-2 border-gray-100 text-gray-800 inline-flex items-center rounded-xl justify-between py-2 px-3 text-sm/6 focus:outline-none data-[hover]:bg-gray-700 data-[open]:bg-gray-900 data-[open]:text-gray-50 data-[focus]:outline-1 data-[focus]:outline-white 
+        className={`relative border-2 border-gray-100 inline-flex items-center rounded-xl justify-between py-2 px-3 text-sm/6 focus:outline-none data-[open]:bg-white data-[open]:text-gray-800 data-[focus]:outline-1 data-[focus]:outline-white data-[close]:bg-gray-900
         ${iconPosition === "left" ? "" : "min-w-[110px]"}
-      `}
+        ${
+          selectedOption && !excludeOptions.includes(selectedOption)
+            ? "bg-gray-900 text-gray-50"
+            : "bg-white text-gray-800"
+        }
+        `}
       >
         {iconPosition === "left" && (
           <span
@@ -57,7 +64,7 @@ export default function SortControls({
           </span>
         )}
         <span className={`${hideTextOnMobile ? "lg:block hidden" : ""}`}>
-          {selectedOption || "날짜 선택"}
+          {selectedOption || ""}
         </span>
 
         {iconPosition === "right" && (
@@ -80,7 +87,7 @@ export default function SortControls({
           to: anchorPosition,
           gap: "8px",
         }}
-        className="absolute p-1 rounded-2xl flex flex-col items-start justify-start bg-white border border-gray-4 shadow-custom z-50"
+        className="fixed p-1 rounded-2xl flex flex-col items-start justify-start bg-white border border-gray-4 shadow-custom z-50"
       >
         {options.map((option) => (
           <Menu.Item key={option.id}>
@@ -89,7 +96,8 @@ export default function SortControls({
                 onClick={() => onOptionSelect(option)}
                 className={`${
                   active ? "bg-purple-1" : ""
-                } h-[38px] rounded-xl px-4 py-2 w-full text-start`}
+                } h-[38px] rounded-xl px-4 py-2 w-full text-start
+                `}
               >
                 {option.label}
               </button>
@@ -107,7 +115,9 @@ export default function SortControls({
             <div className="flex justify-center gap-3 h-10 text-sm font-semibold ">
               <button
                 onClick={() => onSelectDate && onSelectDate(undefined)}
-                className="w-[118px] rounded-xl border border-gray-900 text-gray-900"
+                className={`w-[118px] rounded-xl border border-gray-900 ${
+                  selectedDate ? "text-gray-900" : "text-gray-400"
+                }`}
               >
                 초기화
               </button>
@@ -118,7 +128,11 @@ export default function SortControls({
                       onApply();
                       close();
                     }}
-                    className="w-[118px] rounded-xl bg-gray-900 text-green-2"
+                    className={`w-[118px] rounded-xl ${
+                      selectedDate
+                        ? "bg-gray-900 text-green-2"
+                        : "bg-gray-400 text-white"
+                    }`}
                   >
                     적용
                   </button>

@@ -26,7 +26,7 @@ export default async function ReviewsPage() {
   }
 
   return (
-    <div className="min-w-[375px] max-w-[375px] md:max-w-[744px] lg:max-w-[1200px] bg-gray-50 m-auto px-4 md:px-[24.5] lg:px-[102px] min-h-screen md:py-10">
+    <div className="min-w-[375px] max-w-[375px] md:max-w-[744px] lg:max-w-[1200px] bg-gray-50 m-auto px-4 md:px-[24.5] lg:px-[102px] min-h-screen py-6 md:py-10">
       <div className="flex gap-2 items-center mb-8">
         <Image
           src="/images/reviews.svg"
