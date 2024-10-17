@@ -1,5 +1,5 @@
-import Favorites from "@/app/favorites/components/Favorites";
 import Header from "@/app/components/Header";
+import Favorites from "@/app/favorites/components/Favorites";
 
 function Home() {
   return (
