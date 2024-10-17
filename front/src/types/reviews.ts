@@ -6,6 +6,7 @@ export interface Review {
   createdAt: string;
   Gathering: Gathering;
   User: User;
+  type?: string | string[];
 }
 
 export interface ReviewArgs {
@@ -14,6 +15,8 @@ export interface ReviewArgs {
   location?: string;
   sortBy?: string;
   date?: string;
+  limit?: number;
+  offset?: number;
 }
 
 export interface Gathering {

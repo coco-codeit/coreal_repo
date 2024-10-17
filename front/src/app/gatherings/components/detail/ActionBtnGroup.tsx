@@ -12,18 +12,25 @@ import { useRouter } from "next/navigation";
 import useAuthStore from "@/stores/useAuthStore";
 import { useToastStore } from "@/stores/useToastStore";
 import { IGatherings } from "@/types/gatherings";
+import { isBefore } from "date-fns";
+
 export default function ActionBtnGroup({
   pageId,
   detailData,
+  isGatherLoading,
 }: {
-  pageId: string;
+  pageId: number;
   detailData: IGatherings;
+  isGatherLoading: boolean;
 }) {
+  const { createdBy, participantCount, capacity, registrationEnd } = detailData;
   const router = useRouter();
 
   const [isJoined, setIsJoined] = useState(false);
   const [isCreated, setIsCreated] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+
   const { isLoggedIn, userInfo } = useAuthStore();
   const { showToast } = useToastStore();
 
@@ -31,12 +38,22 @@ export default function ActionBtnGroup({
   const { mutate: joinMutation } = useGatherJoin(pageId);
   const { mutate: cancelJoinMutation } = useGatherjoinCancel(pageId);
   const { data: joinedData } = useGetJoinedGathers();
+
   const joinedDataArr =
     joinedData?.map((item: { id: number }) => item.id) ?? [];
 
   const isJoinedGather = joinedDataArr.find((elem: number) => elem === +pageId);
-  const isCreatedGather = detailData?.createdBy === userInfo?.id;
-  const isFuullCapa = detailData?.participantCount >= detailData?.capacity;
+  const isCreatedGather = createdBy === userInfo?.id;
+  const isFuullCapa = participantCount >= capacity;
+
+  const now = new Date();
+  const isEnded = isBefore(new Date(registrationEnd), now);
+  const getButtonText = () => {
+    if (isEnded) return "참여불가";
+    return isJoined ? "참여 취소하기" : "참여하기";
+  };
+
+  const buttonText = getButtonText();
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -44,6 +61,12 @@ export default function ActionBtnGroup({
       setIsCreated(!!isCreatedGather);
     }
   }, [pageId, isJoinedGather, isCreatedGather, isLoggedIn]);
+
+  useEffect(() => {
+    if (!isGatherLoading) {
+      setTimeout(() => setIsVisible(true), 100);
+    }
+  }, [isGatherLoading]);
 
   const handleJoinClick = () => {
     if (isFuullCapa) {
@@ -83,9 +106,17 @@ export default function ActionBtnGroup({
       });
   };
 
+  if (isGatherLoading) {
+    return null;
+  }
+
   return (
     <>
-      <div className="fixed bottom-0 left-0 w-full min-h-[84px]  border-t-2 border-black bg-white z-10 ">
+      <div
+        className={`fixed bottom-0 left-0 w-full min-h-[84px] border-t-2 border-black bg-white z-10 transition-transform duration-500 ${
+          isVisible ? "translate-y-0" : "translate-y-full"
+        }`}
+      >
         <div className="block md:flex items-center justify-between max-w-[996px] my-5 mx-auto h-full">
           <div className="px-6">
             <h3 className="font-semibold">
@@ -120,10 +151,15 @@ export default function ActionBtnGroup({
               </div>
             ) : (
               <button
-                className="flex justify-center items-center w-[115px] h-11 rounded-xl bg-gray-900 text-green-2"
+                className={`flex justify-center items-center w-[115px] h-11 rounded-xl ${
+                  isEnded
+                    ? "bg-gray-400 text-white"
+                    : "bg-gray-900 text-green-2"
+                }`}
                 onClick={handleJoinClick}
+                disabled={isEnded}
               >
-                {isJoined ? "참여 취소하기" : "참여하기"}
+                {buttonText}
               </button>
             )}
           </div>

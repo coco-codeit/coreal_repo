@@ -1,4 +1,4 @@
-import { QueryClient, useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { getGatheringList } from "@/libs/gatheringsApi";
 import {
   IGatherings,
@@ -7,41 +7,6 @@ import {
   SortByType,
   SortOrderType,
 } from "@/types/gatherings";
-
-export const usePrefetchGatherings = async ({
-  queryClient,
-  type,
-  location,
-  date,
-  sortBy,
-  sortOrder,
-}: {
-  queryClient: QueryClient;
-  type?: GatheringType;
-  location?: LocationType;
-  date?: Date;
-  sortBy?: SortByType;
-  sortOrder?: SortOrderType;
-}) => {
-  await queryClient.prefetchInfiniteQuery({
-    initialPageParam: 0,
-    queryKey: ["gatherings", type, location, date, sortBy, sortOrder],
-    queryFn: ({ pageParam = 0 }) =>
-      getGatheringList({
-        pageParam,
-        type,
-        location,
-        date,
-        sortBy,
-        sortOrder,
-      }),
-    getNextPageParam: (lastPage: IGatherings[], allPages: IGatherings[][]) => {
-      if (lastPage.length < 10) return null;
-      const nextOffset = allPages.flat().length;
-      return nextOffset;
-    },
-  });
-};
 
 export const useFetchGatherings = ({
   type,

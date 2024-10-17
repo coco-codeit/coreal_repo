@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import CommentsCard from "./CommentsCard";
 import Pagination from "./Pagination";
 import { Review } from "@/types/reviews";
@@ -10,38 +10,30 @@ export default function CommentsSection({
   pageId,
   initialReviews,
 }: {
-  pageId: string;
+  pageId: number;
   initialReviews: Review[];
 }) {
   const [currentPage, setCurrentPage] = useState(1);
-  const [reviews, setReviews] = useState<Review[]>(initialReviews);
-
   const reviewsPerPage = 4;
-  const offset = (currentPage - 1) * reviewsPerPage;
 
-  const { data: reviewData = [] } = useGatherReview(
+  const { data: reviewData = [] } = useGatherReview({
     pageId,
-    offset + initialReviews.length,
-  );
+    offset: 0,
+    limit: 0,
+  });
 
-  useEffect(() => {
-    if (reviewData.length > 0) {
-      setReviews((prevReviews) => [...prevReviews, ...reviewData]);
-    }
-  }, [reviewData]);
-
-  const totalReviews = reviews.length;
+  const totalReviews = reviewData.length;
   const totalPages = Math.ceil(totalReviews / reviewsPerPage);
 
   const indexOfLastReview = currentPage * reviewsPerPage;
   const indexOfFirstReview = indexOfLastReview - reviewsPerPage;
-  const currentReviews = reviews.slice(indexOfFirstReview, indexOfLastReview);
+  const currentReviews =
+    currentPage === 1
+      ? initialReviews
+      : reviewData.slice(indexOfFirstReview, indexOfLastReview);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    if (page === 1) {
-      setReviews(initialReviews);
-    }
   };
 
   return (

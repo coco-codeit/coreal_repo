@@ -1,5 +1,5 @@
 import DateTag from "@/app/gatherings/components/DateTag";
-import LikeButton from "@/app/gatherings/components/LikeButton";
+import LikeButton from "@/app/gatherings/components/list/LikeButton";
 
 import React from "react";
 
@@ -7,17 +7,19 @@ interface GatheringInfo {
   dateInfo: string;
   titleInfo: string;
   locationInfo: string;
+  pageId: number;
 }
 
 export default function GatheringInfo({
   dateInfo,
   titleInfo,
   locationInfo,
+  pageId,
 }: GatheringInfo) {
   return (
     <div className="relative mx-[22px] mb-3">
       <div className="absolute right-0">
-        <LikeButton />
+        <LikeButton gatheringId={pageId} />
       </div>
       <div className="flex items-center text-[18x] h-7 font-semibold">
         {titleInfo || ""}

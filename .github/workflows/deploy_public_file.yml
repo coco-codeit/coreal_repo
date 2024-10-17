@@ -1,11 +1,11 @@
-name: Public 폴더 배포
+name: EC2 배포
 
 on:
   push:
     branches:
       - main
     paths:
-      - "front/public/**"
+      - "front/**"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -16,17 +16,11 @@ permissions:
   contents: read
 
 jobs:
-  deploy-public:
+  deploy-to-ec2:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./front
     steps:
       - name: 코드 체크아웃
         uses: actions/checkout@v2
-
-      - name: Public 폴더 XZ 압축
-        run: tar -cf - public | xz -9e > public.tar.xz
 
       - name: SSH 키 설정
         env:
@@ -38,16 +32,13 @@ jobs:
           chmod 600 ~/.ssh/ec2_key.pem
           ssh-keyscan -H $EC2_HOST >> ~/.ssh/known_hosts
 
-      - name: EC2에 Public 폴더 전송 및 배포
+      - name: EC2에서 git pull 실행
         env:
           EC2_HOST: ${{ secrets.EC2_HOST }}
           EC2_USER: ${{ secrets.EC2_USER }}
         run: |
-          scp -i ~/.ssh/ec2_key.pem -o StrictHostKeyChecking=no \
-            public.tar.xz $EC2_USER@$EC2_HOST:~/front/
           ssh -i ~/.ssh/ec2_key.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST "
             cd ~/front && \
-            xz -d public.tar.xz && \
-            tar -xf public.tar && \
-            rm public.tar
+            git fetch origin main && \
+            git reset --hard origin/main
           "

@@ -22,19 +22,20 @@ export default function ModifyProfileModal({
   setOpen: Dispatch<SetStateAction<boolean>>;
 }) {
   const { image, companyName, setImage, setCompanyName } = useUserInfo();
-  const [previewImage, setPreviewImage] = useState<string>("");
   const [inputImage, setInputImage] = useState<File | string>("");
   const [inputCompany, setInputCompany] = useState<string>("");
+  const [previewImage, setPreviewImage] = useState<string>("");
 
   useEffect(() => {
-    if (image && image !== previewImage) {
+    if (image) {
       setPreviewImage(image);
       setInputImage(image);
     }
-    if (companyName && companyName !== inputCompany) {
-      setInputCompany(companyName);
-    }
-  }, [image, companyName, previewImage, inputCompany]);
+  }, [image]);
+
+  useEffect(() => {
+    if (companyName) setInputCompany(companyName);
+  }, [companyName]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -56,6 +57,7 @@ export default function ModifyProfileModal({
 
   const handleChangeImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+    console.log(file);
     if (!file) return;
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -64,6 +66,7 @@ export default function ModifyProfileModal({
         const imgUrl = event.target?.result as string;
         imgUrl && setPreviewImage(imgUrl);
         setInputImage(file);
+        console.log(imgUrl, file);
       }
     };
   };
