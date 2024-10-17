@@ -48,7 +48,9 @@ export default function DeadLineTag({ endTime, type }: IDeadLineTag) {
         width={24}
         height={24}
       />
-      <span className="text-[12px]">{formattedDeadline}</span>
+      <span className="text-[12px]" suppressHydrationWarning={true}>
+        {formattedDeadline}
+      </span>
     </div>
   );
 }
