@@ -5,28 +5,35 @@ import CardImage from "@/app/gatherings/components/card/CardImage";
 import CardHeader from "@/app/gatherings/components/card/CardHeader";
 import CardParticipants from "@/app/gatherings/components/card/CardParticipants";
 import Bye from "@/app/favorites/components/Bye";
+import { useState, useEffect } from "react";
 
 interface CardProps {
   data: IGatherings;
   showExpiration?: boolean;
 }
 
-function Card({ data, showExpiration }: CardProps) {
+function Card({ data, showExpiration = false }: CardProps) {
   const router = useRouter();
-  const now = new Date();
-  const isExpired = new Date(data.registrationEnd) < now;
+  const [isExpired, setIsExpired] = useState(false);
+
+  useEffect(() => {
+    if (showExpiration) {
+      const now = new Date();
+      setIsExpired(new Date(data.registrationEnd) < now);
+    }
+  }, [showExpiration, data.registrationEnd]);
 
   const handleCardClick = (id: number) => {
-    if (showExpiration && isExpired) {
-      return;
-    }
+    if (showExpiration && isExpired) return;
     router.push(`/gatherings/${id}/detail`);
   };
 
   return (
     <motion.div
       key={data.id}
-      className={`relative h-[316px] md:h-[156px] grid grid-rows-[156px_1fr] rounded-3xl border border-gray-100 md:grid-cols-[280px_1fr] ${showExpiration && isExpired ? "" : "cursor-pointer"}`}
+      className={`relative h-[316px] md:h-[156px] grid grid-rows-[156px_1fr] rounded-3xl border border-gray-100 md:grid-cols-[280px_1fr] ${
+        showExpiration && isExpired ? "" : "cursor-pointer"
+      }`}
       onClick={() => handleCardClick(data.id)}
       whileHover={{
         boxShadow: "0px 10px 10px -5px rgba(0, 0, 0, 0.04)",
@@ -47,6 +54,7 @@ function Card({ data, showExpiration }: CardProps) {
           participantCount={data.participantCount}
         />
       </div>
+
       {showExpiration && isExpired && <Bye gatheringId={data.id} />}
     </motion.div>
   );
