@@ -1,19 +1,6 @@
 import React from "react";
 import { UseFormRegister, FieldValues, Path } from "react-hook-form";
 
-// 반응형 래퍼 컴포넌트
-interface FormWrapperProps {
-  children: React.ReactNode;
-}
-
-export function FormWrapper({ children }: FormWrapperProps) {
-  return (
-    <div className="w-full max-w-[311px] h-[398px] sm:max-w-[500px] sm:h-[414px] lg:max-w-[402px] lg:h-[414px] mx-auto p-4">
-      {children}
-    </div>
-  );
-}
-
 // 수정된 FormField 컴포넌트
 interface FormFieldProps<T extends FieldValues> {
   label: string;
