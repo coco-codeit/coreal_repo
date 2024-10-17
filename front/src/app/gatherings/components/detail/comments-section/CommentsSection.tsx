@@ -10,7 +10,7 @@ export default function CommentsSection({
   pageId,
   initialReviews,
 }: {
-  pageId: string;
+  pageId: number;
   initialReviews: Review[];
 }) {
   const [currentPage, setCurrentPage] = useState(1);

@@ -20,6 +20,7 @@ export interface IGatherings {
   image: string;
   createdBy: number;
   canceledAt: string | null;
+  isExpired?: boolean;
 }
 
 export interface GatheringsUser {
@@ -61,8 +62,7 @@ export const timeSlots = {
 export const locations = ["건대입구", "을지로3가", "신림", "홍대입구"];
 
 export interface UserRiveiw {
-  pageId: string;
+  pageId: number;
   offset: number;
   limit: number;
 }
-
