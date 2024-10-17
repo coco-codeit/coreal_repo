@@ -183,9 +183,9 @@ export default function Card({
   };
 
   return (
-    <div>
+    <div className="max-w-full">
       {/* 리뷰 평점 평균 */}
-      <div className="px-6 my-6 h-[180px] border-y-2 border-[#E5E7EB] bg-white flex justify-center items-center space-x-4">
+      <div className="px-6 my-6 h-[180px] max-w-full overflow-hidden border-y-2 border-[#E5E7EB] bg-white flex justify-center items-center lg:space-x-4">
         <div className="flex flex-col items-center basis-1/4">
           <p className="text-xl md:text-2xl font-semibold">
             {scoreData.averageScore || 0}
@@ -202,9 +202,9 @@ export default function Card({
               <span className="w-[40px] text-end">{score.label}</span>
               <ProgressBar
                 percent={((score.value || 0) / safeTotalReviews) * 100}
-                className="md:w-60 w-[20vw] max-w-60 min-w-[84px]"
+                className="md:w-60 w-[15vw] max-w-60 min-w-[84px]"
               />
-              <span className="w-[40px] text-start">{score.value || 0}</span>
+              <span className="text-start">{score.value || 0}</span>
             </li>
           ))}
         </ul>
@@ -219,6 +219,7 @@ export default function Card({
                 options={regionOptions}
                 selectedOption={selectedRegion}
                 onOptionSelect={handleRegionSelect}
+                excludeOptions={["지역 선택"]}
               />
               <SortControls
                 options={[]}
@@ -232,6 +233,7 @@ export default function Card({
                 selectedDate={selectedDate}
                 onSelectDate={setSelectedDate}
                 onApply={handleApplyFilter}
+                excludeOptions={["날짜 선택"]}
               />
             </div>
           </div>
@@ -248,6 +250,8 @@ export default function Card({
               iconPosition="left"
               hideTextOnMobile={true}
               anchorPosition="bottom end"
+              excludeOptions={sortOptions.map((option) => option.label)}
+
             />
           </div>
         </div>
