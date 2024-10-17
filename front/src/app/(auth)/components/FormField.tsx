@@ -39,16 +39,16 @@ export function FormField<T extends FieldValues>({
         {label}
       </label>
       <div
-        className={`flex justify-start items-center w-full overflow-hidden gap-2.5 px-4 py-2.5 rounded-xl ${
-          error ? "bg-gray-50 border-2 border-red-600" : "bg-gray-50"
-        }`}
+        className={`flex justify-start items-center w-full overflow-hidden gap-2.5 px-4 py-2.5 rounded-xl 
+          ${error ? "bg-gray-50 border-2 border-red-600" : "bg-gray-50 border-2 border-transparent"}
+          focus-within:border-gray-900`}
       >
         <div className="flex justify-between items-center w-full relative">
           <input
             {...register(name)}
             className="w-full text-base font-medium text-left bg-transparent focus:outline-none
                     autofill:bg-gray-50 autofill:text-gray-900 autofill:shadow-[inset_0_0_0px_1000px_rgb(249,250,251)]
-                      spellcheck-off"
+                    spellcheck-off"
             id={name}
             type={type}
             placeholder={label}
