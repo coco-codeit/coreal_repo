@@ -124,7 +124,7 @@ export default function Card({
     }
 
     const formattedSelectedDate = new Date(
-      selectedDate.getTime() - selectedDate.getTimezoneOffset() * 60000
+      selectedDate.getTime() - selectedDate.getTimezoneOffset() * 60000,
     )
       .toISOString()
       .split("T")[0];
@@ -152,13 +152,13 @@ export default function Card({
 
     if (selectedRegion && selectedRegion !== "지역 선택") {
       filtered = filtered.filter(
-        (review) => review.Gathering.location === selectedRegion
+        (review) => review.Gathering.location === selectedRegion,
       );
     }
 
     if (selectedDate) {
       const formattedSelectedDate = new Date(
-        selectedDate.getTime() - selectedDate.getTimezoneOffset() * 60000
+        selectedDate.getTime() - selectedDate.getTimezoneOffset() * 60000,
       )
         .toISOString()
         .split("T")[0];
@@ -185,7 +185,7 @@ export default function Card({
   return (
     <div className="max-w-full">
       {/* 리뷰 평점 평균 */}
-      <div className="px-6 my-6 h-[180px] max-w-full overflow-hidden border-y-2 border-[#E5E7EB] bg-white flex justify-center items-center lg:space-x-4">
+      <div className="px-6 my-6 h-[180px] max-w-full overflow-hidden border-y-2 border-gray-200 bg-white flex justify-center items-center lg:space-x-4">
         <div className="flex flex-col items-center basis-1/4">
           <p className="text-xl md:text-2xl font-semibold">
             {scoreData.averageScore || 0}
@@ -251,7 +251,6 @@ export default function Card({
               hideTextOnMobile={true}
               anchorPosition="bottom end"
               excludeOptions={sortOptions.map((option) => option.label)}
-
             />
           </div>
         </div>
@@ -263,7 +262,7 @@ export default function Card({
           {filteredReviews.length > 0 ? (
             filteredReviews.map((review) => {
               const { parentLabel, childLabel } = getLabelsFromType(
-                review.Gathering.type
+                review.Gathering.type,
               );
 
               // 리뷰 카드
@@ -285,7 +284,7 @@ export default function Card({
                     />
                   </div>
 
-                  <div className="border-b-2 border-dashed border-[#E5E7EB] w-full">
+                  <div className="border-b-2 border-dashed border-gray-200 w-full">
                     <div className="flex flex-col gap-[10px] text-gray-700">
                       <div className="flex flex-row">
                         {Array.from({ length: 5 }).map((_, index) => (
@@ -332,7 +331,7 @@ export default function Card({
               );
             })
           ) : (
-            <p className="flex justify-center items-center h-full text-[#6B7280]">
+            <p className="flex justify-center items-center h-full text-gray-500">
               아직 리뷰가 없어요
             </p>
           )}
