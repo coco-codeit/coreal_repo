@@ -2,33 +2,30 @@ import Image from "next/image";
 import ConfirmBadge from "@/app/gatherings/components/ConfirmBadge";
 import ProgressBar from "@/app/gatherings/components/ProgressBar";
 import { PersonIcon } from "@/app/gatherings/components/list/Icons";
-import { useMemo, useState, useEffect } from "react";
+import { useMemo } from "react";
 
 function CardParticipants({
   dateTime,
   participantCount,
   capacity,
+  isExpired: serverIsExpired,
 }: {
   dateTime: string;
   participantCount: number;
   capacity: number;
+  isExpired?: boolean;
 }) {
   const percent = (participantCount / capacity) * 100;
   const isFull = participantCount >= capacity;
-  const [isMounted, setIsMounted] = useState(false);
 
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  const isClosed = useMemo(() => {
-    if (!isMounted) return false;
-
+  const isExpired = useMemo(() => {
+    if (typeof serverIsExpired !== "undefined") {
+      return serverIsExpired;
+    }
     const now = new Date();
     const endDate = new Date(dateTime);
-
     return endDate < now || isFull;
-  }, [dateTime, isFull, isMounted]);
+  }, [serverIsExpired, dateTime, isFull]);
 
   return (
     <div className="flex justify-between md:pr-2 items-end mt-2">
@@ -50,7 +47,7 @@ function CardParticipants({
         </div>
       </div>
       <div className="flex gap-2 items-center font-semibold">
-        {isClosed ? (
+        {isExpired ? (
           <span className="text-purple-2">closed</span>
         ) : (
           <div className="flex gap-2 items-center">

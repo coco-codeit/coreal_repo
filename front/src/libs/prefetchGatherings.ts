@@ -45,22 +45,28 @@ export async function prefetchGatherings({
         sortBy,
         sortOrder,
       });
-      const transformedData = gatherings.map((gathering: IGatherings) => ({
-        ...gathering,
-        dateTime: format(
-          convertTime(gathering.dateTime),
-          "yyyy-MM-dd HH:mm:ss",
-          { locale: ko },
-        ),
-        registrationEnd: format(
-          convertTime(gathering.registrationEnd),
-          "yyyy-MM-dd HH:mm:ss",
-          { locale: ko },
-        ),
-      }));
+
+      const transformedData = gatherings.map((gathering: IGatherings) => {
+        const currentTime = new Date();
+        const registrationEndTime = convertTime(gathering.registrationEnd);
+
+        return {
+          ...gathering,
+          dateTime: format(
+            convertTime(gathering.dateTime),
+            "yyyy-MM-dd HH:mm:ss",
+            { locale: ko },
+          ),
+          registrationEnd: format(registrationEndTime, "yyyy-MM-dd HH:mm:ss", {
+            locale: ko,
+          }),
+          isExpired: registrationEndTime < currentTime,
+        };
+      });
 
       return transformedData;
     },
+
     getNextPageParam: (lastPage: IGatherings[], allPages: IGatherings[][]) => {
       if (lastPage.length < 10) return null;
       const nextOffset = allPages.flat().length;

@@ -17,6 +17,7 @@ function Card({ data, showExpiration = false }: CardProps) {
   const [isExpired, setIsExpired] = useState(false);
 
   useEffect(() => {
+    // 클라이언트에서만 만료 여부를 확인
     if (showExpiration) {
       const now = new Date();
       setIsExpired(new Date(data.registrationEnd) < now);
@@ -49,6 +50,7 @@ function Card({ data, showExpiration = false }: CardProps) {
           dateTime={data.dateTime}
         />
         <CardParticipants
+          isExpired={data.isExpired}
           dateTime={data.dateTime}
           capacity={data.capacity}
           participantCount={data.participantCount}
