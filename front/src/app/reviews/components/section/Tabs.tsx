@@ -63,7 +63,7 @@ export default function Tabs({ initialReviews }: TabsProps) {
       location: selectedRegion === "지역 선택" ? undefined : selectedRegion,
       sortBy: selectedSort,
     },
-    initialReviews
+    initialReviews,
   );
 
   useEffect(() => {

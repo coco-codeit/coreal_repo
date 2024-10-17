@@ -260,9 +260,7 @@ export default function Card({
         </div>
 
         {isLoading ? (
-          <div className="flex justify-center items-center h-40">
-            <LoadingSpinner />
-          </div>
+          <LoadingSpinner />
         ) : (
           <InfiniteScroll
             fetchNextPage={fetchNextPage}
