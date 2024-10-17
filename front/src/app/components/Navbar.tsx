@@ -4,8 +4,9 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { Menu } from "@headlessui/react";
 import { useSession, signIn, signOut } from "next-auth/react";
-import useAuthStore from "@/stores/useAuthStore";
 import { getUserProfile } from "@/apis/profile";
+import useAuthStore from "@/stores/useAuthStore";
+import useFavoritesStore from "@/stores/useFavoritesStore";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -13,6 +14,7 @@ export default function Navbar() {
   const { isLoggedIn, setIsLoggedIn, userInfo, setUserInfo } = useAuthStore();
   const { data: session } = useSession();
   const pathname = usePathname();
+  const { favorites, setFavoritesFromStorage } = useFavoritesStore();
 
   useEffect(() => {
     setIsLoggedIn(!!session);
@@ -30,6 +32,10 @@ export default function Navbar() {
 
     fetchUserProfile();
   }, [isLoggedIn, setUserInfo]);
+
+  useEffect(() => {
+    setFavoritesFromStorage();
+  }, [setFavoritesFromStorage]);
 
   const isActive = (path: string) =>
     pathname === path || (path === "/" && pathname === "/gatherings")
@@ -73,6 +79,11 @@ export default function Navbar() {
             <div>
               <Link href="/favorites" className={isActive("/favorites")}>
                 찜한 모임
+                {favorites.size > 0 && (
+                  <span className="bg-white rounded-lg text-xs text-black px-2 ml-1 hidden md:inline">
+                    {favorites.size}
+                  </span>
+                )}
               </Link>
             </div>
             <div>
