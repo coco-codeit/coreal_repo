@@ -43,7 +43,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${pretendard.variable} font-pretendard`}>
+    <html lang="ko" className={`${pretendard.variable} font-pretendard`}>
       <body className="w-full bg-gray-100 pt-[54px]">
         <ReactQueryClientProvider>
           <SessionProvider>
