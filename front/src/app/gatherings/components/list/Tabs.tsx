@@ -4,10 +4,10 @@ import { useGatheringsStore } from "@/stores/useGatheringsStore";
 import { tabConfig } from "@/app/gatherings/components/list/config";
 import Button from "@/app/gatherings/components/Button";
 import CreateButton from "@/app/gatherings/components/list/CreateButton";
+import { motion } from "framer-motion";
 
 function Tabs() {
   const { tab, setTab } = useGatheringsStore();
-
   const pathname = usePathname();
   const showCreateButton = pathname !== "/favorites";
 
@@ -34,19 +34,32 @@ function Tabs() {
     const isActiveDallaemfit = isDallaemfitActive && value === "DALLAEMFIT";
 
     return (
-      <button
-        type="button"
+      <li
         key={value}
-        className={`flex items-center gap-1 border-b-2 pb-1 ${
-          isActiveDallaemfit || isSelected
-            ? "border-gray-900 text-gray-900"
-            : "border-none text-gray-400"
-        }`}
+        className={`relative flex items-center gap-1 pb-1 ${isSelected ? "bg-white" : ""} ${
+          isActiveDallaemfit
+            ? "text-gray-900"
+            : isSelected
+              ? "text-gray-900"
+              : "text-gray-400"
+        } cursor-pointer select-none`}
         onClick={() => setTab(value)}
       >
-        {label}
-        <Icon isSelected={isActiveDallaemfit} />
-      </button>
+        {`${label}`}
+        <Icon
+          isSelected={
+            isSelected || (isActiveDallaemfit && value === "DALLAEMFIT")
+          }
+        />
+        {(isSelected || (isActiveDallaemfit && value === "DALLAEMFIT")) && (
+          <motion.div
+            transition={{ type: "spring", stiffness: 500, damping: 30 }}
+            suppressHydrationWarning={true}
+            layoutId="underline"
+            className="absolute bottom-0 left-0 right-0 h-[2px] bg-gray-900 rounded-[1px]"
+          />
+        )}
+      </li>
     );
   };
 
@@ -71,10 +84,12 @@ function Tabs() {
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex justify-between items-start">
-        <div className="flex items-center gap-3 text-lg font-semibold">
-          {Object.values(tabConfig).map(MainTabs)}
-        </div>
+      <div className="relative flex justify-between items-start">
+        <ul className="flex items-center gap-3 text-lg font-semibold">
+          {Object.values(tabConfig).map((tabItem) => (
+            <MainTabs key={tabItem.value} {...tabItem} />
+          ))}
+        </ul>
         {showCreateButton && <CreateButton />}
       </div>
       <div className="flex items-center text-sm gap-2 pb-[14px] border-b-2 border-gray-200">

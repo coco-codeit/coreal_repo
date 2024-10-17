@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useInView } from "react-intersection-observer";
+import LoadingSpinner from "@/app/components/LoadingSpinner";
 
 const InfiniteScroll = ({
   fetchNextPage,
@@ -36,6 +37,7 @@ const InfiniteScroll = ({
     <div className="grid grid-cols-1 gap-6 py-4 md:py-6 w-full">
       {children}
       {hasNextPage && !isFetching && <div ref={ref} className="h-[20px]" />}
+      {isFetching && <LoadingSpinner />}
     </div>
   );
 };
