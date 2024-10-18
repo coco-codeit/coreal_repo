@@ -31,6 +31,16 @@ export const useGatherJoined = (option?: {
   });
 };
 
+export const useGatherWritable = () => {
+  const { isLoggedIn } = useAuthStore();
+  return useQuery({
+    queryKey: ["gatherWritable"],
+    queryFn: (): Promise<GatheringsJoinedReturn[]> =>
+      getGatheringsJoined({ completed: true, reviewed: false }),
+    enabled: isLoggedIn,
+  });
+};
+
 export const useGatherCreated = (id: number | undefined): UseQueryResult => {
   return useQuery({
     queryKey: ["gatherCreated"],

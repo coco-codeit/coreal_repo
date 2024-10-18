@@ -1,4 +1,4 @@
-import { useGatherJoined } from "@/hooks/queries/mypage";
+import { useGatherWritable } from "@/hooks/queries/mypage";
 import { ExtendedGatheringInterface } from "@/types/common";
 import OnEmpty from "../OnEmpty";
 import OnLoading from "../OnLoading";
@@ -6,12 +6,13 @@ import ListWrapper from "../../ListWrapper";
 import GatheringInfo from "../../GatheringInfo";
 import GatheringImage from "../../GatheringImage";
 import ReviewModalBtn from "../../ReviewModalBtn";
+import { useEffect } from "react";
 
 export default function ReviewsWritable() {
-  const { data, isLoading } = useGatherJoined({
-    completed: true,
-    reviewed: false,
-  });
+  const { data, isLoading } = useGatherWritable();
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
   if (isLoading) return <OnLoading />;
 
   if (!Array.isArray(data) || data.length === 0)
@@ -20,7 +21,10 @@ export default function ReviewsWritable() {
   return (
     <>
       {data.map((item: ExtendedGatheringInterface, index: number) => (
-        <ListWrapper key={`${item}-${index}`}>
+        <ListWrapper
+          key={`${item}-${index}`}
+          href={`/gatherings/${item.id}/detail`}
+        >
           <GatheringImage src={item.image} />
           <div className="flex flex-col justify-between items-start gap-4">
             <GatheringInfo
@@ -32,7 +36,10 @@ export default function ReviewsWritable() {
                 capacity: item.capacity,
               }}
             />
-            <ReviewModalBtn gatheringId={item.id} />
+            <ReviewModalBtn
+              gatheringId={item.id}
+              isReviewed={item.isReviewed}
+            />
           </div>
         </ListWrapper>
       ))}

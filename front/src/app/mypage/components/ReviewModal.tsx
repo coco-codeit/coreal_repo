@@ -36,6 +36,7 @@ export default function ReviweModal({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    console.log(formData);
     submitReview(formData);
     closeModal();
   };
