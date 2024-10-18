@@ -7,13 +7,17 @@ export default function Button({
 }: {
   id?: string;
   className?: string;
-  onClick?: React.Dispatch<React.SetStateAction<unknown>>;
+  onClick?: (e: React.MouseEvent) => void;
   children?: React.ReactNode;
   [key: string]: unknown;
 }) {
+  const handleClickButton = (e: React.MouseEvent<Element, MouseEvent>) => {
+    e.stopPropagation();
+    onClick?.(e);
+  };
   return (
     <button
-      onClick={onClick}
+      onClick={handleClickButton}
       id={id}
       className={`h-10 px-4 rounded-xl ${className}`}
       {...props}

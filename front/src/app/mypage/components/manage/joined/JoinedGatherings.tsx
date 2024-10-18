@@ -65,7 +65,8 @@ export default function JoinedGatherings() {
             ) : (
               <Button
                 className="border-2 bg-white border-gray-900 text-gray-900 hover:bg-red-600 hover:border-red-600 hover:text-white"
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                   !item.canceledAt && cancelGatherJoined(item.id);
                 }}
               >
