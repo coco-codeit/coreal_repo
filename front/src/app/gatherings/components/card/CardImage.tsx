@@ -4,11 +4,11 @@ import DeadLineTag from "@/app/gatherings/components/DeadLineTag";
 function CardImage({
   image,
   name,
-  endTime,
+  registrationEnd,
 }: {
   image: string;
   name: string;
-  endTime: string;
+  registrationEnd: string;
 }) {
   const defaultImage = "/images/detail/gatherDetail.png";
   const imageUrl = image || defaultImage;
@@ -22,8 +22,8 @@ function CardImage({
         className="object-cover"
         sizes="(max-width: 768px) 100vw, (min-width: 768px) and (max-width: 1024px) 50vw, 280px"
       />
-      <DeadLineTag endTime={endTime} type="lg" />
-      <DeadLineTag endTime={endTime} type="sm" />
+      <DeadLineTag endTime={registrationEnd} type="lg" />
+      <DeadLineTag endTime={registrationEnd} type="sm" />
     </div>
   );
 }
