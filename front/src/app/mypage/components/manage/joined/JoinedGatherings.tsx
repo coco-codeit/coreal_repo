@@ -1,7 +1,7 @@
 "use client";
 
 import { FaCheck } from "react-icons/fa6";
-import { GatheringsJoinedReturn } from "@/apis/profile";
+import { GatheringsJoinedReturn } from "@/libs/profileApi";
 import { useGatherJoined, useCancelGatherJoined } from "@/hooks/queries/mypage";
 import Image from "next/image";
 import OnEmpty from "../OnEmpty";
@@ -65,7 +65,8 @@ export default function JoinedGatherings() {
             ) : (
               <Button
                 className="border-2 bg-white border-gray-900 text-gray-900 hover:bg-red-600 hover:border-red-600 hover:text-white"
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                   !item.canceledAt && cancelGatherJoined(item.id);
                 }}
               >

@@ -5,7 +5,7 @@ import {
   DialogPanel,
   DialogTitle,
 } from "@headlessui/react";
-import { submitReview } from "@/apis/profile";
+import { submitReview } from "@/libs/profileApi";
 import { IoIosHeart } from "react-icons/io";
 import { IoCloseOutline } from "react-icons/io5";
 import Button from "./Button";

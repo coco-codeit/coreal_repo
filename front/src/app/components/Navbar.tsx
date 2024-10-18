@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { Menu } from "@headlessui/react";
 import { useSession, signIn, signOut } from "next-auth/react";
-import { getUserProfile } from "@/apis/profile";
+import { getUserProfile } from "@/libs/profileApi";
 import useAuthStore from "@/stores/useAuthStore";
 import useFavoritesStore from "@/stores/useFavoritesStore";
 import Link from "next/link";

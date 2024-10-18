@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 export default function ListWrapper({
@@ -11,13 +11,16 @@ export default function ListWrapper({
   href?: string;
 }) {
   console.log(href);
-  const content = (
-    <div
-      className={`relative flex flex-col sm:flex-row gap-4 my-5 border-b-2 border-gray-200 border-dashed last:border-none hover:bg-[#fafafa] cursor-pointer ${className}`}
-    >
-      {children}
-    </div>
-  );
+  const router = useRouter();
 
-  return <>{href ? <Link href={href}>{content}</Link> : content}</>;
+  return (
+    <>
+      <div
+        className={`relative flex flex-col sm:flex-row gap-4 my-5 border-b-2 border-gray-200 border-dashed last:border-none hover:bg-[#fafafa] cursor-pointer ${className}`}
+        onClick={() => href && router.push(href)}
+      >
+        {children}
+      </div>
+    </>
+  );
 }
