@@ -38,6 +38,9 @@ export default function GatheringSection({
           src={detailData.image || "/images/default_gathering_image.png"}
           alt="Gather Detail Img"
           sizes="100%"
+          priority={true}
+          placeholder="blur"
+          blurDataURL="/images/blur-img.png"
           fill
         />
         <DeadLineTag endTime={detailData?.registrationEnd} type="lg" />
