@@ -23,8 +23,11 @@ export default function JoinedGatherings() {
   return (
     <>
       {data.map((item: GatheringsJoinedReturn, index) => (
-        <ListWrapper key={`${item}-${index}`}>
-          {!item.canceledAt && (
+        <ListWrapper
+          key={`${item}-${index}`}
+          href={`/gatherings/${item.id}/detail`}
+        >
+          {item.canceledAt && (
             <div className="absolute -top-2 -left-2 w-[calc(100%+16px)] h-[calc(100%+16px)] bg-black/80 text-white flex flex-col justify-center items-center rounded-[28px]">
               <p>모집이 취소된 모임이에요.</p>
               <p>다음 기회에 다시 만나요 🙏</p>
@@ -55,7 +58,10 @@ export default function JoinedGatherings() {
               }}
             />
             {new Date(item.dateTime) < new Date() && !item.canceledAt ? (
-              <ReviewModalBtn gatheringId={item.id} />
+              <ReviewModalBtn
+                gatheringId={item.id}
+                isReviewed={item.isReviewed}
+              />
             ) : (
               <Button
                 className="border-2 bg-white border-gray-900 text-gray-900 hover:bg-red-600 hover:border-red-600 hover:text-white"
