@@ -49,7 +49,7 @@ const InfiniteScroll = ({
               key={index}
               initial={{ opacity: 1 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
+              exit={{ opacity: 0, y: -5 }}
               transition={{ duration: 0.5, ease: "easeInOut" }}
             >
               {child}

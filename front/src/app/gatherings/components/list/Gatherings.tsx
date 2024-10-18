@@ -3,12 +3,14 @@
 import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { useFetchGatherings } from "@/hooks/queries/useGatheringsQuery";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { useGatheringsStore } from "@/stores/useGatheringsStore";
 import { IGatherings } from "@/types/gatherings";
 import Header from "@/app/components/Header";
 import Tabs from "@/app/gatherings/components/list/Tabs";
 import Filters from "@/app/gatherings/components/filter";
 import InfiniteScroll from "@/app/gatherings/components/list/InfiniteScroll";
+import Gradient from "@/app/components/Gradient";
 import Card from "@/app/gatherings/components/card";
 
 function Gatherings() {
@@ -37,6 +39,7 @@ function Gatherings() {
 
   const pathname = usePathname();
   const previousPath = useRef<string | null>(null);
+  const controls = useScrollAnimation();
 
   useEffect(() => {
     if (previousPath.current !== pathname) {
@@ -62,14 +65,13 @@ function Gatherings() {
           </div>
         ) : (
           <div className="relative overflow-hidden">
-            <div className="absolute top-0 left-0 right-0 h-24 pointer-events-none bg-gradient-to-b from-[#F9FAFB] to-transparent z-10"></div>
+            <Gradient position="top" controls={controls} />
             <div className="grid grid-cols-1 gap-6 py-4 md:py-6 w-full">
               {gatherings.map((item: IGatherings) => (
                 <Card key={item.id} data={item} />
               ))}
             </div>
-
-            <div className="absolute bottom-0 left-0 right-0 h-24 pointer-events-none bg-gradient-to-t from-[#F9FAFB] to-transparent z-10"></div>
+            <Gradient position="bottom" controls={controls} />
           </div>
         )}
       </InfiniteScroll>
