@@ -3,7 +3,7 @@ import Favorites from "@/app/favorites/components/Favorites";
 
 function Home() {
   return (
-    <div className="min-w-[375px] max-w-[375px] px-4 md:max-w-[744px] md:px-[24.5px] lg:max-w-[996px] lg:min-w-[1200px] lg:px-[102px] min-h-screen mx-auto flex flex-col bg-gray-50">
+    <div className="min-w-[375px] max-w-[375px] px-4 md:max-w-[744px] md:px-[24.5px] lg:max-w-[996px] lg:min-w-[1200px] lg:px-[102px] min-h-screen pb-4 mx-auto flex flex-col bg-gray-50">
       <Header type="saved" />
       <Favorites />
     </div>

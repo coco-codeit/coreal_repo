@@ -1,5 +1,7 @@
-import { useEffect, useRef } from "react";
+import React from "react";
+import { useEffect, useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
+import { motion, AnimatePresence } from "framer-motion";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
 
 const InfiniteScroll = ({
@@ -19,6 +21,11 @@ const InfiniteScroll = ({
   });
 
   const isFetchingRef = useRef(false);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   useEffect(() => {
     if (inView && hasNextPage && !isFetchingRef.current && !isFetching) {
@@ -34,11 +41,27 @@ const InfiniteScroll = ({
   }, [isFetching]);
 
   return (
-    <div className="grid grid-cols-1 gap-6 py-4 md:py-6 w-full">
-      {children}
+    <>
+      <AnimatePresence>
+        {React.Children.map(children, (child, index) =>
+          isClient ? (
+            <motion.div
+              key={index}
+              initial={{ opacity: 1 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.5, ease: "easeInOut" }}
+            >
+              {child}
+            </motion.div>
+          ) : (
+            <div key={index}>{child}</div>
+          ),
+        )}
+      </AnimatePresence>
       {hasNextPage && !isFetching && <div ref={ref} className="h-[20px]" />}
       {isFetching && <LoadingSpinner />}
-    </div>
+    </>
   );
 };
 

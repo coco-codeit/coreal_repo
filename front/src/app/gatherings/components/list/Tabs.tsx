@@ -21,48 +21,6 @@ function Tabs() {
     ? tabConfig["DALLAEMFIT"].subTabs
     : tabConfig["WORKATION"].subTabs;
 
-  const MainTabs = ({
-    label,
-    value,
-    Icon,
-  }: {
-    label: string;
-    value: GatheringType;
-    Icon: React.FC<{ isSelected: boolean }>;
-  }) => {
-    const isSelected = tab === value;
-    const isActiveDallaemfit = isDallaemfitActive && value === "DALLAEMFIT";
-
-    return (
-      <li
-        key={value}
-        className={`relative flex items-center gap-1 pb-1 ${isSelected ? "bg-white" : ""} ${
-          isActiveDallaemfit
-            ? "text-gray-900"
-            : isSelected
-              ? "text-gray-900"
-              : "text-gray-400"
-        } cursor-pointer select-none`}
-        onClick={() => setTab(value)}
-      >
-        {`${label}`}
-        <Icon
-          isSelected={
-            isSelected || (isActiveDallaemfit && value === "DALLAEMFIT")
-          }
-        />
-        {(isSelected || (isActiveDallaemfit && value === "DALLAEMFIT")) && (
-          <motion.div
-            transition={{ type: "spring", stiffness: 500, damping: 30 }}
-            suppressHydrationWarning={true}
-            layoutId="underline"
-            className="absolute bottom-0 left-0 right-0 h-[2px] bg-gray-900 rounded-[1px]"
-          />
-        )}
-      </li>
-    );
-  };
-
   const SubTabs = ({
     label,
     value,
@@ -86,9 +44,46 @@ function Tabs() {
     <div className="flex flex-col gap-2">
       <div className="relative flex justify-between items-start">
         <ul className="flex items-center gap-3 text-lg font-semibold">
-          {Object.values(tabConfig).map((tabItem) => (
-            <MainTabs key={tabItem.value} {...tabItem} />
-          ))}
+          {Object.values(tabConfig).map((tabItem) => {
+            const isSelected = tab === tabItem.value;
+            const isActiveDallaemfit =
+              isDallaemfitActive && tabItem.value === "DALLAEMFIT";
+
+            return (
+              <li
+                key={tabItem.value}
+                className={`relative flex items-center gap-1 pb-1 ${isSelected ? "bg-white" : ""} ${
+                  isActiveDallaemfit
+                    ? "text-gray-900"
+                    : isSelected
+                      ? "text-gray-900"
+                      : "text-gray-400"
+                } cursor-pointer select-none`}
+                onClick={() => setTab(tabItem.value)}
+              >
+                {`${tabItem.label}`}
+                <tabItem.Icon
+                  isSelected={
+                    isSelected ||
+                    (isActiveDallaemfit && tabItem.value === "DALLAEMFIT")
+                  }
+                />
+                {(isSelected || isActiveDallaemfit) && (
+                  <motion.div
+                    transition={{
+                      type: "spring",
+                      stiffness: 450,
+                      damping: 50,
+                    }}
+                    suppressHydrationWarning={true}
+                    layoutId="underline"
+                    className="absolute bottom-0 left-0 right-0 h-[2px] bg-gray-900 rounded-[1px]"
+                    key="underline"
+                  />
+                )}
+              </li>
+            );
+          })}
         </ul>
         {showCreateButton && <CreateButton />}
       </div>
