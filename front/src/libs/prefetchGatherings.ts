@@ -7,15 +7,29 @@ import {
   SortByType,
   SortOrderType,
 } from "@/types/gatherings";
-import { format } from "date-fns";
+import { differenceInDays, differenceInHours, format, isToday } from "date-fns";
 import { ko } from "date-fns/locale";
 
 function convertTime(date: string | Date) {
   return new Date(
-    new Date(date).toLocaleString("en-US", {
-      timeZone: "Asia/Seoul",
-    }),
+    new Date(date).toLocaleString("en-US", { timeZone: "Asia/Seoul" }),
   );
+}
+
+function getDeadline(registrationTime: Date, now: Date) {
+  if (registrationTime < now) return "마감된 모임";
+
+  const hoursDiff = differenceInHours(registrationTime, now);
+
+  if (hoursDiff < 24 && isToday(registrationTime))
+    return `오늘 ${registrationTime.getHours()}시 마감`;
+
+  if (hoursDiff < 24 && !isToday(registrationTime))
+    return `내일 ${registrationTime.getHours()}시 마감`;
+
+  const daysDiff = differenceInDays(registrationTime, now);
+
+  return `${daysDiff}일 후 마감`;
 }
 
 export async function prefetchGatherings({
@@ -47,7 +61,7 @@ export async function prefetchGatherings({
       });
 
       const transformedData = gatherings.map((gathering: IGatherings) => {
-        const currentTime = new Date();
+        const currentTime = convertTime(new Date());
         const registrationEndTime = convertTime(gathering.registrationEnd);
 
         return {
@@ -60,7 +74,8 @@ export async function prefetchGatherings({
           registrationEnd: format(registrationEndTime, "yyyy-MM-dd HH:mm:ss", {
             locale: ko,
           }),
-          isExpired: registrationEndTime < currentTime,
+          isClosed: registrationEndTime < currentTime,
+          deadlineText: getDeadline(registrationEndTime, currentTime),
         };
       });
 

@@ -69,7 +69,9 @@ function Favorites() {
             <Gradient position="top" controls={controls} />
             <div className="grid grid-cols-1 gap-6 py-4 md:py-6 w-full">
               {favoriteGatherings?.map((item: IGatherings) => {
-                return <Card key={item.id} data={item} showExpiration={true} />;
+                return (
+                  <Card key={item.id} data={item} isFavoritesPage={true} />
+                );
               })}
             </div>
             <Gradient position="bottom" controls={controls} />
