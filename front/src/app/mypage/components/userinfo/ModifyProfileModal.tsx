@@ -9,7 +9,7 @@ import {
 } from "@headlessui/react";
 import { RiPencilFill } from "react-icons/ri";
 import { IoCloseOutline } from "react-icons/io5";
-import { updateUserProfile } from "@/apis/profile";
+import { updateUserProfile } from "@/libs/profileApi";
 import Button from "../Button";
 import UserImage from "../UserImage";
 import useUserInfo from "@/stores/useUserInfo";

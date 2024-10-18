@@ -5,7 +5,7 @@ import {
   getGatheringsJoined,
   getReviews,
   getUserProfile,
-} from "@/apis/profile";
+} from "@/libs/profileApi";
 import useAuthStore from "@/stores/useAuthStore";
 import {
   useMutation,

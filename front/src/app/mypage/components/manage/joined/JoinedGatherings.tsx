@@ -1,7 +1,7 @@
 "use client";
 
 import { FaCheck } from "react-icons/fa6";
-import { GatheringsJoinedReturn } from "@/apis/profile";
+import { GatheringsJoinedReturn } from "@/libs/profileApi";
 import { useGatherJoined, useCancelGatherJoined } from "@/hooks/queries/mypage";
 import Image from "next/image";
 import OnEmpty from "../OnEmpty";
