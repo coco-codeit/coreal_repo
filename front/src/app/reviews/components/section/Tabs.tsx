@@ -1,9 +1,11 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 import Card from "../content/Card";
 import { useReviews } from "@/hooks/queries/useReviews";
+import { Review } from "@/types/reviews";
+import { DallaemfitIcon } from "../icons/DallaemfitIcon";
+import { WorkationIcon } from "../icons/WorkationIcon";
 
 const tabs = [
   {
@@ -28,32 +30,41 @@ const tabs = [
   },
 ];
 
-export default function Tabs() {
+interface TabsProps {
+  initialReviews: Review[];
+}
+
+export default function Tabs({ initialReviews }: TabsProps) {
   const [selectedTab, setSelectedTab] = useState(tabs[0].id);
   const [selectedSubTab, setSelectedSubTab] = useState(
-    tabs[0].subTabs ? tabs[0].subTabs[0].id : "",
+    tabs[0].subTabs ? tabs[0].subTabs[0].id : ""
   );
-
-  console.log("selectedTab", selectedTab);
-
   const [selectedRegion, setSelectedRegion] = useState<string | undefined>(
-    "지역 선택",
+    "지역 선택"
   );
-
   const [selectedSort, setSelectedSort] = useState("createdAt");
-
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
 
-  const { reviews, reviewScores, isError } = useReviews({
-    type:
-      selectedTab === "WORKATION"
-        ? selectedTab
-        : selectedSubTab === "ALL"
-          ? ["OFFICE_STRETCHING", "MINDFULNESS"]
-          : selectedSubTab,
-    location: selectedRegion === "지역 선택" ? undefined : selectedRegion,
-    sortBy: selectedSort,
-  });
+  const [underlineWidth, setUnderlineWidth] = useState(0);
+  const [underlineLeft, setUnderlineLeft] = useState(0);
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  const {
+    reviews,
+    reviewScores,
+    isError,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isLoading,
+  } = useReviews(
+    {
+      type: selectedTab,
+      location: selectedRegion === "지역 선택" ? undefined : selectedRegion,
+      sortBy: selectedSort,
+    },
+    initialReviews,
+  );
 
   useEffect(() => {
     const currentTab = tabs.find((tab) => tab.id === selectedTab);
@@ -64,58 +75,80 @@ export default function Tabs() {
     }
   }, [selectedTab]);
 
-  const handleTabClick = (tabId: string) => {
+  const handleTabClick = (tabId: string, index: number) => {
     setSelectedTab(tabId);
-    console.log("!!!!!!!!!!", tabId);
-  };
-  const handleSubTabClick = (subTabId: string) => {
-    setSelectedSubTab(subTabId);
-    console.log("!!!!!!!!!!", subTabId);
+    const currentTab = tabRefs.current[index];
+    if (currentTab) {
+      setUnderlineWidth(currentTab.offsetWidth);
+      setUnderlineLeft(currentTab.offsetLeft);
+    }
   };
 
-  // if (isLoading) return <p>Loading...</p>;
+  useEffect(() => {
+    // 초기 탭 크기와 위치 설정
+    const initialTab = tabRefs.current[0];
+    if (initialTab) {
+      setUnderlineWidth(initialTab.offsetWidth);
+      setUnderlineLeft(initialTab.offsetLeft);
+    }
+  }, []);
+
+  const handleSubTabClick = (subTabId: string) => {
+    setSelectedSubTab(subTabId);
+  };
+
   if (isError) return <p>Error loading data</p>;
+
+  const filteredReviews =
+    selectedSubTab === "ALL"
+      ? reviews
+      : reviews.filter((review) => review.Gathering?.type === selectedSubTab);
 
   return (
     <div>
-      <div className="flex gap-3">
-        {tabs.map((tab) => (
+      <div className="inline-flex gap-3 relative">
+        {tabs.map((tab, index) => (
           <button
             key={tab.id}
-            className={`flex items-center gap-1 pb-1 text-lg font-semibold ${
-              selectedTab === tab.id
-                ? "border-[#111827] selected-tab"
-                : "text-gray-400 border-transparent"
-            } relative`}
-            onClick={() => handleTabClick(tab.id)}
+            ref={(el) => {
+              tabRefs.current[index] = el;
+            }}
+            className={`flex items-center gap-1 pb-1 text-lg font-semibold relative transition-colors duration-300 ease-in-out
+              ${selectedTab === tab.id ? "text-black" : "text-gray-400"}
+            
+            relative`}
+            onClick={() => handleTabClick(tab.id, index)}
           >
             {tab.label}
             <span>
-              <Image
-                src={tab.imageSrc}
-                alt={tab.alt}
-                width={32}
-                height={32}
-                className={`${selectedTab === tab.id ? "fill-current text-red-400" : "fill-current text-gray-400"}`}
-              />
+              {tab.id === "DALLAEMFIT" && (
+                <DallaemfitIcon isSelected={selectedTab === "DALLAEMFIT"} />
+              )}
+              {tab.id === "WORKATION" && (
+                <WorkationIcon isSelected={selectedTab === "WORKATION"} />
+              )}
             </span>
-            {selectedTab === tab.id && (
-              <span className="absolute bottom-[-2px] left-0 right-0 h-[2px] bg-gray-900 rounded-[1px]"></span>
-            )}
           </button>
         ))}
+        <span
+          className="absolute bottom-0 h-[2px] bg-gray-900 rounded-[1px] transition-all duration-300 ease-linear"
+          style={{
+            width: underlineWidth,
+            left: underlineLeft,
+          }}
+        ></span>
       </div>
 
       <div className="">
         {tabs.find((tab) => tab.id === selectedTab)?.hasSubTabs && (
-          <div className="space-x-2 border-b-2 border-[#E5E7EB]">
+          <div className="space-x-2 border-b-2 border-gray-200">
             {tabs
               .find((tab) => tab.id === selectedTab)
               ?.subTabs?.map((subTab) => (
                 <button
                   key={subTab.id}
                   onClick={() => handleSubTabClick(subTab.id)}
-                  className={`${selectedSubTab === subTab.id ? "selected-subtab bg-black text-white" : "bg-[#E5E7EB]"} h-10 appearance-none px-4 rounded-xl my-4 text-center text-sm font-medium`}
+                  className={`${selectedSubTab === subTab.id ? "selected-subtab bg-black text-white" : "bg-gray-200"} h-10 appearance-none px-4 rounded-xl my-4 text-center text-sm font-medium`}
                 >
                   {subTab.label}
                 </button>
@@ -126,7 +159,7 @@ export default function Tabs() {
 
       <div>
         <Card
-          reviews={reviews || []}
+          reviews={filteredReviews || []}
           reviewScores={reviewScores || []}
           tabs={tabs}
           selectedRegion={selectedRegion}
@@ -135,6 +168,11 @@ export default function Tabs() {
           setSelectedSort={setSelectedSort}
           selectedDate={selectedDate}
           setSelectedDate={setSelectedDate}
+          selectedSubTab={selectedSubTab}
+          fetchNextPage={fetchNextPage}
+          hasNextPage={hasNextPage}
+          isFetching={isFetching}
+          isLoading={isLoading}
         />
       </div>
     </div>

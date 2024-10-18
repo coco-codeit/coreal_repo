@@ -21,7 +21,6 @@ export default function DateTag({ dateText, textColor, type }: DateTag) {
   return (
     <div
       className={`flex items-center justify-center h-6 p-2 mr-2 text-[14px] font-medium leading-5 rounded-[4px] bg-gray-900 ${colors[textColor]}`}
-      suppressHydrationWarning
     >
       {dateFormatter(dateText, type)}
     </div>

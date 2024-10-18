@@ -20,6 +20,7 @@ export interface IGatherings {
   image: string;
   createdBy: number;
   canceledAt: string | null;
+  isExpired?: boolean;
 }
 
 export interface GatheringsUser {
