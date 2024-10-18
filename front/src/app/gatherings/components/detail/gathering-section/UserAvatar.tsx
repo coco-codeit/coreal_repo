@@ -5,13 +5,11 @@ import React, { useState } from "react";
 
 interface UserAvatarProps {
   participantData: GatheringsParticipants[];
-  gatherCapacity: number;
   participantCount: number;
 }
 
 export default function UserAvatar({
   participantData,
-  gatherCapacity,
   participantCount,
 }: UserAvatarProps) {
   const isMoreUser = participantCount > 5;
@@ -27,7 +25,7 @@ export default function UserAvatar({
     <div className="flex items-center justify-between">
       <div className="flex items-center">
         <div className="min-w-[80px] text-[14px]">
-          모집정원 {gatherCapacity}명
+          모집정원 {participantCount}명
         </div>
         <div
           className="flex flex-wrap min-h-[29px] ml-[22px]"

@@ -48,7 +48,6 @@ export default function GatehringSection({
         <div className="p-6">
           <UserAvatar
             participantData={participantData}
-            gatherCapacity={detailData.capacity}
             participantCount={detailData.participantCount}
           />
           <ProgressBar
