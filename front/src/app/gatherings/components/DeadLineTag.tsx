@@ -7,9 +7,14 @@ import { differenceInHours, differenceInDays, isToday } from "date-fns";
 interface IDeadLineTag {
   endTime: string;
   type: "lg" | "sm";
+  serverDeadlineText?: string;
 }
 
-export default function DeadLineTag({ endTime, type }: IDeadLineTag) {
+export default function DeadLineTag({
+  endTime,
+  type,
+  serverDeadlineText,
+}: IDeadLineTag) {
   const targetDate = useMemo(() => new Date(endTime), [endTime]);
 
   const formatDeadline = () => {
@@ -30,7 +35,7 @@ export default function DeadLineTag({ endTime, type }: IDeadLineTag) {
     return `${daysDiff}일 후 마감`;
   };
 
-  const formattedDeadline = formatDeadline();
+  const formattedDeadline = serverDeadlineText || formatDeadline();
 
   const customRound = {
     lg: "rounded-tr-3xl rounded-bl-lg pr-5",
@@ -48,9 +53,7 @@ export default function DeadLineTag({ endTime, type }: IDeadLineTag) {
         width={24}
         height={24}
       />
-      <span className="text-[12px]" suppressHydrationWarning={true}>
-        {formattedDeadline}
-      </span>
+      <span className="text-[12px]">{formattedDeadline}</span>
     </div>
   );
 }
