@@ -26,7 +26,7 @@ export default function GatheringSection({
   }
 
   return (
-    <section className="flex items-center justify-center md:flex-row flex-col gap-6">
+    <section className="flex items-center justify-center md:flex-row flex-col gap-6 h-[270px]">
       <motion.div
         className="relative w-full md:w-1/2 h-[270px]"
         initial={{ opacity: 0 }}
@@ -46,7 +46,12 @@ export default function GatheringSection({
         <DeadLineTag endTime={detailData?.registrationEnd} type="lg" />
       </motion.div>
 
-      <div className="w-full md:w-1/2 h-[270px] py-6 rounded-[24px] border-2 border-gray-200">
+      <motion.div
+        className="w-full md:w-1/2 h-[270px] py-6 rounded-[24px] border-2 border-gray-200"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.5 }}
+      >
         <GatheringInfo
           dateInfo={detailData?.registrationEnd}
           titleInfo={detailData?.name}
@@ -68,7 +73,7 @@ export default function GatheringSection({
             <div>최대인원 {detailData?.capacity}명</div>
           </div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }
