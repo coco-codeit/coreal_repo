@@ -8,24 +8,24 @@ function CardParticipants({
   dateTime,
   participantCount,
   capacity,
-  isExpired: serverIsExpired,
+  isClosed: serverIsClosed,
 }: {
   dateTime: string;
   participantCount: number;
   capacity: number;
-  isExpired?: boolean;
+  isClosed?: boolean;
 }) {
   const percent = (participantCount / capacity) * 100;
   const isFull = participantCount >= capacity;
 
   const isExpired = useMemo(() => {
-    if (typeof serverIsExpired !== "undefined") {
-      return serverIsExpired;
+    if (typeof serverIsClosed !== "undefined") {
+      return serverIsClosed;
     }
     const now = new Date();
     const endDate = new Date(dateTime);
     return endDate < now || isFull;
-  }, [serverIsExpired, dateTime, isFull]);
+  }, [serverIsClosed, dateTime, isFull]);
 
   return (
     <div className="flex justify-between md:pr-2 items-end mt-2">

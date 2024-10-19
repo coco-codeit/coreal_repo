@@ -9,7 +9,7 @@ import {
 } from "@headlessui/react";
 import { RiPencilFill } from "react-icons/ri";
 import { IoCloseOutline } from "react-icons/io5";
-import { updateUserProfile } from "@/apis/profile";
+import { updateUserProfile } from "@/libs/profileApi";
 import Button from "../Button";
 import UserImage from "../UserImage";
 import useUserInfo from "@/stores/useUserInfo";
@@ -27,15 +27,15 @@ export default function ModifyProfileModal({
   const [previewImage, setPreviewImage] = useState<string>("");
 
   useEffect(() => {
-    if (image) {
+    if (open && image) {
       setPreviewImage(image);
       setInputImage(image);
     }
-  }, [image]);
+  }, [image, open]);
 
   useEffect(() => {
-    if (companyName) setInputCompany(companyName);
-  }, [companyName]);
+    if (open && companyName) setInputCompany(companyName);
+  }, [companyName, open]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,7 +57,6 @@ export default function ModifyProfileModal({
 
   const handleChangeImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    console.log(file);
     if (!file) return;
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -66,7 +65,6 @@ export default function ModifyProfileModal({
         const imgUrl = event.target?.result as string;
         imgUrl && setPreviewImage(imgUrl);
         setInputImage(file);
-        console.log(imgUrl, file);
       }
     };
   };

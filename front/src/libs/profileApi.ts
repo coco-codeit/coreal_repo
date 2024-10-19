@@ -86,12 +86,18 @@ export const submitReview = async (payload: {
   gatheringId: string;
   score: number;
   comment: string;
-}) =>
-  await axiosInstance
-    .post(`${BASE_URL}/reviews?teamId`, {
-      body: payload,
-    })
-    .then((res) => res.data);
+}) => {
+  try {
+    const response = await axiosInstance.post(`${BASE_URL}/reviews`, {
+      ...payload,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error submitting review:", error);
+
+    throw error;
+  }
+};
 
 export const getReviews = async (option?: GetReviewsProps) => {
   const params = new URLSearchParams({ ...option } as Record<string, string>);

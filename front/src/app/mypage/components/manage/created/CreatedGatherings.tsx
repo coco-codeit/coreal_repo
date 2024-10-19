@@ -20,7 +20,10 @@ export default function CreatedGatherings() {
   return (
     <>
       {data.map((item: ExtendedGatheringInterface, index: number) => (
-        <ListWrapper key={`${item}-${index}`}>
+        <ListWrapper
+          key={`${item}-${index}`}
+          href={`/gatherings/${item.id}/detail`}
+        >
           <GatheringImage src={item.image} />
           <div className="flex flex-col justify-between items-start">
             <GatheringInfo
