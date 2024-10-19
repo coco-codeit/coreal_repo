@@ -16,7 +16,7 @@ export default function ListWrapper({
   return (
     <>
       <div
-        className={`relative flex flex-col sm:flex-row gap-4 my-5 border-b-2 border-gray-200 border-dashed last:border-none hover:bg-[#fafafa] cursor-pointer ${className}`}
+        className={`relative flex flex-col sm:flex-row pb-3 gap-4 my-5 border-b-2 border-gray-200 border-dashed last:border-none hover:bg-[#fafafa] cursor-pointer ${className}`}
         onClick={() => href && router.push(href)}
       >
         {children}

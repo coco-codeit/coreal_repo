@@ -44,13 +44,20 @@ export const getGatherJoined = async () => {
 };
 
 export const getUserReviews = async ({ pageId, offset, limit }: UserRiveiw) => {
-  const limitQuery = () => {
-    return limit !== 0 ? `&limit=${limit}` : "";
-  };
+  try {
+    const limitQuery = () => {
+      return limit !== 0 ? `&limit=${limit}` : "";
+    };
 
-  const res = await axiosInstance.get(
-    `/reviews?gatheringId=${pageId}${limitQuery()}&offset=${offset}`,
-  );
-  console.log(res?.data);
-  return res?.data;
+    const res = await axiosInstance.get(
+      `/reviews?gatheringId=${pageId}${limitQuery()}&offset=${offset}`,
+    );
+    console.log(
+      `/reviews?gatheringId=${pageId}${limitQuery()}&offset=${offset}`,
+    );
+    console.log(res?.data);
+    return res?.data;
+  } catch (error) {
+    console.error(error);
+  }
 };

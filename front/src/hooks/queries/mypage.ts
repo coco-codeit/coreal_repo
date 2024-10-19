@@ -5,6 +5,7 @@ import {
   getGatheringsJoined,
   getReviews,
   getUserProfile,
+  submitReview,
 } from "@/libs/profileApi";
 import useAuthStore from "@/stores/useAuthStore";
 import {
@@ -13,6 +14,7 @@ import {
   useQueryClient,
   UseQueryResult,
 } from "@tanstack/react-query";
+import { useToastStore } from "@/stores/useToastStore";
 
 export const useGatherJoined = (option?: {
   completed?: boolean; // 모임 이용 완료 여부로 필터링 (true일 경우 이용 완료한 모임만 조회)
@@ -50,13 +52,18 @@ export const useGatherCreated = (id: number | undefined): UseQueryResult => {
 
 export const useCancelGatherJoined = () => {
   const queryClient = useQueryClient();
+  const { showToast } = useToastStore();
   return useMutation({
     mutationFn: (id: number) => {
       return cancleGatheringJoined(id);
     },
     onSuccess: () => {
       console.log("삭제 완료");
+      showToast("모임이 삭제되었습니다.", "success");
       queryClient.invalidateQueries({ queryKey: ["gatherJoined"] });
+    },
+    onError: () => {
+      showToast("에러가 발생했습니다.", "error");
     },
   });
 };
@@ -83,5 +90,27 @@ export const useUserProfile = () => {
   return useQuery({
     queryKey: ["userProfile"],
     queryFn: () => getUserProfile(),
+  });
+};
+
+export const useUserReviewSubmit = () => {
+  const queryClient = useQueryClient();
+  const { showToast } = useToastStore();
+
+  return useMutation({
+    mutationFn: (payload: {
+      gatheringId: string;
+      score: number;
+      comment: string;
+    }) => {
+      return submitReview(payload);
+    },
+    onSuccess: () => {
+      showToast("리뷰가 등록되었습니다.", "success");
+      queryClient.invalidateQueries({ queryKey: ["gatherJoined"] });
+    },
+    onError: () => {
+      showToast("에러가 발생했습니다.", "error");
+    },
   });
 };

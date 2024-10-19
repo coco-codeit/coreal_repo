@@ -44,7 +44,7 @@ export default function CommentsSection({
 
       {currentReviews.length > 0 ? (
         <>
-          <div className="min-h-[500px]">
+          <div className="mb-[86px]">
             {currentReviews.map((review: Review) => (
               <CommentsCard key={review.id} singleReviewData={review} />
             ))}
@@ -61,7 +61,7 @@ export default function CommentsSection({
           )}
         </>
       ) : (
-        <div className="flex items-center justify-center h-[400px] md:pb-[86px] pb-[134px]">
+        <div className="flex items-center justify-center h-[487px] md:pb-[86px] pb-[134px]">
           <p className="text-gray-500">아직 리뷰가 없어요</p>
         </div>
       )}
