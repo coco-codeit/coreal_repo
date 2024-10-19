@@ -5,10 +5,11 @@ import {
   DialogPanel,
   DialogTitle,
 } from "@headlessui/react";
-import { submitReview } from "@/libs/profileApi";
+// import { submitReview } from "@/libs/profileApi";
 import { IoIosHeart } from "react-icons/io";
 import { IoCloseOutline } from "react-icons/io5";
 import Button from "./Button";
+import { useUserReviewSubmit } from "@/hooks/queries/mypage";
 
 interface ReviewFormInterface {
   gatheringId: string;
@@ -30,6 +31,9 @@ export default function ReviweModal({
     score: 0,
     comment: "",
   });
+
+  const { mutate: submitReview } = useUserReviewSubmit();
+
   const closeModal = () => {
     setOpen?.(false);
   };
