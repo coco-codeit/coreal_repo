@@ -51,7 +51,7 @@
 <td align="center"><img src="https://github.com/user-attachments/assets/d815e712-dc59-4a72-bd93-165bbec2d237" width="160" height="200"  alt="이미지"><br /><b><a href="https://github.com/srp0114">김서영</a></b><br />
 <sub>프론트엔드</sub>
 </td>
-<td align="center"><img src="https://github.com/user-attachments/assets/0df18a1d-e2ca-4331-b5d7-e2cfc7725b25" width="160" height="200"  alt="이미지"><br /><b><a href="https://github.com/itmakesmesoft">이은혁</a></b><br />
+<td align="center"><img src="https://github.com/user-attachments/assets/d9f8f9d9-637c-41d4-8ece-1c42c8eae169" width="160" height="200"  alt="이미지"><br /><b><a href="https://github.com/itmakesmesoft">이은혁</a></b><br />
 <sub>프론트엔드</sub>
 </td>
 </tr>
@@ -62,7 +62,7 @@
 <td align="center"><img src="https://github.com/user-attachments/assets/4c03efd4-ff22-4666-a775-7595c9f5aa22" width="160" height="200"  alt="이미지"><br /><b><a href="https://github.com/HOSEONH">황호선</a></b><br />
 <sub>프론트엔드</sub>
 </td>
-<td align="center"><img src="" width="160" height="200"  alt="이미지"><br /><b>송지은</b><br />
+<td align="center"><img src="https://github.com/user-attachments/assets/3b88658b-a742-4d8b-863f-67f07f17c66a" width="160" height="200"  alt="이미지"><br /><b><a href="www.linkedin.com/in/jieun-song-b6951a219">송지은</a></b><br />
 <sub>디자이너</sub>
 </td>
 </tr>
