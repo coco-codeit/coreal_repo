@@ -44,7 +44,7 @@ export default function CommentsSection({
 
       {currentReviews.length > 0 ? (
         <>
-          <div className="min-h-[500px]">
+          <div className="mb-[86px]">
             {currentReviews.map((review: Review) => (
               <CommentsCard key={review.id} singleReviewData={review} />
             ))}
