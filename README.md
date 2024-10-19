@@ -62,7 +62,7 @@
 <td align="center"><img src="https://github.com/user-attachments/assets/4c03efd4-ff22-4666-a775-7595c9f5aa22" width="160" height="200"  alt="이미지"><br /><b><a href="https://github.com/HOSEONH">황호선</a></b><br />
 <sub>프론트엔드</sub>
 </td>
-<td align="center"><img src="https://github.com/user-attachments/assets/3b88658b-a742-4d8b-863f-67f07f17c66a" width="160" height="200"  alt="이미지"><br /><b><a href="www.linkedin.com/in/jieun-song-b6951a219">송지은</a></b><br />
+<td align="center"><img src="https://github.com/user-attachments/assets/3b88658b-a742-4d8b-863f-67f07f17c66a" width="160" height="200"  alt="이미지"><br /><b><a href="https://www.linkedin.com/in/jieun-song-b6951a219">송지은</a></b><br />
 <sub>디자이너</sub>
 </td>
 </tr>
