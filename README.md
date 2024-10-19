@@ -45,24 +45,24 @@
 
 <table>
 <tr>
-<td align="center"><img src="" width="" height="" alt="이미지"><br /><b><a href="https://github.com/SeanKim05">김유현</a></b><br />
+<td align="center"><img src="https://github.com/user-attachments/assets/730671d2-8561-4571-b74e-7ad9a9a7f7c8" width="160" height="200" alt="이미지"><br /><b><a href="https://github.com/SeanKim05">김유현</a></b><br />
 <sub>프론트엔드</sub>
 </td>
-<td align="center"><img src="" width="" height="" alt="이미지"><br /><b><a href="https://github.com/srp0114">김서영</a></b><br />
+<td align="center"><img src="https://github.com/user-attachments/assets/d815e712-dc59-4a72-bd93-165bbec2d237" width="160" height="200"  alt="이미지"><br /><b><a href="https://github.com/srp0114">김서영</a></b><br />
 <sub>프론트엔드</sub>
 </td>
-<td align="center"><img src="https://github.com/user-attachments/assets/0df18a1d-e2ca-4331-b5d7-e2cfc7725b25" width="" height="" alt="이미지"><br /><b><a href="https://github.com/itmakesmesoft">이은혁</a></b><br />
+<td align="center"><img src="https://github.com/user-attachments/assets/0df18a1d-e2ca-4331-b5d7-e2cfc7725b25" width="160" height="200"  alt="이미지"><br /><b><a href="https://github.com/itmakesmesoft">이은혁</a></b><br />
 <sub>프론트엔드</sub>
 </td>
 </tr>
 <tr>
-<td align="center"><img src="" width="" height="" alt="이미지"><br /><b><a href="https://github.com/yup299">최준엽</a></b><br />
+<td align="center"><img src="https://github.com/user-attachments/assets/2eb595f9-d658-48ae-8dbc-b9dfdedf78e0" width="160" height="200"  alt="이미지"><br /><b><a href="https://github.com/yup299">최준엽</a></b><br />
 <sub>프론트엔드</sub>
 </td>
-<td align="center"><img src="" width="" height="" alt="이미지"><br /><b><a href="https://github.com/HOSEONH">황호선</a></b><br />
+<td align="center"><img src="https://github.com/user-attachments/assets/4c03efd4-ff22-4666-a775-7595c9f5aa22" width="160" height="200"  alt="이미지"><br /><b><a href="https://github.com/HOSEONH">황호선</a></b><br />
 <sub>프론트엔드</sub>
 </td>
-<td align="center"><img src="" width="" height="" alt="이미지"><br /><b>송지은</b><br />
+<td align="center"><img src="" width="160" height="200"  alt="이미지"><br /><b>송지은</b><br />
 <sub>디자이너</sub>
 </td>
 </tr>
