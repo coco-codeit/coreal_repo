@@ -85,7 +85,45 @@
 <br/>
 
 ## 주요 화면
+- 회원가입
+![회원가입](https://github.com/user-attachments/assets/85a3f759-7819-4848-9cda-e0d33d28324c)
+
+- 로그인
+![로그인](https://github.com/user-attachments/assets/d5caed2d-a6f7-4244-b5b0-98f1fd8b19bd)
+
+- 모임 찾기
+![모임](https://github.com/user-attachments/assets/49b1c919-90f2-4a70-b4ae-fce9d02c3454)
+
+  
+- 모임 필터링
+![모임 필터링](https://github.com/user-attachments/assets/a0813d70-f272-44cd-b0aa-2c9e3dae43ed)
+
+
+- 모임 찜하기
+![찜한모임](https://github.com/user-attachments/assets/971d88b9-9b9c-4ae7-9940-48403f7f006e)
+
+  
+- 모임 생성
+![모임생성](https://github.com/user-attachments/assets/69ae00e8-00ed-4422-b8dc-583cf2a2e1b1)
+
+  
+- 참여하기
+![모임 참여](https://github.com/user-attachments/assets/21d3f70f-9cc9-487d-89aa-2e052740a5ad)
+
+  
+- 예약 취소
+![예약취소](https://github.com/user-attachments/assets/91700916-f608-4073-9074-b9f1cf041489)
+
+  
+- 회원정보 수정
+![회원정보 수정](https://github.com/user-attachments/assets/009a90bd-09c7-4745-906a-246fc5008266)
+
+
 
 ## 트러블슈팅
 
 ## 프로젝트 회고
+- 은혁
+  프로젝트 중간에 갑작스러운 팀원 이탈과 프로젝트 방향 수정 등 우여곡절이 많은 프로젝트였다. 남은 2주동안 프로젝트를 완성시킬 수 있을까 하는 생각도 들었지만, 철저한 분업과 팀워크를 통해 프로젝트를 완성시킬 수 있었던 것 같다.
+  비록 이번 프로젝트를 시작하면서 세웠던 소소한 목표인 '테스트 코드 작성하기'는 이루지 못했지만, 여러모로 시간관리와 의사소통의 중요성을 깨우치게 해준 프로젝트였어서 보람있었다. 정규 프로젝트 기간은 끝났지만, 앞으로 이 프로젝트를 리팩토링하면서 테스트 코드도 작성해볼 생각이다.
+ 
