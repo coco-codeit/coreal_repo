@@ -5,7 +5,7 @@ import { Review } from "@/types/reviews";
 
 export default async function Detail({ params }: { params: { id: number } }) {
   const { id } = params;
-  const initialReviews: Review[] = await getUserReviews({
+  const initialReviews: { data: Review[] } = await getUserReviews({
     pageId: id,
     offset: 0,
     limit: 4,

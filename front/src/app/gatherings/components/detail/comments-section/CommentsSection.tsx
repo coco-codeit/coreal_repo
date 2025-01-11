@@ -11,41 +11,36 @@ export default function CommentsSection({
   initialReviews,
 }: {
   pageId: number;
-  initialReviews: Review[];
+  initialReviews: { data: Review[] };
 }) {
-  const [currentPage, setCurrentPage] = useState(1);
-  const reviewsPerPage = 4;
+  const [offset, setOffset] = useState(0);
 
   const { data: reviewData = [] } = useGatherReview({
     pageId,
-    offset: 0,
-    limit: 0,
+    offset,
+    limit: 4,
   });
 
-  const totalReviews = reviewData.length;
-  const totalPages = Math.ceil(totalReviews / reviewsPerPage);
-
-  const indexOfLastReview = currentPage * reviewsPerPage;
-  const indexOfFirstReview = indexOfLastReview - reviewsPerPage;
-  const currentReviews =
-    currentPage === 1
-      ? initialReviews
-      : reviewData.slice(indexOfFirstReview, indexOfLastReview);
+  const totalReviews = reviewData?.totalItemCount;
+  const totalPages = reviewData?.totalPages;
+  const currentPage = reviewData?.currentPage;
 
   const handlePageChange = (page: number) => {
-    setCurrentPage(page);
+    setOffset((page - 1) * 4);
   };
 
+  const reviewInpage = currentPage === 1 ? initialReviews : reviewData;
+  console.log(reviewInpage);
   return (
     <section className="flex flex-col sm:min-h-360px min-h-[487px] mt-6 p-6 border-t-2 border-[#E5E7EB]">
       <h2 className="text-[18px] font-semibold mb-[16px]">
         이용자들은 이 프로그램을 이렇게 느꼈어요!
       </h2>
 
-      {currentReviews.length > 0 ? (
+      {totalReviews > 0 ? (
         <>
-          <div className="mb-[86px]">
-            {currentReviews.map((review: Review) => (
+          <div className="min-h-[500px]">
+            {reviewInpage.data.map((review: Review) => (
               <CommentsCard key={review.id} singleReviewData={review} />
             ))}
           </div>

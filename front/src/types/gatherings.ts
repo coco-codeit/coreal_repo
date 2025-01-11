@@ -52,5 +52,5 @@ export interface ICreateGathering {
 export interface UserRiveiw {
   pageId: number;
   offset: number;
-  limit: number;
+  limit?: number;
 }
