@@ -6,13 +6,7 @@ import Pagination from "./Pagination";
 import { Review } from "@/types/reviews";
 import { useGatherReview } from "@/hooks/queries/gatherDetailQuery";
 
-export default function CommentsSection({
-  pageId,
-  initialReviews,
-}: {
-  pageId: number;
-  initialReviews: { data: Review[] };
-}) {
+export default function CommentsSection({ pageId }: { pageId: number }) {
   const [offset, setOffset] = useState(0);
 
   const { data: reviewData = [] } = useGatherReview({
@@ -29,8 +23,6 @@ export default function CommentsSection({
     setOffset((page - 1) * 4);
   };
 
-  const reviewInpage = currentPage === 1 ? initialReviews : reviewData;
-  console.log(reviewInpage);
   return (
     <section className="flex flex-col sm:min-h-360px min-h-[487px] mt-6 p-6 border-t-2 border-[#E5E7EB]">
       <h2 className="text-[18px] font-semibold mb-[16px]">
@@ -40,7 +32,7 @@ export default function CommentsSection({
       {totalReviews > 0 ? (
         <>
           <div className="min-h-[500px]">
-            {reviewInpage.data.map((review: Review) => (
+            {reviewData.data.map((review: Review) => (
               <CommentsCard key={review.id} singleReviewData={review} />
             ))}
           </div>

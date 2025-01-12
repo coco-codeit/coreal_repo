@@ -10,7 +10,12 @@ import {
 import useAuthStore from "@/stores/useAuthStore";
 import { useToastStore } from "@/stores/useToastStore";
 import { UserRiveiw } from "@/types/gatherings";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  QueryClient,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 
 export const useGatherDeatilQuery = (gatherId: number) => {
   return useQuery({
@@ -84,6 +89,16 @@ export const useCreateCancel = (gatherId: number) => {
 
 export const useGatherReview = ({ pageId, offset, limit }: UserRiveiw) => {
   return useQuery({
+    queryKey: ["gatherReview", pageId, offset, limit],
+    queryFn: () => getUserReviews({ pageId, offset, limit }),
+  });
+};
+
+export const prefetchGatherReview = async (
+  queryClient: QueryClient,
+  { pageId, offset, limit }: UserRiveiw,
+) => {
+  await queryClient.prefetchQuery({
     queryKey: ["gatherReview", pageId, offset, limit],
     queryFn: () => getUserReviews({ pageId, offset, limit }),
   });
