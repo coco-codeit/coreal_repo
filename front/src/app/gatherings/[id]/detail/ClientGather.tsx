@@ -18,7 +18,7 @@ export default function ClientGather({ pageId }: { pageId: number }) {
   const isGatherLoading = isDetailLoading || participantLoading;
 
   return (
-    <div>
+    <article>
       <GatehringSection
         pageId={pageId}
         detailData={detailData}
@@ -30,6 +30,6 @@ export default function ClientGather({ pageId }: { pageId: number }) {
         detailData={detailData}
         isGatherLoading={isGatherLoading}
       />
-    </div>
+    </article>
   );
 }

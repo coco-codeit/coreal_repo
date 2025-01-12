@@ -14,44 +14,40 @@ export default function CommentsSection({ pageId }: { pageId: number }) {
     offset,
     limit: 4,
   });
-
-  const totalReviews = reviewData?.totalItemCount;
-  const totalPages = reviewData?.totalPages;
-  const currentPage = reviewData?.currentPage;
+  const { totalItemCount, totalPages, currentPage } = reviewData;
 
   const handlePageChange = (page: number) => {
     setOffset((page - 1) * 4);
   };
 
   return (
-    <section className="flex flex-col sm:min-h-360px min-h-[487px] mt-6 p-6 border-t-2 border-[#E5E7EB]">
+    <article className="flex flex-col sm:min-h-360px min-h-[487px] mt-6 p-6 border-t-2 border-[#E5E7EB]">
       <h2 className="text-[18px] font-semibold mb-[16px]">
         이용자들은 이 프로그램을 이렇게 느꼈어요!
       </h2>
 
-      {totalReviews > 0 ? (
+      {totalItemCount > 0 ? (
         <>
-          <div className="min-h-[500px]">
+          <section className="min-h-[500px]">
             {reviewData.data.map((review: Review) => (
               <CommentsCard key={review.id} singleReviewData={review} />
             ))}
-          </div>
-
-          {totalPages > 1 && (
-            <div className="mt-2 md:pb-[86px] pb-[134px]">
-              <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={handlePageChange}
-              />
-            </div>
-          )}
+          </section>
         </>
       ) : (
-        <div className="flex items-center justify-center h-[487px] md:pb-[86px] pb-[134px]">
+        <section className="flex items-center justify-center h-[487px] md:pb-[86px] pb-[134px]">
           <p className="text-gray-500">아직 리뷰가 없어요</p>
-        </div>
+        </section>
       )}
-    </section>
+      {totalPages > 1 && (
+        <section className="mt-2 md:pb-[86px] pb-[134px]">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
+        </section>
+      )}
+    </article>
   );
 }

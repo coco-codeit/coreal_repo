@@ -17,13 +17,11 @@ export default async function Detail({ params }: { params: { id: number } }) {
   const dehydratedState = dehydrate(queryClient);
 
   return (
-    <div className="min-h-screen-minus-nav bg-gray-100">
-      <div className="min-h-screen-minus-nav mx-auto container max-w-[1200px] px-6 md:px-[102px] pt-10 bg-white">
-        <ClientGather pageId={id} />
-        <HydrationBoundary state={dehydratedState}>
-          <CommentsSection pageId={id} />
-        </HydrationBoundary>
-      </div>
+    <div className="min-h-screen-minus-nav mx-auto container max-w-[1200px] px-6 md:px-[102px] pt-10 bg-white">
+      <ClientGather pageId={id} />
+      <HydrationBoundary state={dehydratedState}>
+        <CommentsSection pageId={id} />
+      </HydrationBoundary>
     </div>
   );
 }

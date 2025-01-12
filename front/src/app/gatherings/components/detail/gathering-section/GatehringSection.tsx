@@ -26,7 +26,7 @@ export default function GatheringSection({
   }
 
   return (
-    <section className="flex items-center justify-center md:flex-row flex-col gap-6 h-[270px]">
+    <section className="flex items-center justify-center md:flex-row flex-col gap-6 md:h-[270px]">
       <motion.div
         className="relative w-full md:w-1/2 h-[270px]"
         initial={{ opacity: 0 }}
