@@ -45,24 +45,24 @@
 
 <table>
 <tr>
-<td align="center"><img src="" width="" height="" alt="이미지"><br /><b><a href="https://github.com/SeanKim05">김유현</a></b><br />
+<td align="center"><img src="https://github.com/user-attachments/assets/730671d2-8561-4571-b74e-7ad9a9a7f7c8" width="160" height="200" alt="이미지"><br /><b><a href="https://github.com/SeanKim05">김유현</a></b><br />
 <sub>프론트엔드</sub>
 </td>
-<td align="center"><img src="" width="" height="" alt="이미지"><br /><b><a href="https://github.com/srp0114">김서영</a></b><br />
+<td align="center"><img src="https://github.com/user-attachments/assets/d815e712-dc59-4a72-bd93-165bbec2d237" width="160" height="200"  alt="이미지"><br /><b><a href="https://github.com/srp0114">김서영</a></b><br />
 <sub>프론트엔드</sub>
 </td>
-<td align="center"><img src="https://github.com/user-attachments/assets/0df18a1d-e2ca-4331-b5d7-e2cfc7725b25" width="" height="" alt="이미지"><br /><b><a href="https://github.com/itmakesmesoft">이은혁</a></b><br />
+<td align="center"><img src="https://github.com/user-attachments/assets/d9f8f9d9-637c-41d4-8ece-1c42c8eae169" width="160" height="200"  alt="이미지"><br /><b><a href="https://github.com/itmakesmesoft">이은혁</a></b><br />
 <sub>프론트엔드</sub>
 </td>
 </tr>
 <tr>
-<td align="center"><img src="" width="" height="" alt="이미지"><br /><b><a href="https://github.com/yup299">최준엽</a></b><br />
+<td align="center"><img src="https://github.com/user-attachments/assets/2eb595f9-d658-48ae-8dbc-b9dfdedf78e0" width="160" height="200"  alt="이미지"><br /><b><a href="https://github.com/yup299">최준엽</a></b><br />
 <sub>프론트엔드</sub>
 </td>
-<td align="center"><img src="" width="" height="" alt="이미지"><br /><b><a href="https://github.com/HOSEONH">황호선</a></b><br />
+<td align="center"><img src="https://github.com/user-attachments/assets/4c03efd4-ff22-4666-a775-7595c9f5aa22" width="160" height="200"  alt="이미지"><br /><b><a href="https://github.com/HOSEONH">황호선</a></b><br />
 <sub>프론트엔드</sub>
 </td>
-<td align="center"><img src="" width="" height="" alt="이미지"><br /><b>송지은</b><br />
+<td align="center"><img src="https://github.com/user-attachments/assets/3b88658b-a742-4d8b-863f-67f07f17c66a" width="160" height="200"  alt="이미지"><br /><b><a href="https://www.linkedin.com/in/jieun-song-b6951a219">송지은</a></b><br />
 <sub>디자이너</sub>
 </td>
 </tr>
@@ -85,7 +85,36 @@
 <br/>
 
 ## 주요 화면
+- 회원가입
+![회원가입](https://github.com/user-attachments/assets/85a3f759-7819-4848-9cda-e0d33d28324c)
 
-## 트러블슈팅
+- 로그인
+![로그인](https://github.com/user-attachments/assets/d5caed2d-a6f7-4244-b5b0-98f1fd8b19bd)
 
-## 프로젝트 회고
+- 모임 찾기
+![모임](https://github.com/user-attachments/assets/49b1c919-90f2-4a70-b4ae-fce9d02c3454)
+
+  
+- 모임 필터링
+![모임 필터링](https://github.com/user-attachments/assets/a0813d70-f272-44cd-b0aa-2c9e3dae43ed)
+
+
+- 모임 찜하기
+![찜한모임](https://github.com/user-attachments/assets/971d88b9-9b9c-4ae7-9940-48403f7f006e)
+
+  
+- 모임 생성
+![모임생성](https://github.com/user-attachments/assets/69ae00e8-00ed-4422-b8dc-583cf2a2e1b1)
+
+  
+- 참여하기
+![모임 참여](https://github.com/user-attachments/assets/21d3f70f-9cc9-487d-89aa-2e052740a5ad)
+
+  
+- 예약 취소
+![예약취소](https://github.com/user-attachments/assets/91700916-f608-4073-9074-b9f1cf041489)
+
+  
+- 회원정보 수정
+![회원정보 수정](https://github.com/user-attachments/assets/009a90bd-09c7-4745-906a-246fc5008266)
+

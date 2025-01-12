@@ -11,17 +11,17 @@ import LoginAlertModal from "@/app/components/LoginAlertModal";
 import { useRouter } from "next/navigation";
 import useAuthStore from "@/stores/useAuthStore";
 import { useToastStore } from "@/stores/useToastStore";
-import { IGatherings } from "@/types/gatherings";
 import { isBefore } from "date-fns";
+import { IGatherings } from "@/types/gatherings";
 
 export default function ActionBtnGroup({
+  isGatherLoading,
   pageId,
   detailData,
-  isGatherLoading,
 }: {
   pageId: number;
-  detailData: IGatherings;
   isGatherLoading: boolean;
+  detailData: IGatherings;
 }) {
   const { createdBy, participantCount, capacity, registrationEnd } = detailData;
   const router = useRouter();
@@ -111,27 +111,28 @@ export default function ActionBtnGroup({
   }
 
   return (
-    <div
+    <aside
       className={`fixed bottom-0 left-0 w-full min-h-[84px] border-t-2 border-black bg-white z-10 transition-transform duration-500 ${
         isVisible ? "translate-y-0" : "translate-y-full"
       }`}
     >
       <div className="block md:flex items-center justify-between max-w-[996px] my-5 mx-auto h-full">
-        <div className="px-6">
-          <h3 className="font-semibold">
+        <dl className="px-6">
+          <dt className="font-semibold">
             더 건강한 나와 팀을 위한 프로그램 🏃‍️️
-          </h3>
-          <div className="text-[12px]">
+          </dt>
+          <dd className="text-[12px]">
             {isCreated ? (
               "모임을 공유해서 더 많은 사람들이 참여할 수 있도록 독려해봐요"
             ) : (
-              <div className="md:flex">
-                <div>국내 최고 웰니스 전문가와 프로그램을 </div>
-                <div>통해 지친 몸과 마음을 회복해요</div>
-              </div>
+              <p className="md:flex">
+                <span>국내 최고 웰니스 전문가와 프로그램을</span>
+                <span>통해 지친 몸과 마음을 회복해요</span>
+              </p>
             )}
-          </div>
-        </div>
+          </dd>
+        </dl>
+
         <div className="px-4 md:mt-0 mt-[10px] font-semibold">
           {isCreated ? (
             <div className="flex">
@@ -167,6 +168,6 @@ export default function ActionBtnGroup({
         message="로그인이 필요해요"
         onConfirm={handleLoginRedirect}
       />
-    </div>
+    </aside>
   );
 }

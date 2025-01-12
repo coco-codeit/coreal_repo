@@ -21,36 +21,34 @@ export default function CommentsCard({
   };
 
   return (
-    <div className="h-[102px] mt-4">
-      <div className="flex h-6 space-x-1">
+    <article className="h-[102px] mt-4">
+      <figure className="flex h-6 space-x-1">
         {renderHearts(singleReviewData.score)}
-      </div>
-      <div className="text-[14px] mt-[10px]">{singleReviewData.comment}</div>
-      <div className="flex items-center text-[12px] mt-2">
-        <div className="relative w-6 h-6">
+      </figure>
+      <section className="text-[14px] mt-[10px]">
+        {singleReviewData.comment}
+      </section>
+      <footer className="flex items-center text-[12px] mt-2">
+        <picture className="relative w-6 h-6">
           <Image
             src={userImgSrc}
             className="rounded-full"
             fill
             alt="profile img"
           />
-        </div>
+        </picture>
         <span className="pl-2">{singleReviewData.User.name}</span>
         <span className="w-1 px-[1px] ml-2 mr-3">|</span>
-        <span>
+        <time>
           {format(singleReviewData.createdAt, "MMMM d일", {
             locale: ko,
           }).replace("MMMM", "월")}
-        </span>
-      </div>
-      <div className="relative w-full h-[2px] my-4">
-        <Image
-          src="/images/dashed.svg"
-          alt="dashed Img"
-          fill
-          style={{ objectFit: "contain" }}
-        />
-      </div>
-    </div>
+        </time>
+      </footer>
+      <hr
+        className="border-t-2 border-dashed border-gray-300 my-4"
+        aria-hidden="true"
+      />
+    </article>
   );
 }
