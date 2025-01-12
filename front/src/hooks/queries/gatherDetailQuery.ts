@@ -24,6 +24,16 @@ export const useGatherDeatilQuery = (gatherId: number) => {
   });
 };
 
+export const prefetchGatherDeatilQuery = async (
+  queryClient: QueryClient,
+  gatherId: number,
+) => {
+  await queryClient.prefetchQuery({
+    queryKey: ["gatherDetail", gatherId],
+    queryFn: () => getGatherDetail(gatherId),
+  });
+};
+
 export const useGatherParticipants = (gatherId: number, limit: number) => {
   return useQuery({
     queryKey: ["gatherParticipants", gatherId, limit],

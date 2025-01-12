@@ -1,8 +1,6 @@
 import DateTag from "@/app/gatherings/components/DateTag";
 import FavoriteButton from "@/app/gatherings/components/FavoriteButton";
 
-import React from "react";
-
 interface GatheringInfo {
   dateInfo: string;
   titleInfo: string;
@@ -10,12 +8,13 @@ interface GatheringInfo {
   pageId: number;
 }
 
-export default function GatheringInfo({
+export default function DetailInfo({
   dateInfo,
   titleInfo,
   locationInfo,
   pageId,
 }: GatheringInfo) {
+  console.log(dateInfo);
   return (
     <section className="relative mx-[22px] mb-3">
       <figure className="absolute right-0">

@@ -11,17 +11,17 @@ import LoginAlertModal from "@/app/components/LoginAlertModal";
 import { useRouter } from "next/navigation";
 import useAuthStore from "@/stores/useAuthStore";
 import { useToastStore } from "@/stores/useToastStore";
-import { IGatherings } from "@/types/gatherings";
 import { isBefore } from "date-fns";
+import { IGatherings } from "@/types/gatherings";
 
 export default function ActionBtnGroup({
+  isGatherLoading,
   pageId,
   detailData,
-  isGatherLoading,
 }: {
   pageId: number;
-  detailData: IGatherings;
   isGatherLoading: boolean;
+  detailData: IGatherings;
 }) {
   const { createdBy, participantCount, capacity, registrationEnd } = detailData;
   const router = useRouter();

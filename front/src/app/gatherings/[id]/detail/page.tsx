@@ -1,5 +1,5 @@
 import CommentsSection from "../../components/detail/comments-section/CommentsSection";
-import ClientGather from "./ClientGather";
+import GatherInfo from "../../components/detail/GatherInfo";
 
 import {
   HydrationBoundary,
@@ -18,7 +18,7 @@ export default async function Detail({ params }: { params: { id: number } }) {
 
   return (
     <div className="min-h-screen-minus-nav mx-auto container max-w-[1200px] px-6 md:px-[102px] pt-10 bg-white">
-      <ClientGather pageId={id} />
+      <GatherInfo pageId={id} />
       <HydrationBoundary state={dehydratedState}>
         <CommentsSection pageId={id} />
       </HydrationBoundary>

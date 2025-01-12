@@ -19,7 +19,6 @@ export default function CommentsSection({ pageId }: { pageId: number }) {
   const handlePageChange = (page: number) => {
     setOffset((page - 1) * 4);
   };
-
   return (
     <article className="flex flex-col sm:min-h-360px min-h-[487px] mt-6 p-6 border-t-2 border-[#E5E7EB]">
       <h2 className="text-[18px] font-semibold mb-[16px]">
