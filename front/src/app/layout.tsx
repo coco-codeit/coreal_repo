@@ -5,6 +5,7 @@ import Navbar from "./components/Navbar";
 import { ReactQueryClientProvider } from "./components/ReactQueryClientProvider";
 import { Provider as SessionProvider } from "./components/SessionProvider";
 import { Toast } from "./components/Toast";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 export const metadata: Metadata = {
   title: "같이달램",
@@ -46,6 +47,7 @@ export default function RootLayout({
     <html lang="ko" className={`${pretendard.variable} font-pretendard`}>
       <body className="w-full bg-gray-100 pt-[54px]">
         <ReactQueryClientProvider>
+          <ReactQueryDevtools />
           <SessionProvider>
             <main>
               <Navbar />

@@ -24,7 +24,7 @@ export const useGatherDeatilQuery = (gatherId: number) => {
   });
 };
 
-export const prefetchGatherDeatilQuery = async (
+export const prefetchGatherDetailQuery = async (
   queryClient: QueryClient,
   gatherId: number,
 ) => {
